@@ -23,21 +23,21 @@ public class PlayerInteractEntityListener  implements Listener {
 	
 	@EventHandler
 	public void onEntityDamage(PlayerInteractEntityEvent event) {
-		
+
 		Player attacker = (Player) event.getPlayer();
-			
-			//If game is not running.  Player is in lobby.
-			//This is for kit selection.
-			if (GameManager.isGameRunning() == true) {
-				
-				
-			} else { //Lobby code.
-				//Identify the mob being punched, then set up player kit.
-				Entity mob = event.getRightClicked();
-				UUID mobID = mob.getUniqueId();
-				
-				KitManager.setPlayerKit(attacker, mobID);
-			}
-		
+
+		// If game is not running. Player is in lobby.
+		// This is for kit selection.
+		if (GameManager.isGameRunning() == true) {
+			//Arena code goes here.
+
+		} else { // Lobby code.
+			// Identify the mob being right-clicked, then set player kit.
+			Entity mob = event.getRightClicked();
+			UUID mobID = mob.getUniqueId();
+
+			KitManager.setPlayerKit(attacker, mobID);
+		}
+
 	}
 }
