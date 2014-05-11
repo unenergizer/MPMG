@@ -63,11 +63,13 @@ public class ScoreboardUtil {
 	public void updateLobbyText(Player player) {
 		//setPoints(Bukkit.getOfflinePlayer("      "), 15);
 		
-		setPoints(Bukkit.getOfflinePlayer(ChatColor.BOLD + "Status: "), 14);
+		setPoints(Bukkit.getOfflinePlayer(ChatColor.GREEN + "" + ChatColor.BOLD + "Status: "), 14);
+		
 		//Start game if minimal players reached.
 		if (Bukkit.getOnlinePlayers().length >= GameManager.getMinPlayers()) {
 			setPoints(Bukkit.getOfflinePlayer(ChatColor.GREEN + "Game ready!"), 13);
-		} else {
+		}
+		if (Bukkit.getOnlinePlayers().length < GameManager.getMinPlayers()){
 			setPoints(Bukkit.getOfflinePlayer(ChatColor.YELLOW + "Need players.."), 13);
 		}
 		

@@ -15,6 +15,7 @@ import com.minepile.mpmg.listeners.InventoryClickListener;
 import com.minepile.mpmg.listeners.InventoryMoveItemListener;
 import com.minepile.mpmg.listeners.JoinListener;
 import com.minepile.mpmg.listeners.PlayerDropItemListener;
+import com.minepile.mpmg.listeners.PlayerInteractEntityListener;
 import com.minepile.mpmg.listeners.PlayerMoveListener;
 import com.minepile.mpmg.listeners.PlayerPickupItemListener;
 import com.minepile.mpmg.listeners.QuitListener;
@@ -63,6 +64,7 @@ public class MPMG extends JavaPlugin {
 		pluginManager.registerEvents(new InventoryMoveItemListener(this), this);
 		pluginManager.registerEvents(new JoinListener(this), this);
 		pluginManager.registerEvents(new PlayerDropItemListener(this), this);
+		pluginManager.registerEvents(new PlayerInteractEntityListener(this), this);
 		pluginManager.registerEvents(new PlayerMoveListener(this), this);
 		pluginManager.registerEvents(new PlayerPickupItemListener(this), this);
 		pluginManager.registerEvents(new QuitListener(this), this);
