@@ -63,13 +63,17 @@ public class ScoreboardUtil {
 	public void updateLobbyText(Player player) {
 		//setPoints(Bukkit.getOfflinePlayer("      "), 15);
 		
-		setPoints(Bukkit.getOfflinePlayer(ChatColor.GREEN + "" + ChatColor.BOLD + "Status: "), 14);
+		setPoints(Bukkit.getOfflinePlayer(ChatColor.BOLD + "Status: "), 14);
 		
 		//Start game if minimal players reached.
 		if (Bukkit.getOnlinePlayers().length >= GameManager.getMinPlayers()) {
+			player.sendMessage(ChatColor.RED + "<<< DEBUG >>> scoreboard - status: game ready.");
+			removePlayer(Bukkit.getOfflinePlayer(ChatColor.YELLOW + "Need players.."));
 			setPoints(Bukkit.getOfflinePlayer(ChatColor.GREEN + "Game ready!"), 13);
 		}
 		if (Bukkit.getOnlinePlayers().length < GameManager.getMinPlayers()){
+			player.sendMessage(ChatColor.RED + "<<< DEBUG >>> scoreboard - status: need players.");
+			//removePlayer(Bukkit.getOfflinePlayer(ChatColor.GREEN + "Game ready!"));
 			setPoints(Bukkit.getOfflinePlayer(ChatColor.YELLOW + "Need players.."), 13);
 		}
 		
@@ -91,7 +95,7 @@ public class ScoreboardUtil {
 		setPoints(Bukkit.getOfflinePlayer(ChatColor.BOLD + "Next Game: "), 2);
 		setPoints(Bukkit.getOfflinePlayer(ChatColor.AQUA + "One in the C.."), 1);
 	}
-	
+
 	public void setupTeam(ScoreboardTeam team, boolean canSeeFriendlyInvisibles, boolean allowFriendlyFire, String prefix) {
 		switch(team) {
 			case TEAM0:
@@ -198,6 +202,11 @@ public class ScoreboardUtil {
 	
 	public void removePlayer(Player player) {
 		board.resetScores(player);
+		updateScoreboard();
+	}
+	
+	private void removePlayer(OfflinePlayer offlinePlayer) {
+		board.resetScores(offlinePlayer);
 		updateScoreboard();
 	}
 	
