@@ -1,0 +1,12 @@
+name: MPMG
+main: com.minepile.mpmg.MPMG
+version: 0.1
+description: MinePile Mini-Games
+author: unenergizer
+website: http://www.minepile.com/
+depend: [BarAPI]
+
+commands:
+    mpmg:
+        usage: /<command>
+        description: Sets a player spawn point.
