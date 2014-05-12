@@ -77,7 +77,7 @@ public class ScoreboardUtil {
 		setPoints(Bukkit.getOfflinePlayer(" "), 12);
 		
 		setPoints(Bukkit.getOfflinePlayer(ChatColor.BOLD + "Players: "), 11);
-		setPoints(Bukkit.getOfflinePlayer(ChatColor.GREEN + Integer.toString(Bukkit.getOnlinePlayers().length) + " / 32"), 10);
+		setPoints(Bukkit.getOfflinePlayer(ChatColor.GREEN + Integer.toString(Bukkit.getOnlinePlayers().length) + " / " + Integer.toString(GameManager.getMaxPlayers())), 10);
 		setPoints(Bukkit.getOfflinePlayer("  "), 9);
 		
 		setPoints(Bukkit.getOfflinePlayer(ChatColor.BOLD + "Kit: "), 8);
@@ -151,29 +151,21 @@ public class ScoreboardUtil {
 	}
 	
 	public void addPlayer(Player player, ScoreboardTeam team) {
-		
-		Score score = objective.getScore(player);
-		
 		switch (team) {
 			case TEAM0: 
 				team0.addPlayer(player);
-				score.setScore(0);
 				break;
 			case TEAM1: 
 				team1.addPlayer(player);
-				score.setScore(0);
 				break;
 			case TEAM2: 
 				team2.addPlayer(player);
-				score.setScore(0); 
 				break;
 			case TEAM3: 
 				team3.addPlayer(player);
-				score.setScore(0); 
 				break;
 			case TEAM4: 
-				team4.addPlayer(player); 
-				score.setScore(0);
+				team4.addPlayer(player);
 				break;
 			case LOBBY: 
 				lobby.addPlayer(player); 

@@ -118,7 +118,7 @@ public class LobbyManager {
 			player.sendMessage(ChatColor.RED + "<<<DEBUG>>> added to scoreboardTeam.MOD");
 			break;
 		default:
-			player.sendMessage(ChatColor.RED + "<<<DEBUG>>> added to scoreboardTeam.MOD");
+			player.sendMessage(ChatColor.RED + "<<<DEBUG>>> added to scoreboardTeam.LOBBY");
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.LOBBY);
 			break;
 		}
