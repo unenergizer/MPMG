@@ -143,47 +143,47 @@ public class KitManager {
 			case KIT0: 
 				PlayerManager.setPlayerKit(player, Kits.KIT0);
 				//Show Kit  info
-				player.sendMessage(ChatColor.GOLD + "You chose kit 1!");
+				player.sendMessage(ChatColor.GOLD + "You chose kit 0!");
 				player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1, 10);
 				break;
 			case KIT1: PlayerManager.setPlayerKit(player, Kits.KIT1);
 				//Show Kit info
-				player.sendMessage(ChatColor.GOLD + "You chose kit 2!");
+				player.sendMessage(ChatColor.GOLD + "You chose kit 1!");
 				player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1, 10);
 				break;
 			case KIT2: PlayerManager.setPlayerKit(player, Kits.KIT2);
 				//Show Kit info
-				player.sendMessage(ChatColor.GOLD + "You chose kit 3!");
+				player.sendMessage(ChatColor.GOLD + "You chose kit 2!");
 				player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1, 10);
 				break;
 			case KIT3: PlayerManager.setPlayerKit(player, Kits.KIT3);
 				//Show Kit info
-				player.sendMessage(ChatColor.GOLD + "You chose kit 4!");
+				player.sendMessage(ChatColor.GOLD + "You chose kit 3!");
 				player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1, 10);
 				break;
 			case KIT4: PlayerManager.setPlayerKit(player, Kits.KIT4);
 				//Show Kit info
-				player.sendMessage(ChatColor.GOLD + "You chose kit 5!");
+				player.sendMessage(ChatColor.GOLD + "You chose kit 4!");
 				player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1, 10);
 				break;
 			case KIT5: PlayerManager.setPlayerKit(player, Kits.KIT5);
-				player.sendMessage(ChatColor.GOLD + "You chose kit 6!");
+				player.sendMessage(ChatColor.GOLD + "You chose kit 5!");
 				player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1, 10);
 				//Show Kit info
 				break;
 			case KIT6: PlayerManager.setPlayerKit(player, Kits.KIT6);
 				//Show Kit info
-				player.sendMessage(ChatColor.GOLD + "You chose kit 7!");
+				player.sendMessage(ChatColor.GOLD + "You chose kit 6!");
 				player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1, 10);
 				break;
 			case KIT7: PlayerManager.setPlayerKit(player, Kits.KIT7);
 				//Show Kit info
-				player.sendMessage(ChatColor.GOLD + "You chose kit 8!");
+				player.sendMessage(ChatColor.GOLD + "You chose kit 7!");
 				player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1, 10);
 				break;
 			case KIT8: PlayerManager.setPlayerKit(player, Kits.KIT8);
 				//Show Kit info
-				player.sendMessage(ChatColor.GOLD + "You chose kit 9!");	
+				player.sendMessage(ChatColor.GOLD + "You chose kit 8!");	
 				player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1, 10);
 				break;
 			case VILLAGER:
