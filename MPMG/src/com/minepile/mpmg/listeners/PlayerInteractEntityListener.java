@@ -35,8 +35,11 @@ public class PlayerInteractEntityListener  implements Listener {
 			// Identify the mob being right-clicked, then set player kit.
 			Entity mob = event.getRightClicked();
 			UUID mobID = mob.getUniqueId();
-
-			KitManager.setPlayerKit(attacker, mobID);
+			
+			//Prevent kit selection from right clicking other players.
+			if(!(mob instanceof Player)) {
+				KitManager.setPlayerKit(attacker, mobID);
+			}
 		}
 
 	}
