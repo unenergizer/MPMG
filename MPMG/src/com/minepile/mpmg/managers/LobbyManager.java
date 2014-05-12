@@ -31,7 +31,7 @@ public class LobbyManager {
 	private static ScoreboardUtil scoreboardUtil = new ScoreboardUtil();
 	
 	private static boolean lobbyCountdownStarted = false;
-	private static int lobbyCountdownTime = 500;	// TODO : Default 90
+	private static int lobbyCountdownTime = 90;	// TODO : Default 90
 	private static int currentCountdownTime = lobbyCountdownTime;
 	private static int lastCountdownTime = 0;
 	private static int taskID; 
@@ -106,15 +106,19 @@ public class LobbyManager {
 		switch(player.getName().toLowerCase()){
 		case "unenergizer":
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.DEV);
+
+			player.sendMessage(ChatColor.RED + "<<<DEBUG>>> added to scoreboardTeam.DEV");
 			break;
 		case "cloudfr":
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.MOD);
 			break;
 		case "trainedtotroll":
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.MOD);
+
+			player.sendMessage(ChatColor.RED + "<<<DEBUG>>> added to scoreboardTeam.MOD");
 			break;
 		default:
-			player.sendMessage(ChatColor.RED + "<<<DEBUG>>> added to scoreboardTeam.LOBBY");
+			player.sendMessage(ChatColor.RED + "<<<DEBUG>>> added to scoreboardTeam.MOD");
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.LOBBY);
 			break;
 		}
@@ -188,6 +192,10 @@ public class LobbyManager {
 		player.getInventory().setItem(7, book);
 	}
 	
+	public static void updatePlayerScoreboard(Player player) {
+		scoreboardUtil.updateLobbyText(player);
+	}
+	
 	public static void removePlayer(Player player) {
 		try {
 			BarAPI.removeBar(player);
@@ -223,20 +231,20 @@ public class LobbyManager {
 			@Override
 			public void run() {
 				
-				//show countdown message
+				//Show countdown time at top.
+				BarAPI.setMessage(ChatColor.RED + "" + ChatColor.BOLD + "Teleporting to arena in " + 
+						ChatColor.WHITE + ChatColor.BOLD + currentCountdownTime + ChatColor.RED + "" + ChatColor.BOLD + " seconds!");
+				//show countdown message.
 				chatUtil.colorCountDown(currentCountdownTime);
 				currentCountdownTime--;
 				
 				//Checking to make sure we still have enough players to start the game.
 				if (Bukkit.getOnlinePlayers().length < GameManager.getMinPlayers()) {
 					Bukkit.getScheduler().cancelTask(taskID); 		//cancel repeating task
-					Bukkit.broadcastMessage("Warning! Not enough players. Stopping countdown.");
+					BarAPI.setMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "Not enough players! Pausing countdown.");
+					Bukkit.broadcastMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "[!]Not enough players! Pausing countdown.");
 					lobbyCountdownStarted = false;
 				}
-				
-				//Show countdown time at top.
-				BarAPI.setMessage(ChatColor.RED + "" + ChatColor.BOLD + "Teleporting to arena in " + 
-						ChatColor.WHITE + ChatColor.BOLD + (currentCountdownTime + 1) + ChatColor.RED + "" + ChatColor.BOLD + " seconds!");
 				
 				//Start game if time is less than 0.
 				if (currentCountdownTime < 0) {

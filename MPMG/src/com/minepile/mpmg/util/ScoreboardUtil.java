@@ -17,15 +17,8 @@ public class ScoreboardUtil {
 	
 	private Scoreboard board;
 	private Objective objective;
-	private Team team0;
-	private Team team1;
-	private Team team2;
-	private Team team3;
-	private Team team4;
-	private Team lobby;
-	private Team global;
-	private Team dev;
-	private Team mod;
+	private Team team0, team1, team2, team3, team4, lobby, global, dev, mod;
+	private String tempObjectiveName, tempDisplayName;
 	
 	public enum ScoreboardTeam {
 		
@@ -53,6 +46,9 @@ public class ScoreboardUtil {
 	}
 	
 	public void setup(String objectiveName, String displayName) {
+		setTempObjectiveName(objectiveName);
+		setTempDisplayName(displayName);
+		
 		board = Bukkit.getScoreboardManager().getNewScoreboard();
 		
 		objective = board.registerNewObjective(objectiveName, "dummy");
@@ -61,23 +57,23 @@ public class ScoreboardUtil {
 	}
 	
 	public void updateLobbyText(Player player) {
-		//setPoints(Bukkit.getOfflinePlayer("      "), 15);
+		removeAllScoreboards();
+		setup(getTempObjectiveName(), getTempDisplayName());
+		setLobbyText(player);
+	}
+	
+	public void setLobbyText(Player player) {
+		setPoints(Bukkit.getOfflinePlayer("         "), 15);
 		
 		setPoints(Bukkit.getOfflinePlayer(ChatColor.BOLD + "Status: "), 14);
 		
-		//Start game if minimal players reached.
+		//If the game needs more players, display that to the user. Otherwise game is ready.
 		if (Bukkit.getOnlinePlayers().length >= GameManager.getMinPlayers()) {
-			player.sendMessage(ChatColor.RED + "<<< DEBUG >>> scoreboard - status: game ready.");
-			removePlayer(Bukkit.getOfflinePlayer(ChatColor.YELLOW + "Need players.."));
 			setPoints(Bukkit.getOfflinePlayer(ChatColor.GREEN + "Game ready!"), 13);
-		}
-		if (Bukkit.getOnlinePlayers().length < GameManager.getMinPlayers()){
-			player.sendMessage(ChatColor.RED + "<<< DEBUG >>> scoreboard - status: need players.");
-			//removePlayer(Bukkit.getOfflinePlayer(ChatColor.GREEN + "Game ready!"));
+		} else {
 			setPoints(Bukkit.getOfflinePlayer(ChatColor.YELLOW + "Need players.."), 13);
 		}
 		
-		setPoints(Bukkit.getOfflinePlayer(ChatColor.YELLOW + "Need players.."), 13);
 		setPoints(Bukkit.getOfflinePlayer(" "), 12);
 		
 		setPoints(Bukkit.getOfflinePlayer(ChatColor.BOLD + "Players: "), 11);
@@ -161,7 +157,6 @@ public class ScoreboardUtil {
 		switch (team) {
 			case TEAM0: 
 				team0.addPlayer(player);
-				score.setScore(1);
 				score.setScore(0);
 				break;
 			case TEAM1: 
@@ -182,19 +177,15 @@ public class ScoreboardUtil {
 				break;
 			case LOBBY: 
 				lobby.addPlayer(player); 
-				score.setScore(0);
-				//break;
+				break;
 			case GLOBAL: 
 				global.addPlayer(player); 
-				score.setScore(0);
 				break;
 			case DEV: 
 				dev.addPlayer(player); 
-				score.setScore(0);
 				break;
 			case MOD: 
 				mod.addPlayer(player);
-				score.setScore(0);
 				break;
 			default:
 		}
@@ -205,12 +196,7 @@ public class ScoreboardUtil {
 		updateScoreboard();
 	}
 	
-	private void removePlayer(OfflinePlayer offlinePlayer) {
-		board.resetScores(offlinePlayer);
-		updateScoreboard();
-	}
-	
-	//TODO : FIX me. Select proper team.
+	//TODO : FIX me. Add real team selection (remove auto select).
 	public void addAllPlayers(Player player, ScoreboardTeam team) {
 		for (Player players : Bukkit.getOnlinePlayers()) {
 			addPlayer(players, team);
@@ -259,6 +245,22 @@ public class ScoreboardUtil {
 		for (Player players : Bukkit.getOnlinePlayers()) {
 			players.setScoreboard(board);
 		}
+	}
+
+	public String getTempObjectiveName() {
+		return tempObjectiveName;
+	}
+
+	public void setTempObjectiveName(String tempObjectiveName) {
+		this.tempObjectiveName = tempObjectiveName;
+	}
+
+	public String getTempDisplayName() {
+		return tempDisplayName;
+	}
+
+	public void setTempDisplayName(String tempDisplayName) {
+		this.tempDisplayName = tempDisplayName;
 	}
 	
 }

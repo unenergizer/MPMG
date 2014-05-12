@@ -138,6 +138,7 @@ public class KitManager {
 	
 	public static void setPlayerKit(Player player, UUID mob) {
 		
+		//Sets the players kit.  TODO : Get dynamic kit info.
 		switch(KitManager.getEntityKit(mob)) {
 			case KIT0: 
 				PlayerManager.setPlayerKit(player, Kits.KIT0);
@@ -191,6 +192,8 @@ public class KitManager {
 				PlayerManager.setPlayerKit(player, Kits.KIT0);
 				break;
 		}
+		
+		LobbyManager.updatePlayerScoreboard(player);
 
 	}
 	

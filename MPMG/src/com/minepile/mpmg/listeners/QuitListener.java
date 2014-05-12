@@ -1,9 +1,11 @@
 package com.minepile.mpmg.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.minepile.mpmg.MPMG;
 import com.minepile.mpmg.managers.ArenaManager;
@@ -13,7 +15,6 @@ import com.minepile.mpmg.util.ChatUtil;
 
 public class QuitListener implements Listener {
 	
-	@SuppressWarnings("unused")
 	private MPMG plugin;
 	private ChatUtil chatManager = new ChatUtil();
 	
@@ -30,6 +31,16 @@ public class QuitListener implements Listener {
 			ArenaManager.removePlayer(player);
 		} else { // Lobby code.
 			LobbyManager.removePlayer(player);
+			
+			new BukkitRunnable() {
+				@Override
+		    	public void run() {
+					//Update lobby scoreboard with accurate Player count.
+					for (Player onlinePlayers : Bukkit.getOnlinePlayers()) {
+						LobbyManager.updatePlayerScoreboard(onlinePlayers);
+					}
+				}
+			}.runTaskLater(this.plugin, 1); //run after 1 tick
 		}
 		
 		//Show message to all player.
