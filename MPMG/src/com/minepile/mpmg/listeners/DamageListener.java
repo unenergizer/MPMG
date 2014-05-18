@@ -6,6 +6,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
@@ -88,7 +89,23 @@ public class DamageListener  implements Listener {
 				}
 			}
 
+		} else {
+			//If the entity is not a player, cancel their damage.
+			event.setCancelled(true);
 		}
     }
+	
+	@EventHandler
+	public void EntityCombust(EntityCombustEvent event) {
+		if (GameManager.isGameRunning() == true) {
+			//Arena code
+			
+		} else { //Lobby code.
+			//Prevent mobs from catching on fire.
+			if (!(event.getEntity() instanceof Player)) {
+				event.setCancelled(true);
+			}
+		}
+	}
 	
 }
