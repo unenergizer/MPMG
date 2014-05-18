@@ -32,15 +32,18 @@ public class QuitListener implements Listener {
 		} else { // Lobby code.
 			LobbyManager.removePlayer(player);
 			
-			new BukkitRunnable() {
-				@Override
-		    	public void run() {
-					//Update lobby scoreboard with accurate Player count.
-					for (Player onlinePlayers : Bukkit.getOnlinePlayers()) {
-						LobbyManager.updatePlayerScoreboard(onlinePlayers);
+			//If 0 players are online, do not update scoreboard.
+			if (Bukkit.getOnlinePlayers().length >= 1) {
+				new BukkitRunnable() {
+					@Override
+			    	public void run() {
+						//Update lobby scoreboard with accurate Player count.
+						for (Player onlinePlayers : Bukkit.getOnlinePlayers()) {
+							LobbyManager.updatePlayerScoreboard(onlinePlayers);
+						}
 					}
-				}
-			}.runTaskLater(this.plugin, 1); //run after 1 tick
+				}.runTaskLater(this.plugin, 1); //run after 1 tick
+			}
 		}
 		
 		//Show message to all player.

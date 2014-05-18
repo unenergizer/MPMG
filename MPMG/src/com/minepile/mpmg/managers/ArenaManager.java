@@ -44,6 +44,7 @@ public class ArenaManager {
 	private static String worldName;
 	private static String gameName;
 	private static boolean arenaCountdownStarted = false;
+	private static int maxScore = 5;
 	private static int arenaCountdownTime = 20;
 	private static int currentCountdownTime = arenaCountdownTime;
 	private static int spawnID = 0;
@@ -60,26 +61,35 @@ public class ArenaManager {
 		this.plugin = plugin;
 	}
 	
-	public static void loadArenaWorld() {
-		worldUtil.loadWorld(getWorldName(), true, false, 0, 0, 6000);
-	}
-
-	public static void setupGame() {
+	//This will setup the game world, before players are loaded into it.
+	public static void setupGameWorld() {
+		String worldName = GameManager.getMiniGame().getWorldName();
+		
+		Bukkit.broadcastMessage(ChatColor.RED + "<<< DEBUG >>> Loading world: " + worldName);
 		
 		//Get world name.
-		setWorldName(GameManager.getMiniGame().getWorldName());
+		setWorldName(worldName);
+		
+		//Loads the given arena world.
+		worldUtil.loadWorld(worldName);
+	}
+	
+	//Game has been initialed.  Lets setup the game.
+	public static void setupGame() {
+		//Setup game world properties.
+		worldUtil.setWorldProperties(false, false, 0, 6, 6000);
+		
+		//Get game name from GameManager.java.
 		setGameName(GameManager.getMiniGame().getGameName());
 		
 		//Setup scoreboard.
 		scoreboardUtil.setup("Lobby", getGameName());
 		scoreboardUtil.setupTeam(ScoreboardTeam.TEAM0, true, true, ChatColor.YELLOW + "");
 		
-		//TODO remove, this and load arena (and game kits/teams) when loading lobby.
-		loadArenaWorld();
-		
 		//Setup MiniGame
 		GameManager.getMiniGame().setupGame();
 		
+		//Setup all players online in the game.
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			setupPlayer(player);
 		}
@@ -97,7 +107,8 @@ public class ArenaManager {
 		//Start game countdown.
 		startGameCountdown();
 	}
-
+	
+	//The game has ended and needs to be cleaned up and removed.
 	public static void endGame() {
 		GameManager.setGameRunning(false);
 		
@@ -107,12 +118,16 @@ public class ArenaManager {
 		//Clear player kit selection.
 		PlayerManager.resetAllPlayerKits();
 		
+		//Setup the game lobby. Also teleports players back to lobby).
 		LobbyManager.setupLobby();
 		
 		//Unload the game world to save memory.
 		worldUtil.unloadWorld();
+		
+		//TODO : Delete world.
 	}
 	
+	//Setup a player in the arena.
 	public static void setupPlayer(Player player) {
 		//Monster bar @ top of screen.
 		BarAPI.removeBar(player);
@@ -124,6 +139,7 @@ public class ArenaManager {
 		spawnPlayer(player, false);
 	}
 	
+	//This will spawn a player in the arena.  
 	public static void spawnPlayer(Player player, boolean spectator) {
 		if (spectator == true) {
 			
@@ -164,27 +180,35 @@ public class ArenaManager {
 			GameManager.getMiniGame().setupPlayer(player);
 
 			//Spawn player using cords from config file.
-			int x = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".x");
-			int y = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".y");
-			int z = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".z");
-			int yaw = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".yaw");
-			int pitch = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".pitch");
+			int x = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".x"); //Loads x coordinate from file.
+			int y = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".y"); //Loads y coordinate from file.
+			int z = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".z"); //Loads z coordinate from file.
+			int yaw = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".yaw"); //Loads yaw from file.
+			int pitch = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".pitch"); //Loads pitch from file.
 			
+			//Teleport players.
 			worldUtil.teleportPlayer(player, x + .5, y, z + .5, yaw, pitch);
 			
+			//Save users spawn location for later.
+			//This location will be used to teleport player back to this point during countdowns.
 			playerSpawnID.put(player.getName(), spawnID);
 			
+			//Increment the spawn location id.  Sets next location to load.
 			spawnID++;
+			
+			//If the spawn location id is greater than 15, reset the counter.
 			if(spawnID > 15) {
 				spawnID = 0;
 			}
 		}
 	}
 	
+	//Updates a players inventory.
 	public static void updatePlayerInventory(Player player) {
 		GameManager.getMiniGame().updatePlayerInventory(player);
 	}
 	
+	//Removes a player from the scoreboard.
 	public static void removePlayer(Player player) {
 		scoreboardUtil.removePlayer(player);
 	}
@@ -197,25 +221,30 @@ public class ArenaManager {
             public void run() {
         		
             	//Spawn player using cords from config file.
-        		float tempYaw = player.getLocation().getYaw();
-        		float tempPitch = player.getLocation().getPitch();
-        		int playerSpawnID = getPlayerSpawnID(player.getName());
+        		float tempYaw = player.getLocation().getYaw();		//Gets players in-game yaw.
+        		float tempPitch = player.getLocation().getPitch();	//Gets players in-game pitch.
+        		int playerSpawnID = getPlayerSpawnID(player.getName());	//Gets the players spawn location.
         		
-        		int x = (int) plugin.getConfig().get(getWorldName() + "." + playerSpawnID + ".x");
-        		int y = (int) plugin.getConfig().get(getWorldName() + "." + playerSpawnID + ".y");
-        		int z = (int) plugin.getConfig().get(getWorldName() + "." + playerSpawnID + ".z");
-
+        		int x = (int) plugin.getConfig().get(getWorldName() + "." + playerSpawnID + ".x"); //Loads x coordinate from file.
+        		int y = (int) plugin.getConfig().get(getWorldName() + "." + playerSpawnID + ".y"); //Loads y coordinate from file.
+        		int z = (int) plugin.getConfig().get(getWorldName() + "." + playerSpawnID + ".z"); //Loads z coordinate from file.
+        		
+        		//Teleport the player to their original spawn location.
+        		//Players camera does not change.
         		worldUtil.teleportPlayer(player, x + .5, y, z + .5, tempYaw, tempPitch);
             }
  
         }.runTaskLater(plugin, 1);
 	}
 	
+	//Returns the location the player was spawned from the config file.
+	//This is used to teleport players back to their spawn location during the game countdown.
 	public static int getPlayerSpawnID(String playerName) {
 		int spawnLocation = playerSpawnID.get(playerName);
 		return spawnLocation;
 	}
 	
+	//If a player is a spectator, spawn them with this inventory contents.
 	private static void setupSpectatorInventory(Player player) {
 		player.getInventory().clear();	//Clear any existing items before we spawn new items.
 		
@@ -255,6 +284,8 @@ public class ArenaManager {
 		player.getInventory().setItem(7, book);
 	}
 	
+	//Starts the countdown for the game.  
+	//Also displays messages and prevents players from moving.
 	private static void startGameCountdown() {
 		arenaCountdownStarted = true;
 		
@@ -263,15 +294,21 @@ public class ArenaManager {
 			@Override
 			public void run() {
 				
-				//show countdown message
+				//Show countdown message.
 				chatUtil.colorCountDown(currentCountdownTime);
+				//Deduct time from the countdown.
 				currentCountdownTime--;
+				
+				//Shows a countdown message using the boss bar at the top of the screen.
 				BarAPI.setMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "Game starts in " + 
 						ChatColor.WHITE + ChatColor.BOLD + (currentCountdownTime + 1) + ChatColor.GREEN + "" + ChatColor.BOLD + " seconds!");
+				
 				//Start game if time is less than 0.
 				if (currentCountdownTime < 1) {
 					BarAPI.setMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Good Luck!");
 				}
+				
+				//Start the game! 
 				if (currentCountdownTime < 0) {
 					Bukkit.getScheduler().cancelTask(arenaTaskID); 		//cancel repeating task
 					arenaCountdownStarted = false;
@@ -286,16 +323,20 @@ public class ArenaManager {
 		}, 0, 20); //(20 ticks = 1 second)
 	}
 	
+	//This method returns if the game countdown has started.
 	public static boolean hasCountdownStarted() {
 		return arenaCountdownStarted;
 	}
 	
+	//Adds a point to the scoreboard.
 	public static void addPoint(Player player, int points) {
 		if (player != null) {
-			player.playSound(player.getLocation(), Sound.ANVIL_BREAK, 1, 10); //Play a sound
-			scoreboardUtil.addPoint(player, points);
+			player.playSound(player.getLocation(), Sound.ANVIL_BREAK, 1, 10); //Play a sound.
+			scoreboardUtil.addPoint(player, points);	//Add a point to the scoreboard.
 			
-			if (scoreboardUtil.getPoits(player) >= 5) {
+			//TODO : Remove win message and code from here.
+			//If the players points on the scoreboard are great than or equal to the max Score, trigger a win.
+			if (scoreboardUtil.getPoits(player) >= maxScore) {
 				
 				Bukkit.broadcastMessage(ChatColor.GOLD + "✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
@@ -304,29 +345,34 @@ public class ArenaManager {
 				Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰");
 				
+				//Show win message for X ammount of seconds.
 				new BukkitRunnable() {
 					@Override
 			    	public void run() {
-						endGame();
+						endGame();	//Runs the methods to end the game code.
 					}
-				}.runTaskLater(plugin, 5*20); //run after 5 secs
+				}.runTaskLater(plugin, 5*20); //run after 5 seconds.
 			}
 		}
 		
 	}
 	
+	//Get the world currently loaded for game play.
 	public static String getWorldName() {
 		return worldName;
 	}
-
+	
+	//Set the name of the world to load for game play.
 	public static void setWorldName(String worldName) {
 		ArenaManager.worldName = worldName;
 	}
-
+	
+	//Get the name of the GameMode to be played.
 	public static String getGameName() {
 		return gameName;
 	}
-
+	
+	//Set the name of the GameMode to be played.
 	public static void setGameName(String gameName) {
 		ArenaManager.gameName = gameName;
 	}

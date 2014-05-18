@@ -89,7 +89,17 @@ public class ScoreboardUtil {
 		setPoints(Bukkit.getOfflinePlayer("    "), 3);
 		
 		setPoints(Bukkit.getOfflinePlayer(ChatColor.BOLD + "Next Game: "), 2);
-		setPoints(Bukkit.getOfflinePlayer(ChatColor.AQUA + "One in the C.."), 1);
+		
+		if(GameManager.getMiniGame().getGameName().length() > 14) {
+			
+			String gameName = GameManager.getMiniGame().getGameName();
+			int ammountOver = gameName.length() - 14;
+			String tempName = gameName.substring(0, gameName.length() - ammountOver - 2) + "..";
+			
+			setPoints(Bukkit.getOfflinePlayer(ChatColor.AQUA + tempName), 1);
+		} else {
+			setPoints(Bukkit.getOfflinePlayer(ChatColor.AQUA + GameManager.getMiniGame().getGameName()), 1);
+		}
 	}
 
 	public void setupTeam(ScoreboardTeam team, boolean canSeeFriendlyInvisibles, boolean allowFriendlyFire, String prefix) {

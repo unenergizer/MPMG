@@ -30,20 +30,14 @@ public class GameManager {
 
 		private String name;
 
-		MiniGameType(String mg)
-		{
+		MiniGameType(String mg) {
 			this.name = mg;
 		}
 
-		public String getName()
-		{
+		public String getName() {
 			return name;
 		}
 
-		public void setupPlayer() {
-			// TODO Auto-generated method stub
-			
-		}
 	}
 	
 	public static GameManager getInstance() {
@@ -57,7 +51,18 @@ public class GameManager {
 		setGameRunning(false);
 		
 		//TODO: Randomize or loop game selection.
-		selectGame(MiniGameType.ONEINTHECHAMBER);
+		int randomNum = (int) (Math.random() * 2);
+		
+		switch (randomNum) {
+		case 1:
+			selectGame(MiniGameType.ONEINTHECHAMBER);
+			break;
+		case 2:
+			break;
+		default:
+			selectGame(MiniGameType.TEAMDEATHMATCH);
+			break;
+		}
 	}
 
 	public static MiniGame getMiniGame() {
@@ -95,6 +100,8 @@ public class GameManager {
 				miniGame.setupGame();
 				break;
 			default:
+				miniGame = new OneInTheChamber();
+				miniGame.setupGame();
 				break;
 		}
 	}

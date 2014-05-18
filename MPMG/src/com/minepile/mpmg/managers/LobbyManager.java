@@ -31,7 +31,7 @@ public class LobbyManager {
 	private static ScoreboardUtil scoreboardUtil = new ScoreboardUtil();
 	
 	private static boolean lobbyCountdownStarted = false;
-	private static int lobbyCountdownTime = 90;	// TODO : Default 90
+	private static int lobbyCountdownTime = 60;	// TODO : Default 90
 	private static int currentCountdownTime = lobbyCountdownTime;
 	private static int lastCountdownTime = 0;
 	private static int taskID; 
@@ -47,7 +47,8 @@ public class LobbyManager {
 		this.plugin = plugin;
 		
 		//Setup world.
-		worldUtil.loadWorld("world", false, false, 0, 6, 6000);
+		worldUtil.loadWorld("world");
+		worldUtil.setWorldProperties(false, false, 0, 6, 6000);
 		
 		//Setup scoreboard.
 		setupLobby();
@@ -79,21 +80,25 @@ public class LobbyManager {
 		
 		//Spawn kit mobs.
 		KitManager.spawnKitMobs();
+		
+		//Setup the arena world before the countdown can end.
+		ArenaManager.setupGameWorld();
 	}
 	
+	//This will setup a player in the mini-game lobby.
 	public static void setupPlayer(Player player) {
 		//Teleport player to lobby spawn point.
 		worldUtil.teleportPlayer(player, 0.5, 76, 0.5, 180f, 2f);
 		
-		//Set Gamemode
+		//If the players game-mode is not creative, then lets set it to creative now.
 		if (!(player.getGameMode().equals(GameMode.CREATIVE))) {
 			player.setGameMode(GameMode.CREATIVE);
 		}
-		player.setHealth(20);
-		player.setHealthScale(40);
-		player.setFoodLevel(20);
-		player.setAllowFlight(false);
-		player.setFlying(false);
+		player.setHealth(20);			//Sets players heath.
+		player.setHealthScale(40);		//Sets the players health scale.		
+		player.setFoodLevel(20);		//Sets the players food level.
+		player.setAllowFlight(false);	//Sets the players ability to fly.
+		player.setFlying(false);		//Set player whether or not player is flying when spawned.
 		player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1, 10); //Play a sound
 	    player.removePotionEffect(PotionEffectType.INVISIBILITY);	//Remove spectators potion effects.
 		player.removePotionEffect(PotionEffectType.JUMP);			//Remove lobby players potion effects.
@@ -106,23 +111,21 @@ public class LobbyManager {
 		switch(player.getName().toLowerCase()){
 		case "unenergizer":
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.DEV);
-
-			player.sendMessage(ChatColor.RED + "<<<DEBUG>>> added to scoreboardTeam.DEV");
 			break;
 		case "cloudfr":
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.MOD);
 			break;
 		case "trainedtotroll":
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.MOD);
-
-			player.sendMessage(ChatColor.RED + "<<<DEBUG>>> added to scoreboardTeam.MOD");
+			scoreboardUtil.addPoint(player, 1);
+			//scoreboardUtil.removePoints(player);
 			break;
 		default:
-			player.sendMessage(ChatColor.RED + "<<<DEBUG>>> added to scoreboardTeam.LOBBY");
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.LOBBY);
 			break;
 		}
 		
+		//Display important game information in the scoreboard.
 		scoreboardUtil.updateLobbyText(player);
 		
 		//Setup player Team
@@ -153,6 +156,7 @@ public class LobbyManager {
 		}
 	}
 	
+	//Sets up the inventory specific to the mini-game lobby.
 	public static void setupPlayerInventory(Player player) {
 		player.getInventory().clear();	//Clear any existing items before we spawn new items.
 		
@@ -192,25 +196,28 @@ public class LobbyManager {
 		player.getInventory().setItem(7, book);
 	}
 	
+	//Update the scoreboard for the given player.
 	public static void updatePlayerScoreboard(Player player) {
 		scoreboardUtil.updateLobbyText(player);
 	}
 	
+	//A player has left, lets remove them from the following.
 	public static void removePlayer(Player player) {
 		try {
-			BarAPI.removeBar(player);
+			BarAPI.removeBar(player);	//Boss bar.
 		} catch (NullPointerException exception) {}
 		try {
-			PlayerManager.removePlayerKit(player);
+			PlayerManager.removePlayerKit(player);	//Player kit.
 		} catch (NullPointerException exception) {}
 		try {
-			scoreboardUtil.removePlayer(player);
+			scoreboardUtil.removePlayer(player);	//Scoreboard scores.
 		} catch (NullPointerException exception) {}
 		try {
-			TeamManager.removePlayer(player);
+			TeamManager.removePlayer(player);		//Player team.
 		} catch (NullPointerException exception) {}
 	}
 	
+	//Starts the countdown that will teleoport the players to the arena.
 	private static void startGameCountdown() {
 		lobbyCountdownStarted = true;
 		
@@ -234,6 +241,7 @@ public class LobbyManager {
 				//Show countdown time at top.
 				BarAPI.setMessage(ChatColor.RED + "" + ChatColor.BOLD + "Teleporting to arena in " + 
 						ChatColor.WHITE + ChatColor.BOLD + currentCountdownTime + ChatColor.RED + "" + ChatColor.BOLD + " seconds!");
+				
 				//show countdown message.
 				chatUtil.colorCountDown(currentCountdownTime);
 				currentCountdownTime--;

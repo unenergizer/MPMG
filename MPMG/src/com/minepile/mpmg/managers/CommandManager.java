@@ -24,7 +24,7 @@ public class CommandManager implements CommandExecutor {
 		this.plugin = plugin;
 	}
 	
-	//Add eCash to player Account (operator or console only)
+	//TODO: Fix : Add spawn point to the config. (operator or console only)
 	public void addSpawn(Player player, int spawnNumber) {
 		
 		//Save configuration
@@ -45,9 +45,10 @@ public class CommandManager implements CommandExecutor {
 	// Command /mpmg setspawn
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+		sender.sendMessage("You ran a command.");
 	    if(commandLabel.equalsIgnoreCase("mpmg")) {
 	    	if(!(sender instanceof Player)){
-	    		sender.sendMessage("You ran a command.");
+	    		sender.sendMessage("Player ran a command.");
 	    		if (args.length == 0 && args[0].equalsIgnoreCase("setSpawn")) {
 	    			sender.sendMessage(ChatColor.RED + "Not enough arguments.");
 	    			sender.sendMessage(ChatColor.GOLD + "/mpmg setSpawn <spawnNumber>");

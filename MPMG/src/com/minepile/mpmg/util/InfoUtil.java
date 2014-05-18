@@ -5,13 +5,7 @@ import org.bukkit.ChatColor;
 
 public class InfoUtil {
 
-	private String titleSlot = null;
-	private String infoSlot1 = "";
-	private String infoSlot2 = "";
-	private String infoSlot3 = "";
-	private String infoSlot4 = "";
-	private String infoSlot5 = "";
-	private String infoSlot6 = "";
+	private String titleSlot, infoSlot1, infoSlot2, infoSlot3, infoSlot4, infoSlot5, infoSlot6;
 
 	public void showInfo() {
 		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "█    " + ChatColor.BOLD + "");

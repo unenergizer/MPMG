@@ -26,13 +26,13 @@ public class KitManager {
 	public static HashMap<UUID, Location> entityKitLocation = new HashMap<UUID, Location>();
 	@SuppressWarnings("unused")
 	private static int taskID;
-	private static Location kit0Location = new Location(world, -8, 74.5, -18);
-	private static Location kit1Location = new Location(world, -4, 74.5, -18);
-	private static Location kit2Location = new Location(world, 0, 74.5, -18);
-	private static Location kit3Location = new Location(world, 4, 74.5, -18);
-	private static Location kit4Location = new Location(world, 8, 74.5, -18);
-	private static Location kit5Location = new Location(world, 12, 74.5, -18);
-	private static Location kit6Location = new Location(world, 16, 74.5, -18);
+	private static Location kit0Location = new Location(world, -8, 74, -18);
+	private static Location kit1Location = new Location(world, -4, 74, -18);
+	private static Location kit2Location = new Location(world, 0, 74, -18);
+	private static Location kit3Location = new Location(world, 4, 74, -18);
+	private static Location kit4Location = new Location(world, 8, 74, -18);
+	private static Location kit5Location = new Location(world, 12, 75, -18);
+	private static Location kit6Location = new Location(world, 16, 74, -18);
 	private static Location npc0Location = new Location(world, 0.5, 72, 11.5);
 	
 	private static MPMG plugin;
@@ -79,31 +79,31 @@ public class KitManager {
 	}
 	
 	public static void spawnKitMobs() {
-		spawnerUtil.spawnEntity(world.getName(), kit0Location, EntityType.PIG, ChatColor.GREEN + "Kit 0");
+		spawnerUtil.spawnEntity(world.getName(), kit0Location, EntityType.PIG, ChatColor.GOLD + "Kit 0");
 		entityKit.put(spawnerUtil.getEntityID(), Kits.KIT0);
 		entityKitLocation.put(spawnerUtil.getEntityID(), kit0Location);
 		
-		spawnerUtil.spawnEntity(world.getName(), kit1Location, EntityType.WOLF, ChatColor.GREEN + "Kit 1");
+		spawnerUtil.spawnEntity(world.getName(), kit1Location, EntityType.WOLF, ChatColor.GOLD + "Kit 1");
 		entityKit.put(spawnerUtil.getEntityID(), Kits.KIT1);
 		entityKitLocation.put(spawnerUtil.getEntityID(), kit1Location);
 		
-		spawnerUtil.spawnEntity(world.getName(), kit2Location, EntityType.COW, ChatColor.GREEN + "Kit 2");
+		spawnerUtil.spawnEntity(world.getName(), kit2Location, EntityType.COW, ChatColor.GOLD + "Kit 2");
 		entityKit.put(spawnerUtil.getEntityID(), Kits.KIT2);
 		entityKitLocation.put(spawnerUtil.getEntityID(), kit2Location);
 		
-		spawnerUtil.spawnEntity(world.getName(), kit3Location, EntityType.CAVE_SPIDER, ChatColor.GREEN + "Kit 3");
+		spawnerUtil.spawnEntity(world.getName(), kit3Location, EntityType.CAVE_SPIDER, ChatColor.GOLD + "Kit 3");
 		entityKit.put(spawnerUtil.getEntityID(), Kits.KIT3);
 		entityKitLocation.put(spawnerUtil.getEntityID(), kit3Location);
 		
-		spawnerUtil.spawnEntity(world.getName(), kit4Location, EntityType.MUSHROOM_COW, ChatColor.GREEN + "Kit 4");
+		spawnerUtil.spawnEntity(world.getName(), kit4Location, EntityType.MUSHROOM_COW, ChatColor.GOLD + "Kit 4");
 		entityKit.put(spawnerUtil.getEntityID(), Kits.KIT4);
 		entityKitLocation.put(spawnerUtil.getEntityID(), kit4Location);
 		
-		spawnerUtil.spawnEntity(world.getName(), kit5Location, EntityType.CHICKEN, ChatColor.GREEN + "Kit 5");
+		spawnerUtil.spawnEntity(world.getName(), kit5Location, EntityType.CHICKEN, ChatColor.GOLD + "Kit 5");
 		entityKit.put(spawnerUtil.getEntityID(), Kits.KIT5);
 		entityKitLocation.put(spawnerUtil.getEntityID(), kit5Location);
 		
-		spawnerUtil.spawnEntity(world.getName(), kit6Location, EntityType.SKELETON, ChatColor.GREEN + "Kit 6");
+		spawnerUtil.spawnEntity(world.getName(), kit6Location, EntityType.SKELETON, ChatColor.GOLD + "Kit 6");
 		entityKit.put(spawnerUtil.getEntityID(), Kits.KIT6);
 		entityKitLocation.put(spawnerUtil.getEntityID(), kit6Location);
 		

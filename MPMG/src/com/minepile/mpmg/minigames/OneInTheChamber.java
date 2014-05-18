@@ -36,6 +36,7 @@ public class OneInTheChamber extends MiniGame {
 			setupPlayer(player);	
 		}		
 	}
+	
 	@Override
 	public void setupPlayer(Player player) {
 		
