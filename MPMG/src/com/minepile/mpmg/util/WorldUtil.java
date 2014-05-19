@@ -27,15 +27,18 @@ public class WorldUtil {
 	public void loadWorld(String worldName) {
 
 		if (worldName.equalsIgnoreCase("world")) {
+			//"world" should be the lobby world with kit selection.
 			// World settings
 			world = Bukkit.getWorld(worldName);
 		} else {
-			// Replace the game world being loaded.
+			// Replace the game world to be loaded.
 			replaceWorld(worldName, worldName.concat("_backup"));
-			//World to create
+			
+			//Load world into memory.
 			WorldCreator wc = new WorldCreator(worldName);
 			wc.createWorld();
-			// World settings
+			
+			//World settings
 			world = Bukkit.getWorld(worldName);
 		}
 	}

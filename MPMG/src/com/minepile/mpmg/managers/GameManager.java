@@ -49,7 +49,6 @@ public class GameManager {
 		this.plugin = plugin;
 		
 		setGameRunning(false);
-		//selectGame(MiniGameType.ONEINTHECHAMBER);
 	}
 	
 	public static void selectNextGame() {
