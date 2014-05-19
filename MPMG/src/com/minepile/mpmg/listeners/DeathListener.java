@@ -27,6 +27,9 @@ public class DeathListener implements Listener {
 			final Player player = (Player) event.getEntity();
 			final Player killer = player.getKiller();
 			
+			//Lets do a lightning strike because the player died!
+			player.getWorld().strikeLightning(player.getLocation());
+			
 			if (player != killer) {
 				ArenaManager.addPoint(killer, 1);
 				ArenaManager.updatePlayerInventory(killer);

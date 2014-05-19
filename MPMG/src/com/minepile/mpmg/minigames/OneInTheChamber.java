@@ -45,8 +45,8 @@ public class OneInTheChamber extends MiniGame {
 		player.setHealth(20);
 		player.setFoodLevel(20);
 		player.setGameMode(GameMode.SURVIVAL);
-		player.setAllowFlight(false);
-		player.setFlying(false);
+		player.setAllowFlight(true);
+		player.setFlying(true);
 		player.getInventory().clear();
 		
 		//Setup player inventory.

@@ -18,10 +18,10 @@ public class GameManager {
 	@SuppressWarnings("unused")
 	private static MPMG plugin;
 	
-	private static boolean gameRunning = false;				//Mini-game is running? (default = false)
-	private static String pluginVersion = "0.2.9";			//Plugin version.
-	private static int minPlayers = 2;						//Minimal players needed to start a game.
-	private static int maxPlayers = 16;						//Maximum players allowed in a game.
+	private static boolean gameRunning = false;		//Mini-game is running? (default = false)
+	private static String pluginVersion = "0.3.0";	//Plugin version.
+	private static int minPlayers = 2;				//Minimal players needed to start a game.
+	private static int maxPlayers = 16;				//Maximum players allowed in a game.
 	
 	public enum MiniGameType {
 		
@@ -49,43 +49,12 @@ public class GameManager {
 		this.plugin = plugin;
 		
 		setGameRunning(false);
-		
-		//TODO: Randomize or loop game selection.
-		int randomNum = (int) (Math.random() * 2);
-		
-		switch (randomNum) {
-		case 1:
-			selectGame(MiniGameType.ONEINTHECHAMBER);
-			break;
-		case 2:
-			break;
-		default:
-			selectGame(MiniGameType.TEAMDEATHMATCH);
-			break;
-		}
-	}
-
-	public static MiniGame getMiniGame() {
-		return miniGame;
-	}
-
-	public static void setMiniGame(MiniGame miniGame) {
-		GameManager.miniGame = miniGame;
+		//selectGame(MiniGameType.ONEINTHECHAMBER);
 	}
 	
-	public static boolean isGameRunning() {
-		return gameRunning;
+	public static void selectNextGame() {
+		selectGame(MiniGameType.ONEINTHECHAMBER);
 	}
-
-	public static void setGameRunning(boolean gameIsRunning) {
-		gameRunning = gameIsRunning;
-	}
-
-	public static int getMinPlayers() { return minPlayers; }
-	
-	public static int getMaxPlayers() { return maxPlayers; }
-
-	public static String getPluginVersion() { return pluginVersion; }
 	
 	public static void selectGame(MiniGameType game) {
 		
@@ -105,4 +74,22 @@ public class GameManager {
 				break;
 		}
 	}
+	
+	public static MiniGame getMiniGame() { return miniGame; }
+
+	public static void setMiniGame(MiniGame miniGame) {
+		GameManager.miniGame = miniGame;
+	}
+	
+	public static boolean isGameRunning() { return gameRunning; }
+
+	public static void setGameRunning(boolean gameIsRunning) {
+		gameRunning = gameIsRunning;
+	}
+
+	public static int getMinPlayers() { return minPlayers; }
+	
+	public static int getMaxPlayers() { return maxPlayers; }
+
+	public static String getPluginVersion() { return pluginVersion; }
 }

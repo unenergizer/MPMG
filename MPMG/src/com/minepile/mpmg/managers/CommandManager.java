@@ -42,31 +42,80 @@ public class CommandManager implements CommandExecutor {
 		plugin.saveConfig();
 	}
 	
-	// Command /mpmg setspawn
+	//Operator commands.
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-		sender.sendMessage("You ran a command.");
 	    if(commandLabel.equalsIgnoreCase("mpmg")) {
-	    	if(!(sender instanceof Player)){
-	    		sender.sendMessage("Player ran a command.");
-	    		if (args.length == 0 && args[0].equalsIgnoreCase("setSpawn")) {
-	    			sender.sendMessage(ChatColor.RED + "Not enough arguments.");
-	    			sender.sendMessage(ChatColor.GOLD + "/mpmg setSpawn <spawnNumber>");
-	    		} else if (args.length == 1) {
-	    			Player player = (Player) sender;
-	    			addSpawn(player, Integer.parseInt(args[1]));
-	    		} else {
-	    			sender.sendMessage(ChatColor.RED + "Not enough arguments.");
-	    			sender.sendMessage(ChatColor.GOLD + "/mpmg setSpawn <world> <spawnNumber>");
-	    		}
+	    	if(sender.isOp()) {
+	    		if (args.length == 1) {
+   				 	//Start game command.
+	    			 if(args[1].equalsIgnoreCase("startGame")) {
+	    				 sender.sendMessage(ChatColor.GOLD + "Command start game ran.");
+	    				 if (GameManager.isGameRunning() == false) {
+	    					 if (LobbyManager.isLobbyCountdownStarted() == true) {
+	    						 //Set lobby countdown time to trigger game start.
+	    						 LobbyManager.setCurrentCountdownTime(0);
+	    						 return true;
+	    					 } else {
+	    						 //If countdown not started, lets start it now, then change the countdown time.
+	    						 LobbyManager.startGameCountdown();
+	    						 //Set lobby countdown time to trigger game start.
+	    						 LobbyManager.setCurrentCountdownTime(0);
+	    						 return true;
+	    					 }
+	    				 } else {
+	    					 sender.sendMessage(ChatColor.RED + "Game already started.");
+	    					 return true;
+	    				 }
+	    			 } else if(args[1].equalsIgnoreCase("stopGame")) {
+	    				 //stop game.
+	    				 sender.sendMessage(ChatColor.GOLD + "Command stop game ran.");
+	    				 if (GameManager.isGameRunning() == true) {
+	    					 ArenaManager.endGame();
+	    					 return true;
+	    				 } else {
+	    					 sender.sendMessage(ChatColor.RED + "Not in a game.");
+	    					 return true;
+	    				 }
+	    			 } else if(args[1].equalsIgnoreCase("pauseGameCountdown")) {
+	    				 //pause game countdown.
+	    				 sender.sendMessage(ChatColor.GOLD + "Command pause game countdown ran.");
+	    				 sender.sendMessage("Command not comming soon.");
+	    			 } else if(args[1].equalsIgnoreCase("pauseLobbyCountdown")) {
+	    				 //pause lobby countdown.
+	    				 sender.sendMessage(ChatColor.GOLD + "Command pause lobby countdown ran.");
+	    				 sender.sendMessage("Command not comming soon.");
+	    			 } else if(args[1].equalsIgnoreCase("resumeGameCountdown")) {
+	    				 //pause game countdown.
+	    				 sender.sendMessage(ChatColor.GOLD + "Command resume game countdown ran.");
+	    				 sender.sendMessage("Command not comming soon.");
+	    			 } else if(args[1].equalsIgnoreCase("resumeLobbyCountdown")) {
+	    				 //pause lobby countdown.
+	    				 sender.sendMessage(ChatColor.GOLD + "Command start game ran.");
+	    				 sender.sendMessage("Command not comming soon.");
+	    			 } else {
+	 	    			sender.sendMessage(ChatColor.RED + "Not enough arguments.");
+	 	    			sender.sendMessage(ChatColor.GOLD + "/mpmg startGame|stopGame|pauseGameCountdown|pauseLobbyCountdown");
+	 	    			sender.sendMessage(ChatColor.GOLD + "/mpmg resumeGameCountdown|resumeLobbyCountdown");
+	 	    			return true;
+	 	    		}
 	    		return true;
+	    		} else if (args.length >= 2) {
+    				sender.sendMessage(ChatColor.RED + "You have entered to many arguments.");
+    				return true;
+    			} else {
+ 	    			sender.sendMessage(ChatColor.RED + "Not enough arguments.");
+ 	    			sender.sendMessage(ChatColor.GOLD + "/mpmg startGame|stopGame|pauseGameCountdown|pauseLobbyCountdown");
+ 	    			sender.sendMessage(ChatColor.GOLD + "/mpmg resumeGameCountdown|resumeLobbyCountdown");
+ 	    			return true;
+    			}
+	    	//Must be operator to use these commands.
 	    	} else {
-	    		//If console sends command, send error.
-	    		sender.sendMessage(ChatColor.RED + "You need to be in-game to do this.");
+	    		sender.sendMessage(ChatColor.RED + "You need to be staff member to use this.");
 	    		return true;
 	    	}
 	    }
-	    return true;
+		return true;
 	}
-	
+	    
 }//End Class

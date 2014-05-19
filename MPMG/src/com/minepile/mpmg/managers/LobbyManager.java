@@ -16,6 +16,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import com.minepile.mpmg.MPMG;
+import com.minepile.mpmg.managers.GameManager.MiniGameType;
 import com.minepile.mpmg.managers.KitManager.Kits;
 import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
 import com.minepile.mpmg.util.ChatUtil;
@@ -55,6 +56,9 @@ public class LobbyManager {
 	}
 	
 	public static void setupLobby() {
+		//Select game to load in lobby.
+		//Select the next game to load.
+		GameManager.selectNextGame();
 		
 		//Remove player from these mechanics before new setup.
 		for (Player player : Bukkit.getOnlinePlayers()) {
@@ -218,7 +222,7 @@ public class LobbyManager {
 	}
 	
 	//Starts the countdown that will teleoport the players to the arena.
-	private static void startGameCountdown() {
+	public static void startGameCountdown() {
 		lobbyCountdownStarted = true;
 		
 		//If countdown was paused, then lets resume it.
@@ -273,6 +277,18 @@ public class LobbyManager {
 				
 			} //END Run method.
 		}, 0, 20); //(20 ticks = 1 second)
+	}
+
+	public static void setCurrentCountdownTime(int currentCountdownTime) {
+		LobbyManager.currentCountdownTime = currentCountdownTime;
+	}
+
+	public static boolean isLobbyCountdownStarted() {
+		return lobbyCountdownStarted;
+	}
+
+	public static void setLobbyCountdownStarted(boolean lobbyCountdownStarted) {
+		LobbyManager.lobbyCountdownStarted = lobbyCountdownStarted;
 	}
 
 }

@@ -65,7 +65,7 @@ public class ArenaManager {
 	public static void setupGameWorld() {
 		String worldName = GameManager.getMiniGame().getWorldName();
 		
-		Bukkit.broadcastMessage(ChatColor.RED + "<<< DEBUG >>> Loading world: " + worldName);
+		Bukkit.broadcastMessage(ChatColor.RED + "<<< DEBUG >>> setupGameWorld() worldname: " + worldName);
 		
 		//Get world name.
 		setWorldName(worldName);
@@ -77,7 +77,7 @@ public class ArenaManager {
 	//Game has been initialed.  Lets setup the game.
 	public static void setupGame() {
 		//Setup game world properties.
-		worldUtil.setWorldProperties(false, false, 0, 6, 6000);
+		worldUtil.setWorldProperties(true, false, 0, 6, 6000);
 		
 		//Get game name from GameManager.java.
 		setGameName(GameManager.getMiniGame().getGameName());
@@ -120,11 +120,6 @@ public class ArenaManager {
 		
 		//Setup the game lobby. Also teleports players back to lobby).
 		LobbyManager.setupLobby();
-		
-		//Unload the game world to save memory.
-		worldUtil.unloadWorld();
-		
-		//TODO : Delete world.
 	}
 	
 	//Setup a player in the arena.
@@ -178,7 +173,7 @@ public class ArenaManager {
 			}
 		} else { //Spawn player in game.		
 			GameManager.getMiniGame().setupPlayer(player);
-
+			
 			//Spawn player using cords from config file.
 			int x = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".x"); //Loads x coordinate from file.
 			int y = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".y"); //Loads y coordinate from file.
@@ -188,6 +183,7 @@ public class ArenaManager {
 			
 			//Teleport players.
 			worldUtil.teleportPlayer(player, x + .5, y, z + .5, yaw, pitch);
+			player.sendMessage(ChatColor.RED + "<<< DEBUG >>> you have spawned in the " + getWorldName() + " world." );
 			
 			//Save users spawn location for later.
 			//This location will be used to teleport player back to this point during countdowns.

@@ -53,6 +53,9 @@ public class MPMG extends JavaPlugin {
 		PlayerManager.getInstance().setup(this);
 		StatsManager.getInstance().setup(this);
 		
+		//Register commands
+		getCommand("mpmg").setExecutor(CommandManager.getInstance());
+		
 		//Register event listeners.
 		pluginManager.registerEvents(new BlockPlaceListener(this), this);
 		pluginManager.registerEvents(new ChatListener(this), this);
