@@ -30,7 +30,10 @@ public class DeathListener implements Listener {
 			//Lets do a lightning strike because the player died!
 			player.getWorld().strikeLightningEffect(player.getLocation());
 			
-			if (player != killer) {
+			//if the killer is an instance of class Player and 
+			//if the player killed is not equal to the killer, then
+			//update the killers inventory.
+			if (killer instanceof Player && player != killer) {
 				ArenaManager.addPoint(killer, 1);
 				ArenaManager.updatePlayerInventory(killer);
 			}
