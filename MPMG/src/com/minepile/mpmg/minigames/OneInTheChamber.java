@@ -32,22 +32,22 @@ public class OneInTheChamber extends MiniGame {
 		setMaxLives(0);
 		
 		//Setup Kit names.
-		KitManager.setKit0("Wooden Axe");
-		KitManager.setKit1("Wooden Sword");
-		KitManager.setKit2("Stone Spade");
-		KitManager.setKit3("Stone Sword");
-		KitManager.setKit4("Iron Axe");
-		KitManager.setKit5("Iron Spade");
-		KitManager.setKit6("Iron Sword");
+		KitManager.setKit0(ChatColor.RED + "Wooden Axe");
+		KitManager.setKit1(ChatColor.GOLD + "Wooden Sword");
+		KitManager.setKit2(ChatColor.YELLOW + "Stone Spade");
+		KitManager.setKit3(ChatColor.GREEN + "Stone Sword");
+		KitManager.setKit4(ChatColor.AQUA + "Iron Axe");
+		KitManager.setKit5(ChatColor.BLUE + "Iron Spade");
+		KitManager.setKit6(ChatColor.DARK_PURPLE + "Death Bringer");
 		
 		//Spawn Kit NPC's.
-		NPCManager.setupNPC(NPCManager.kit0Location, EntityType.COW, ChatColor.GOLD, KitManager.getKit0(), Kits.KIT0);
-		NPCManager.setupNPC(NPCManager.kit1Location, EntityType.COW, ChatColor.GOLD, KitManager.getKit1(), Kits.KIT1);
-		NPCManager.setupNPC(NPCManager.kit2Location, EntityType.COW, ChatColor.GOLD, KitManager.getKit2(), Kits.KIT2);
-		NPCManager.setupNPC(NPCManager.kit3Location, EntityType.COW, ChatColor.GOLD, KitManager.getKit3(), Kits.KIT3);
-		NPCManager.setupNPC(NPCManager.kit4Location, EntityType.COW, ChatColor.GOLD, KitManager.getKit4(), Kits.KIT4);
-		NPCManager.setupNPC(NPCManager.kit5Location, EntityType.COW, ChatColor.GOLD, KitManager.getKit5(), Kits.KIT5);
-		NPCManager.setupNPC(NPCManager.kit6Location, EntityType.COW, ChatColor.GOLD, KitManager.getKit6(), Kits.KIT6);
+		NPCManager.setupNPC(NPCManager.kit0Location, EntityType.ZOMBIE, KitManager.getKit0(), Kits.KIT0);
+		NPCManager.setupNPC(NPCManager.kit1Location, EntityType.ZOMBIE, KitManager.getKit1(), Kits.KIT1);
+		NPCManager.setupNPC(NPCManager.kit2Location, EntityType.ZOMBIE, KitManager.getKit2(), Kits.KIT2);
+		NPCManager.setupNPC(NPCManager.kit3Location, EntityType.ZOMBIE, KitManager.getKit3(), Kits.KIT3);
+		NPCManager.setupNPC(NPCManager.kit4Location, EntityType.ZOMBIE, KitManager.getKit4(), Kits.KIT4);
+		NPCManager.setupNPC(NPCManager.kit5Location, EntityType.ZOMBIE, KitManager.getKit5(), Kits.KIT5);
+		NPCManager.setupNPC(NPCManager.kit6Location, EntityType.SKELETON, KitManager.getKit6(), Kits.KIT6);
 
 		//Setup join-able teams.
 		NPCManager.setupNPC(NPCManager.team0Location, EntityType.COW, ChatColor.GREEN, "Player Team", ArenaTeams.PLAYER);		

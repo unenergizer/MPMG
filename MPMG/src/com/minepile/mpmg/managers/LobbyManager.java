@@ -118,7 +118,7 @@ public class LobbyManager {
 		
 		//Setup kit.
 		if (KitManager.containsPlayer(player) == false) {
-			player.sendMessage(ChatColor.GOLD + "No kit selected.  Auto selecting a kit for you now.");
+			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MP" + ChatColor.GOLD + "> No kit selected.  Auto selecting a kit for you now.");
 			KitManager.setPlayerKit(player, Kits.KIT0);
 		}
 		

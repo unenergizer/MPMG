@@ -33,7 +33,7 @@ public class NPCManager {
 	public static Location kit2Location = new Location(world, 0, 74, -18);
 	public static Location kit3Location = new Location(world, 4, 74, -18);
 	public static Location kit4Location = new Location(world, 8, 74, -18);
-	public static Location kit5Location = new Location(world, 12, 75, -18);
+	public static Location kit5Location = new Location(world, 12, 74, -18);
 	public static Location kit6Location = new Location(world, 16, 74, -18);
 	public static Location npc0Location = new Location(world, 0.5, 72, 11.5);
 	public static Location team0Location = new Location(world, 7, 74, -10);
@@ -56,8 +56,8 @@ public class NPCManager {
 
 	}
 
-	public static void setupNPC(Location location, EntityType entity, ChatColor nameColor, String kitName, Kits kit) {
-		spawnerUtil.spawnEntity(world.getName(), location, entity, nameColor + kitName);
+	public static void setupNPC(Location location, EntityType entity, String kitName, Kits kit) {
+		spawnerUtil.spawnEntity(world.getName(), location, entity, kitName);
 		entityLocation.put(spawnerUtil.getEntityID(), location);
 		entityKit.put(spawnerUtil.getEntityID(), kit);
 	}

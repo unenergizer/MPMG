@@ -32,14 +32,23 @@ public class TeamDeathMatch extends MiniGame {
 			setCanPlayerTakeDamage(true);
 			setMaxLives(0);
 			
-			// Setup Kits
-			NPCManager.setupNPC(NPCManager.kit0Location, EntityType.COW, ChatColor.GOLD, "Kit 0", Kits.KIT0);
-			NPCManager.setupNPC(NPCManager.kit1Location, EntityType.COW, ChatColor.GOLD, "Kit 1", Kits.KIT1);
-			NPCManager.setupNPC(NPCManager.kit2Location, EntityType.COW, ChatColor.GOLD, "Kit 2", Kits.KIT2);
-			NPCManager.setupNPC(NPCManager.kit3Location, EntityType.COW, ChatColor.GOLD, "Kit 3", Kits.KIT4);
-			NPCManager.setupNPC(NPCManager.kit4Location, EntityType.COW, ChatColor.GOLD, "Kit 4", Kits.KIT4);
-			NPCManager.setupNPC(NPCManager.kit5Location, EntityType.COW, ChatColor.GOLD, "Kit 5", Kits.KIT5);
-			NPCManager.setupNPC(NPCManager.kit6Location, EntityType.COW, ChatColor.GOLD, "Kit 6", Kits.KIT6);
+			//Setup Kit names.
+			KitManager.setKit0(ChatColor.AQUA + "Wooden Axe");
+			KitManager.setKit1(ChatColor.AQUA + "Wooden Sword");
+			KitManager.setKit2(ChatColor.AQUA + "Stone Spade");
+			KitManager.setKit3(ChatColor.AQUA + "Stone Sword");
+			KitManager.setKit4(ChatColor.AQUA + "Iron Axe");
+			KitManager.setKit5(ChatColor.AQUA + "Iron Spade");
+			KitManager.setKit6(ChatColor.AQUA + "Death Bringer");
+			
+			//Spawn Kit NPC's.
+			NPCManager.setupNPC(NPCManager.kit0Location, EntityType.COW, KitManager.getKit0(), Kits.KIT0);
+			NPCManager.setupNPC(NPCManager.kit1Location, EntityType.COW, KitManager.getKit1(), Kits.KIT1);
+			NPCManager.setupNPC(NPCManager.kit2Location, EntityType.COW, KitManager.getKit2(), Kits.KIT2);
+			NPCManager.setupNPC(NPCManager.kit3Location, EntityType.COW, KitManager.getKit3(), Kits.KIT3);
+			NPCManager.setupNPC(NPCManager.kit4Location, EntityType.COW, KitManager.getKit4(), Kits.KIT4);
+			NPCManager.setupNPC(NPCManager.kit5Location, EntityType.COW, KitManager.getKit5(), Kits.KIT5);
+			NPCManager.setupNPC(NPCManager.kit6Location, EntityType.COW, KitManager.getKit6(), Kits.KIT6);
 
 			//Setup join-able teams.
 			NPCManager.setupNPC(NPCManager.team0Location, EntityType.COW, ChatColor.BLUE, "Blue Team", ArenaTeams.BLUE);

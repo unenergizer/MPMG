@@ -82,27 +82,35 @@ public class ScoreboardUtil {
 		setPoints(Bukkit.getOfflinePlayer("  "), 9);
 		
 		setPoints(Bukkit.getOfflinePlayer(ChatColor.BOLD + "Kit: "), 8);
-		setPoints(Bukkit.getOfflinePlayer(ChatColor.GOLD + KitManager.getPlayerKit(player).getName()), 7);
+		if(KitManager.getPlayerKitName(player).length() > 14) {
+			setPoints(Bukkit.getOfflinePlayer(trimString(KitManager.getPlayerKitName(player))), 7);
+		} else {
+			setPoints(Bukkit.getOfflinePlayer(ChatColor.GOLD + KitManager.getPlayerKitName(player)), 7);
+		}
 		setPoints(Bukkit.getOfflinePlayer("   "), 6);
 		
 		setPoints(Bukkit.getOfflinePlayer(ChatColor.BOLD + "Team: "), 5);
-		setPoints(Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName()), 4);
+		if(TeamManager.getPlayerTeam(player).getName().length() > 14) {
+			setPoints(Bukkit.getOfflinePlayer(trimString(TeamManager.getPlayerTeam(player).getName())), 4);
+		} else {
+			setPoints(Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName()), 4);
+		}
 		setPoints(Bukkit.getOfflinePlayer("    "), 3);
 		
 		setPoints(Bukkit.getOfflinePlayer(ChatColor.BOLD + "Next Game: "), 2);
-		
 		if(GameManager.getMiniGame().getGameName().length() > 14) {
-			
-			String gameName = GameManager.getMiniGame().getGameName();
-			int ammountOver = gameName.length() - 14;
-			String tempName = gameName.substring(0, gameName.length() - ammountOver - 2) + "..";
-			
-			setPoints(Bukkit.getOfflinePlayer(ChatColor.AQUA + tempName), 1);
+			setPoints(Bukkit.getOfflinePlayer(ChatColor.AQUA + trimString(GameManager.getMiniGame().getGameName())), 1);
 		} else {
 			setPoints(Bukkit.getOfflinePlayer(ChatColor.AQUA + GameManager.getMiniGame().getGameName()), 1);
 		}
 	}
-
+	
+	public String trimString(String input) {
+		int ammountOver = input.length() - 14;
+		String newString = input.substring(0, input.length() - ammountOver - 2) + "..";
+		return newString;
+	}
+	
 	public void setupTeam(ScoreboardTeam team, boolean canSeeFriendlyInvisibles, boolean allowFriendlyFire, String prefix) {
 		switch(team) {
 			case TEAM0:
@@ -197,13 +205,6 @@ public class ScoreboardUtil {
 	public void removePlayer(Player player) {
 		board.resetScores(player);
 		updateScoreboard();
-	}
-	
-	//TODO : FIX me. Add real team selection (remove auto select).
-	public void addAllPlayers(Player player, ScoreboardTeam team) {
-		for (Player players : Bukkit.getOnlinePlayers()) {
-			addPlayer(players, team);
-		}
 	}
 	
 	public void removeAllScoreboards() {

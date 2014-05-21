@@ -60,25 +60,25 @@ public class KitManager {
 		player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1, 10);
 		switch(kit) {
 		case KIT0:
-			player.sendMessage(ChatColor.GOLD + "You chose " + kit0 + "!");
+			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MP" + ChatColor.GOLD + "> You chose " + getKit0() + ChatColor.GOLD + "!");
 			break;
 		case KIT1:
-			player.sendMessage(ChatColor.GOLD + "You chose " + kit1 + "!");
+			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MP" + ChatColor.GOLD + "> You chose " + getKit1() + ChatColor.GOLD + "!");
 			break;
 		case KIT2:
-			player.sendMessage(ChatColor.GOLD + "You chose " + kit2 + "!");
+			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MP" + ChatColor.GOLD + "> You chose " + getKit2() + ChatColor.GOLD + "!");
 			break;
 		case KIT3:
-			player.sendMessage(ChatColor.GOLD + "You chose " + kit3 + "!");
+			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MP" + ChatColor.GOLD + "> You chose " + getKit3() + ChatColor.GOLD + "!");
 			break;
 		case KIT4:
-			player.sendMessage(ChatColor.GOLD + "You chose " + kit4 + "!");
+			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MP" + ChatColor.GOLD + "> You chose " + getKit4() + ChatColor.GOLD + "!");
 			break;
 		case KIT5:
-			player.sendMessage(ChatColor.GOLD + "You chose " + kit5 + "!");
+			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MP" + ChatColor.GOLD + "> You chose " + getKit5() + ChatColor.GOLD + "!");
 			break;
 		case KIT6:
-			player.sendMessage(ChatColor.GOLD + "You chose " + kit6 + "!");
+			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MP" + ChatColor.GOLD + "> You chose " + getKit6() + ChatColor.GOLD + "!");
 			break;
 		default:
 			break;
@@ -96,6 +96,39 @@ public class KitManager {
 		}
 		
 		return selectedKit;
+	}
+	
+	public static String getPlayerKitName(Player player) {
+		String playerName = player.getName();
+		Kits selectedKit = playerKit.get(playerName);
+		String kitName = "";
+		switch(selectedKit){
+		case KIT0:
+			kitName = getKit0();
+			break;
+		case KIT1:
+			kitName = getKit1();
+			break;
+		case KIT2:
+			kitName = getKit2();
+			break;
+		case KIT3:
+			kitName = getKit3();
+			break;
+		case KIT4:
+			kitName = getKit4();
+			break;
+		case KIT5:
+			kitName = getKit5();
+			break;
+		case KIT6:
+			kitName = getKit6();
+			break;
+		default:
+			kitName = getKit0();
+			break;
+		}
+		return kitName;
 	}
 	
 	public static boolean containsPlayer(Player player) {
