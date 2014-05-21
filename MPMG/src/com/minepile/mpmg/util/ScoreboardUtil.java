@@ -11,7 +11,8 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import com.minepile.mpmg.managers.GameManager;
-import com.minepile.mpmg.managers.PlayerManager;
+import com.minepile.mpmg.managers.KitManager;
+import com.minepile.mpmg.managers.TeamManager;
 
 public class ScoreboardUtil {
 	
@@ -81,11 +82,11 @@ public class ScoreboardUtil {
 		setPoints(Bukkit.getOfflinePlayer("  "), 9);
 		
 		setPoints(Bukkit.getOfflinePlayer(ChatColor.BOLD + "Kit: "), 8);
-		setPoints(Bukkit.getOfflinePlayer(ChatColor.GOLD + PlayerManager.getPlayerKit(player).getName()), 7);
+		setPoints(Bukkit.getOfflinePlayer(ChatColor.GOLD + KitManager.getPlayerKit(player).getName()), 7);
 		setPoints(Bukkit.getOfflinePlayer("   "), 6);
 		
 		setPoints(Bukkit.getOfflinePlayer(ChatColor.BOLD + "Team: "), 5);
-		setPoints(Bukkit.getOfflinePlayer(ChatColor.RED + "Red Team"), 4);
+		setPoints(Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName()), 4);
 		setPoints(Bukkit.getOfflinePlayer("    "), 3);
 		
 		setPoints(Bukkit.getOfflinePlayer(ChatColor.BOLD + "Next Game: "), 2);

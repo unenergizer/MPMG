@@ -13,7 +13,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import com.minepile.mpmg.MPMG;
 import com.minepile.mpmg.managers.ArenaManager;
 import com.minepile.mpmg.managers.GameManager;
-import com.minepile.mpmg.managers.KitManager;
+import com.minepile.mpmg.managers.NPCManager;
 import com.minepile.mpmg.managers.LobbyManager;
 import com.minepile.mpmg.managers.TeamManager;
 import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
@@ -50,7 +50,7 @@ public class DamageListener  implements Listener {
 				Entity mob = event.getEntity();
 				UUID mobID = mob.getUniqueId();
 				
-				KitManager.setPlayerKit(attacker, mobID);
+				NPCManager.interactPlayer(attacker, mobID);
 				
 			}
 		}

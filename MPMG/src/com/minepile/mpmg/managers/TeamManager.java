@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import com.minepile.mpmg.MPMG;
@@ -18,15 +19,15 @@ public class TeamManager {
 	
 	public enum ArenaTeams {
 		
-		SPECTATOR("spectator"),
-		PLAYER("player"),
-		BLUE("blue"),
-		GOLD("gold"),
-		GREEN("green"),
-		PURPLE("purple"),
-		RED("red"),
-		WHITE("white"),
-		YELLOW("yellow");
+		SPECTATOR(ChatColor.GOLD + "Spectator"),
+		PLAYER(ChatColor.GREEN + "Player"),
+		BLUE(ChatColor.BLUE + "Blue"),
+		GOLD(ChatColor.GOLD + "Gold"),
+		GREEN(ChatColor.GREEN + "Green"),
+		PURPLE(ChatColor.LIGHT_PURPLE + "Purple"),
+		RED(ChatColor.RED + "Red"),
+		WHITE(ChatColor.WHITE + "White"),
+		YELLOW(ChatColor.YELLOW + "Yellow");
 
 		private String name;
 
@@ -57,39 +58,9 @@ public class TeamManager {
 		String playerName = player.getName();
 		
 		playerTeam.put(playerName, team);
+		player.sendMessage(ChatColor.GOLD + "You joined the " + team.getName() + ChatColor.GOLD + " team.");
+		player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1, 10);
 		
-		switch(team) {
-		case BLUE:
-			player.sendMessage(ChatColor.BLUE + "You joined the " + team.getName() + " team.");
-			break;
-		case GOLD:
-			player.sendMessage(ChatColor.GOLD + "You joined the " + team.getName() + " team.");
-			break;
-		case GREEN:
-			player.sendMessage(ChatColor.GREEN + "You joined the " + team.getName() + " team.");
-			break;
-		case PLAYER:
-			player.sendMessage(ChatColor.WHITE + "You joined the " + team.getName() + " team.");
-			break;
-		case PURPLE:
-			player.sendMessage(ChatColor.LIGHT_PURPLE + "You joined the " + team.getName() + " team.");
-			break;
-		case RED:
-			player.sendMessage(ChatColor.RED + "You joined the " + team.getName() + " team.");
-			break;
-		case SPECTATOR:
-			player.sendMessage(ChatColor.GOLD + "You joined the " + team.getName() + " team.");
-			break;
-		case WHITE:
-			player.sendMessage(ChatColor.WHITE + "You joined the " + team.getName() + " team.");
-			break;
-		case YELLOW:
-			player.sendMessage(ChatColor.YELLOW + "You joined the " + team.getName() + " team.");
-			break;
-		default:
-			player.sendMessage("You joined the " + team.getName() + " team.");
-			break;
-		}
 	}
 	
 	public static void removePlayer(Player player) {

@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 import com.minepile.mpmg.MPMG;
 import com.minepile.mpmg.managers.GameManager;
-import com.minepile.mpmg.managers.KitManager;
+import com.minepile.mpmg.managers.NPCManager;
 
 public class PlayerInteractEntityListener  implements Listener {
 	
@@ -38,7 +38,7 @@ public class PlayerInteractEntityListener  implements Listener {
 			
 			//Prevent kit selection from right clicking other players.
 			if(!(mob instanceof Player)) {
-				KitManager.setPlayerKit(attacker, mobID);
+				NPCManager.interactPlayer(attacker, mobID);
 			}
 		}
 

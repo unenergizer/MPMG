@@ -65,8 +65,6 @@ public class ArenaManager {
 	public static void setupGameWorld() {
 		String worldName = GameManager.getMiniGame().getWorldName();
 		
-		Bukkit.broadcastMessage(ChatColor.RED + "<<< DEBUG >>> setupGameWorld() worldname: " + worldName);
-		
 		//Get world name.
 		setWorldName(worldName);
 		
@@ -86,8 +84,11 @@ public class ArenaManager {
 		scoreboardUtil.setup("Lobby", getGameName());
 		scoreboardUtil.setupTeam(ScoreboardTeam.TEAM0, true, true, ChatColor.YELLOW + "");
 		
-		//Setup MiniGame
-		GameManager.getMiniGame().setupGame();
+		//Setup all players.
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			GameManager.miniGame.setupPlayer(player);	
+		}
+		
 		
 		//Setup all players online in the game.
 		for (Player player : Bukkit.getOnlinePlayers()) {
@@ -116,7 +117,7 @@ public class ArenaManager {
 		scoreboardUtil.removeAllScoreboards();
 		
 		//Clear player kit selection.
-		PlayerManager.resetAllPlayerKits();
+		KitManager.resetAllPlayerKits();
 		
 		//Setup the game lobby. Also teleports players back to lobby).
 		LobbyManager.setupLobby();

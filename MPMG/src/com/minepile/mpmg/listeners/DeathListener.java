@@ -46,6 +46,7 @@ public class DeathListener implements Listener {
 					@Override
 			    	public void run() {
 						ArenaManager.spawnPlayer(player, false);
+						ArenaManager.updatePlayerInventory(player);
 					}
 				}.runTaskLater(this.plugin, 1); //run after 1 tick
 			} else { // Lobby code.

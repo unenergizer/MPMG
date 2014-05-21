@@ -16,7 +16,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import com.minepile.mpmg.MPMG;
-import com.minepile.mpmg.managers.GameManager.MiniGameType;
 import com.minepile.mpmg.managers.KitManager.Kits;
 import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
 import com.minepile.mpmg.util.ChatUtil;
@@ -59,7 +58,7 @@ public class LobbyManager {
 		//Select game to load in lobby.
 		//Select the next game to load.
 		GameManager.selectNextGame();
-		
+				
 		//Remove player from these mechanics before new setup.
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			removePlayer(player);
@@ -83,7 +82,7 @@ public class LobbyManager {
 		}
 		
 		//Spawn kit mobs.
-		KitManager.spawnKitMobs();
+		NPCManager.spawnNPCs();
 		
 		//Setup the arena world before the countdown can end.
 		ArenaManager.setupGameWorld();
@@ -98,6 +97,7 @@ public class LobbyManager {
 		if (!(player.getGameMode().equals(GameMode.CREATIVE))) {
 			player.setGameMode(GameMode.CREATIVE);
 		}
+		
 		player.setHealth(20);			//Sets players heath.
 		player.setHealthScale(40);		//Sets the players health scale.		
 		player.setFoodLevel(20);		//Sets the players food level.
@@ -110,6 +110,17 @@ public class LobbyManager {
 		
 		//Setup player inventory.
 		setupPlayerInventory(player);
+		
+		//TODO : Set proper team based on gamemode. Setup player Team.
+		if (TeamManager.containsPlayer(player) == false) {
+			TeamManager.setPlayerTeam(player, ArenaTeams.PLAYER);
+		}
+		
+		//Setup kit.
+		if (KitManager.containsPlayer(player) == false) {
+			player.sendMessage(ChatColor.GOLD + "No kit selected.  Auto selecting a kit for you now.");
+			KitManager.setPlayerKit(player, Kits.KIT0);
+		}
 		
 		//Setup player scoreboard.
 		switch(player.getName().toLowerCase()){
@@ -131,17 +142,6 @@ public class LobbyManager {
 		
 		//Display important game information in the scoreboard.
 		scoreboardUtil.updateLobbyText(player);
-		
-		//Setup player Team
-		if (TeamManager.containsPlayer(player) == false) {
-			TeamManager.setPlayerTeam(player, ArenaTeams.PLAYER);
-		}
-		
-		//Setup kit.
-		if (PlayerManager.containsPlayer(player) == false) {
-			player.sendMessage(ChatColor.GOLD + "No kit selected.  Auto selecting kit 1 for you now.");
-			PlayerManager.setPlayerKit(player, Kits.KIT0);
-		}
 		
 		//Monster bar @ top of screen.
 		BarAPI.removeBar(player);
@@ -211,7 +211,7 @@ public class LobbyManager {
 			BarAPI.removeBar(player);	//Boss bar.
 		} catch (NullPointerException exception) {}
 		try {
-			PlayerManager.removePlayerKit(player);	//Player kit.
+			KitManager.removePlayerKit(player);	//Player kit.
 		} catch (NullPointerException exception) {}
 		try {
 			scoreboardUtil.removePlayer(player);	//Scoreboard scores.
