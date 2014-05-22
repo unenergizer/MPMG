@@ -113,7 +113,26 @@ public class LobbyManager {
 		
 		//TODO : Set proper team based on gamemode. Setup player Team.
 		if (TeamManager.containsPlayer(player) == false) {
-			TeamManager.setPlayerTeam(player, ArenaTeams.PLAYER);
+			switch(GameManager.getCurrentMiniGame()){
+			case ONEINTHECHAMBER:
+				TeamManager.setPlayerTeam(player, ArenaTeams.PLAYER);
+				break;
+			case TEAMDEATHMATCH:
+				int redTeam = TeamManager.getTeamSize(ArenaTeams.RED);
+				int blueTeam = TeamManager.getTeamSize(ArenaTeams.BLUE);
+				if (TeamManager.getPlayerTeam(player) == null) {
+					if (redTeam > blueTeam) {
+						TeamManager.setPlayerTeam(player, ArenaTeams.BLUE);
+					} else if (blueTeam > redTeam) {
+						TeamManager.setPlayerTeam(player, ArenaTeams.RED);
+					} else {
+						TeamManager.setPlayerTeam(player, ArenaTeams.BLUE);
+					}
+				}
+				break;
+			default:
+				break;
+			}
 		}
 		
 		//Setup kit.

@@ -14,6 +14,7 @@ public class GameManager {
 	//Load objects.
 	static GameManager gameManagerInstance = new GameManager();
 	static MiniGame miniGame;
+	static MiniGameType currentMiniGame;
 
 	@SuppressWarnings("unused")
 	private static MPMG plugin;
@@ -52,7 +53,7 @@ public class GameManager {
 	}
 	
 	public static void selectNextGame() {
-		selectGame(MiniGameType.ONEINTHECHAMBER);
+		selectGame(MiniGameType.TEAMDEATHMATCH);
 	}
 	
 	public static void selectGame(MiniGameType game) {
@@ -60,14 +61,17 @@ public class GameManager {
 		//Select the minigame and then start it up.
 		switch(game) {
 			case ONEINTHECHAMBER:
+				setCurrentMiniGame(MiniGameType.ONEINTHECHAMBER);
 				miniGame = new OneInTheChamber();
 				miniGame.setupGame();
 				break;
 			case TEAMDEATHMATCH:
+				setCurrentMiniGame(MiniGameType.TEAMDEATHMATCH);
 				miniGame = new TeamDeathMatch();
 				miniGame.setupGame();
 				break;
 			default:
+				setCurrentMiniGame(MiniGameType.ONEINTHECHAMBER);
 				miniGame = new OneInTheChamber();
 				miniGame.setupGame();
 				break;
@@ -80,6 +84,14 @@ public class GameManager {
 		GameManager.miniGame = miniGame;
 	}
 	
+	public static MiniGameType getCurrentMiniGame() {
+		return currentMiniGame;
+	}
+
+	public static void setCurrentMiniGame(MiniGameType currentMiniGame) {
+		GameManager.currentMiniGame = currentMiniGame;
+	}
+
 	public static boolean isGameRunning() { return gameRunning; }
 
 	public static void setGameRunning(boolean gameIsRunning) {

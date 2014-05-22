@@ -28,7 +28,7 @@ public class ScoreboardUtil {
 		TEAM2("team2"),
 		TEAM3("team3"),
 		TEAM4("team4"),
-		GLOBAL("global"),
+		PLAYER("player"),
 		LOBBY("lobby"),
 		MOD("mod"),
 		DEV("dev");
@@ -148,7 +148,7 @@ public class ScoreboardUtil {
 				lobby.setCanSeeFriendlyInvisibles(canSeeFriendlyInvisibles);
 				lobby.setAllowFriendlyFire(allowFriendlyFire);
 				break;
-			case GLOBAL:
+			case PLAYER:
 				global = board.registerNewTeam("global");
 				global.setCanSeeFriendlyInvisibles(canSeeFriendlyInvisibles);
 				global.setAllowFriendlyFire(allowFriendlyFire);
@@ -189,7 +189,7 @@ public class ScoreboardUtil {
 			case LOBBY: 
 				lobby.addPlayer(player); 
 				break;
-			case GLOBAL: 
+			case PLAYER: 
 				global.addPlayer(player); 
 				break;
 			case DEV: 
@@ -228,6 +228,12 @@ public class ScoreboardUtil {
 		updateScoreboard();
 	}
 	
+	public void addPoint(OfflinePlayer offlinePlayer, int points) {
+		Score score = objective.getScore(offlinePlayer);
+		score.setScore(score.getScore() + points);
+		updateScoreboard();
+	}
+	
 	public void setPoints(OfflinePlayer offlinePlayer, int points) {
 		Score score = objective.getScore(offlinePlayer);
 		score.setScore(points);
@@ -236,6 +242,11 @@ public class ScoreboardUtil {
 	
 	public int getPoits(Player player) {
 		int points = objective.getScore(player).getScore();
+		return points;
+	}
+	
+	public int getPoits(OfflinePlayer offlinePlayer) {
+		int points = objective.getScore(offlinePlayer).getScore();
 		return points;
 	}
 	
@@ -266,5 +277,4 @@ public class ScoreboardUtil {
 	public void setTempDisplayName(String tempDisplayName) {
 		this.tempDisplayName = tempDisplayName;
 	}
-	
 }

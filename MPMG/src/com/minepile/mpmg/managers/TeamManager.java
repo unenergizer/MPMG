@@ -81,6 +81,16 @@ public class TeamManager {
 		return playerTeam.get(playerName);
 	}
 	
+	public static int getTeamSize(ArenaTeams arenaTeam) {
+		int teamSize = 0;
+		for (Entry<String, ArenaTeams> entry : playerTeam.entrySet()) {
+			if (entry.getValue() == arenaTeam) {
+				teamSize++;
+			}
+		}
+		return teamSize;
+	}
+	
 	public static int getNonSpectatorsTotal() {
 		int notSpectator = 0;
 		for (Entry<String, ArenaTeams> entry : playerTeam.entrySet()) {

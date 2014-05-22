@@ -82,7 +82,18 @@ public class ArenaManager {
 		
 		//Setup scoreboard.
 		scoreboardUtil.setup("Lobby", getGameName());
-		scoreboardUtil.setupTeam(ScoreboardTeam.TEAM0, true, true, ChatColor.YELLOW + "");
+		switch(GameManager.currentMiniGame){
+		case ONEINTHECHAMBER:
+			scoreboardUtil.setupTeam(ScoreboardTeam.PLAYER, true, true, ChatColor.GREEN + "");
+			break;
+		case TEAMDEATHMATCH:
+			scoreboardUtil.setupTeam(ScoreboardTeam.TEAM0, true, true, ChatColor.BLUE + "");
+			scoreboardUtil.setupTeam(ScoreboardTeam.TEAM1, true, true, ChatColor.RED + "");
+			break;
+		default:
+			break;
+		
+		}
 		
 		//Setup all players.
 		for (Player player : Bukkit.getOnlinePlayers()) {
@@ -97,11 +108,11 @@ public class ArenaManager {
 		
 		// TODO : Show some game specific info.
 		infoUtil.setTitleSlot(getGameName()); 	//Game Name
-		infoUtil.setInfoSlot1("You only get one arrow.");
+		infoUtil.setInfoSlot1("Bows are insta-kill and you only get one arrow.");
 		infoUtil.setInfoSlot2("");
-		infoUtil.setInfoSlot3("Bows are insta-kill.");
+		infoUtil.setInfoSlot3("Kill someone and you get another arrow. >:]");
 		infoUtil.setInfoSlot4("");
-		infoUtil.setInfoSlot5("Kill someone and you get another arrow. >:]");
+		infoUtil.setInfoSlot5("First person to " + Integer.toString(maxScore) + " kills wins!");
 		infoUtil.setInfoSlot6("");
 		infoUtil.showInfo();
 		
@@ -129,7 +140,21 @@ public class ArenaManager {
 		BarAPI.removeBar(player);
 		
 		//Set scoreboard info.
-		scoreboardUtil.addPlayer(player, ScoreboardTeam.TEAM0);
+		switch(GameManager.currentMiniGame){
+		case ONEINTHECHAMBER:
+			scoreboardUtil.addPlayer(player, ScoreboardTeam.PLAYER);
+			break;
+		case TEAMDEATHMATCH:
+			if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.BLUE)){
+				scoreboardUtil.addPlayer(player, ScoreboardTeam.TEAM0);
+			} else {
+				scoreboardUtil.addPlayer(player, ScoreboardTeam.TEAM1);
+			}
+			break;
+		default:
+			break;
+		
+		}
 		
 		//Spawn player
 		spawnPlayer(player, false);
@@ -327,21 +352,41 @@ public class ArenaManager {
 	//Adds a point to the scoreboard.
 	public static void addPoint(Player player, int points) {
 		if (player != null) {
-			player.playSound(player.getLocation(), Sound.ANVIL_BREAK, 1, 10); //Play a sound.
-			scoreboardUtil.addPoint(player, points);	//Add a point to the scoreboard.
 			
+			int tempScore = 0;
+			String tempName = "";
+			
+			player.playSound(player.getLocation(), Sound.ANVIL_BREAK, 1, 10); //Play a sound.
+			//Add a point to the scoreboard.
+			
+				switch(GameManager.getCurrentMiniGame()) {
+				case ONEINTHECHAMBER:
+					scoreboardUtil.addPoint(player, points);	//Add a point to the scoreboard.
+					tempScore = scoreboardUtil.getPoits(player);
+					tempName = player.getName();
+					break;
+				case TEAMDEATHMATCH:
+					scoreboardUtil.addPoint(Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team"), points);	//Add a point to the scoreboard.
+					tempScore = scoreboardUtil.getPoits(Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team"));
+					tempName = Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team").getName();
+					break;
+				default:
+					break;
+				}
+			
+					
 			//TODO : Remove win message and code from here.
 			//If the players points on the scoreboard are great than or equal to the max Score, trigger a win.
-			if (scoreboardUtil.getPoits(player) >= maxScore) {
+			if (tempScore >= maxScore) {
 				
 				Bukkit.broadcastMessage(ChatColor.GOLD + "✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
-				Bukkit.broadcastMessage(ChatColor.GOLD + "✰ " + ChatColor.GREEN + "" + ChatColor.BOLD + player.getName() + " has won the game!");
+				Bukkit.broadcastMessage(ChatColor.GOLD + "✰ " + ChatColor.GREEN + "" + ChatColor.BOLD + tempName + " has won the game!");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰");
 				
-				//Show win message for X ammount of seconds.
+				//Show win message for X amount of seconds.
 				new BukkitRunnable() {
 					@Override
 			    	public void run() {
