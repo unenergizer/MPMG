@@ -108,7 +108,7 @@ public class NPCManager {
 		if (entityTeam.containsKey(mobID) == true) {
 			setPlayerTeam(player, mobID);
 		}
-		LobbyManager.updatePlayerScoreboard(player);
+		LobbyManager.updatePlayerScoreboard();
 	}
 
 	public static void setPlayerKit(Player player, UUID mob) {

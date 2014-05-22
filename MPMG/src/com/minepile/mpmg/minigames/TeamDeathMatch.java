@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 
+import com.minepile.mpmg.managers.ArenaManager;
 import com.minepile.mpmg.managers.KitManager;
 import com.minepile.mpmg.managers.KitManager.Kits;
 import com.minepile.mpmg.managers.NPCManager;
@@ -31,7 +32,15 @@ public class TeamDeathMatch extends MiniGame {
 		setCanPlayerDie(true);
 		setCanPlayerTakeDamage(true);
 		setMaxLives(0);
-
+		
+		//Set Game info.
+		setInfoSlot1("Bows are insta-kill and you only get one arrow.");
+		setInfoSlot2("");
+		setInfoSlot3("Kill someone and you get another arrow. >:]");
+		setInfoSlot4("");
+		setInfoSlot5("First team with " + Integer.toString(ArenaManager.getMaxScore()) + " kills wins!");
+		setInfoSlot6("");
+		
 		// Setup Kit names.
 		KitManager.setKit0(ChatColor.RED + "Wooden Axe");
 		KitManager.setKit1(ChatColor.GOLD + "Wooden Sword");

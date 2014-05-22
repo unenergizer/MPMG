@@ -57,51 +57,53 @@ public class ScoreboardUtil {
 		objective.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + displayName);
 	}
 	
-	public void updateLobbyText(Player player) {
-		removeAllScoreboards();
-		setup(getTempObjectiveName(), getTempDisplayName());
-		setLobbyText(player);
+	public void updateLobbyText() {
+		//Update all players lobby text.
+		for (Player onlinePlayers : Bukkit.getOnlinePlayers()) {
+			setup(getTempObjectiveName(), getTempDisplayName());
+			setLobbyText(onlinePlayers);
+		}
 	}
 	
 	public void setLobbyText(Player player) {
-		setPoints(Bukkit.getOfflinePlayer("         "), 15);
+		setPoints(player, Bukkit.getOfflinePlayer("         "), 15);
 		
-		setPoints(Bukkit.getOfflinePlayer(ChatColor.BOLD + "Status: "), 14);
+		setPoints(player, Bukkit.getOfflinePlayer(ChatColor.BOLD + "Status: "), 14);
 		
 		//If the game needs more players, display that to the user. Otherwise game is ready.
 		if (Bukkit.getOnlinePlayers().length >= GameManager.getMinPlayers()) {
-			setPoints(Bukkit.getOfflinePlayer(ChatColor.GREEN + "Game ready!"), 13);
+			setPoints(player, Bukkit.getOfflinePlayer(ChatColor.GREEN + "Game ready!"), 13);
 		} else {
-			setPoints(Bukkit.getOfflinePlayer(ChatColor.YELLOW + "Need players.."), 13);
+			setPoints(player, Bukkit.getOfflinePlayer(ChatColor.YELLOW + "Need players.."), 13);
 		}
 		
-		setPoints(Bukkit.getOfflinePlayer(" "), 12);
+		setPoints(player, Bukkit.getOfflinePlayer(" "), 12);
 		
-		setPoints(Bukkit.getOfflinePlayer(ChatColor.BOLD + "Players: "), 11);
-		setPoints(Bukkit.getOfflinePlayer(ChatColor.GREEN + Integer.toString(Bukkit.getOnlinePlayers().length) + " / " + Integer.toString(GameManager.getMaxPlayers())), 10);
-		setPoints(Bukkit.getOfflinePlayer("  "), 9);
+		setPoints(player, Bukkit.getOfflinePlayer(ChatColor.BOLD + "Players: "), 11);
+		setPoints(player, Bukkit.getOfflinePlayer(ChatColor.GREEN + Integer.toString(Bukkit.getOnlinePlayers().length) + " / " + Integer.toString(GameManager.getMaxPlayers())), 10);
+		setPoints(player, Bukkit.getOfflinePlayer("  "), 9);
 		
-		setPoints(Bukkit.getOfflinePlayer(ChatColor.BOLD + "Kit: "), 8);
+		setPoints(player, Bukkit.getOfflinePlayer(ChatColor.BOLD + "Kit: "), 8);
 		if(KitManager.getPlayerKitName(player).length() > 14) {
-			setPoints(Bukkit.getOfflinePlayer(trimString(KitManager.getPlayerKitName(player))), 7);
+			setPoints(player, Bukkit.getOfflinePlayer(trimString(KitManager.getPlayerKitName(player))), 7);
 		} else {
-			setPoints(Bukkit.getOfflinePlayer(ChatColor.GOLD + KitManager.getPlayerKitName(player)), 7);
+			setPoints(player, Bukkit.getOfflinePlayer(ChatColor.GOLD + KitManager.getPlayerKitName(player)), 7);
 		}
-		setPoints(Bukkit.getOfflinePlayer("   "), 6);
+		setPoints(player, Bukkit.getOfflinePlayer("   "), 6);
 		
-		setPoints(Bukkit.getOfflinePlayer(ChatColor.BOLD + "Team: "), 5);
+		setPoints(player, Bukkit.getOfflinePlayer(ChatColor.BOLD + "Team: "), 5);
 		if(TeamManager.getPlayerTeam(player).getName().length() > 14) {
-			setPoints(Bukkit.getOfflinePlayer(trimString(TeamManager.getPlayerTeam(player).getName())), 4);
+			setPoints(player, Bukkit.getOfflinePlayer(trimString(TeamManager.getPlayerTeam(player).getName())), 4);
 		} else {
-			setPoints(Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName()), 4);
+			setPoints(player, Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName()), 4);
 		}
-		setPoints(Bukkit.getOfflinePlayer("    "), 3);
+		setPoints(player, Bukkit.getOfflinePlayer("    "), 3);
 		
-		setPoints(Bukkit.getOfflinePlayer(ChatColor.BOLD + "Next Game: "), 2);
+		setPoints(player, Bukkit.getOfflinePlayer(ChatColor.BOLD + "Next Game: "), 2);
 		if(GameManager.getMiniGame().getGameName().length() > 14) {
-			setPoints(Bukkit.getOfflinePlayer(ChatColor.AQUA + trimString(GameManager.getMiniGame().getGameName())), 1);
+			setPoints(player, Bukkit.getOfflinePlayer(ChatColor.AQUA + trimString(GameManager.getMiniGame().getGameName())), 1);
 		} else {
-			setPoints(Bukkit.getOfflinePlayer(ChatColor.AQUA + GameManager.getMiniGame().getGameName()), 1);
+			setPoints(player, Bukkit.getOfflinePlayer(ChatColor.AQUA + GameManager.getMiniGame().getGameName()), 1);
 		}
 	}
 	
@@ -204,7 +206,7 @@ public class ScoreboardUtil {
 	
 	public void removePlayer(Player player) {
 		board.resetScores(player);
-		updateScoreboard();
+		updateAllScoreboards();
 	}
 	
 	public void removeAllScoreboards() {
@@ -225,19 +227,19 @@ public class ScoreboardUtil {
 	public void addPoint(Player player, int points) {
 		Score score = objective.getScore(player);
 		score.setScore(score.getScore() + points);
-		updateScoreboard();
+		updateScoreboard(player);
 	}
 	
-	public void addPoint(OfflinePlayer offlinePlayer, int points) {
+	public void addPoint(Player player, OfflinePlayer offlinePlayer, int points) {
 		Score score = objective.getScore(offlinePlayer);
 		score.setScore(score.getScore() + points);
-		updateScoreboard();
+		updateScoreboard(player);
 	}
 	
-	public void setPoints(OfflinePlayer offlinePlayer, int points) {
+	public void setPoints(Player player, OfflinePlayer offlinePlayer, int points) {
 		Score score = objective.getScore(offlinePlayer);
 		score.setScore(points);
-		updateScoreboard();
+		updateScoreboard(player);
 	}
 	
 	public int getPoits(Player player) {
@@ -250,16 +252,28 @@ public class ScoreboardUtil {
 		return points;
 	}
 	
-	public void removePoints(OfflinePlayer offlinePlayer) {
+	public void removePoints(Player player, OfflinePlayer offlinePlayer) {
 		Score score = objective.getScore(offlinePlayer);
 		score.setScore(0);
-		updateScoreboard();
+		updateScoreboard(player);
 	}
 	
-	public void updateScoreboard() {
+	public void updateScoreboard(Player player) {
+		player.setScoreboard(board);
+	}
+	
+	public void updateAllScoreboards() {
 		for (Player players : Bukkit.getOnlinePlayers()) {
 			players.setScoreboard(board);
 		}
+	}
+
+	public Scoreboard getBoard() {
+		return board;
+	}
+
+	public void setBoard(Scoreboard board) {
+		this.board = board;
 	}
 
 	public String getTempObjectiveName() {

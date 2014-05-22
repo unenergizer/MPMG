@@ -87,8 +87,8 @@ public class ArenaManager {
 			scoreboardUtil.setupTeam(ScoreboardTeam.PLAYER, true, true, ChatColor.GREEN + "");
 			break;
 		case TEAMDEATHMATCH:
-			scoreboardUtil.setupTeam(ScoreboardTeam.TEAM0, true, true, ChatColor.BLUE + "");
-			scoreboardUtil.setupTeam(ScoreboardTeam.TEAM1, true, true, ChatColor.RED + "");
+			scoreboardUtil.setupTeam(ScoreboardTeam.TEAM0, true, false, ChatColor.BLUE + "");
+			scoreboardUtil.setupTeam(ScoreboardTeam.TEAM1, true, false, ChatColor.RED + "");
 			break;
 		default:
 			break;
@@ -108,12 +108,12 @@ public class ArenaManager {
 		
 		// TODO : Show some game specific info.
 		infoUtil.setTitleSlot(getGameName()); 	//Game Name
-		infoUtil.setInfoSlot1("Bows are insta-kill and you only get one arrow.");
-		infoUtil.setInfoSlot2("");
-		infoUtil.setInfoSlot3("Kill someone and you get another arrow. >:]");
-		infoUtil.setInfoSlot4("");
-		infoUtil.setInfoSlot5("First person to " + Integer.toString(maxScore) + " kills wins!");
-		infoUtil.setInfoSlot6("");
+		infoUtil.setInfoSlot1(GameManager.miniGame.getInfoSlot1());
+		infoUtil.setInfoSlot2(GameManager.miniGame.getInfoSlot2());
+		infoUtil.setInfoSlot3(GameManager.miniGame.getInfoSlot3());
+		infoUtil.setInfoSlot4(GameManager.miniGame.getInfoSlot4());
+		infoUtil.setInfoSlot5(GameManager.miniGame.getInfoSlot5());
+		infoUtil.setInfoSlot6(GameManager.miniGame.getInfoSlot6());
 		infoUtil.showInfo();
 		
 		//Start game countdown.
@@ -366,7 +366,7 @@ public class ArenaManager {
 					tempName = player.getName();
 					break;
 				case TEAMDEATHMATCH:
-					scoreboardUtil.addPoint(Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team"), points);	//Add a point to the scoreboard.
+					scoreboardUtil.addPoint(player, Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team"), points);	//Add a point to the scoreboard.
 					tempScore = scoreboardUtil.getPoits(Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team"));
 					tempName = Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team").getName();
 					break;
@@ -416,5 +416,13 @@ public class ArenaManager {
 	//Set the name of the GameMode to be played.
 	public static void setGameName(String gameName) {
 		ArenaManager.gameName = gameName;
+	}
+
+	public static int getMaxScore() {
+		return maxScore;
+	}
+
+	public static void setMaxScore(int maxScore) {
+		ArenaManager.maxScore = maxScore;
 	}
 }

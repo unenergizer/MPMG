@@ -31,7 +31,7 @@ public class LobbyManager {
 	private static ScoreboardUtil scoreboardUtil = new ScoreboardUtil();
 	
 	private static boolean lobbyCountdownStarted = false;
-	private static int lobbyCountdownTime = 60;	// TODO : Default 90
+	private static int lobbyCountdownTime = 600;	// TODO : Default 90
 	private static int currentCountdownTime = lobbyCountdownTime;
 	private static int lastCountdownTime = 0;
 	private static int taskID; 
@@ -144,23 +144,27 @@ public class LobbyManager {
 		//Setup player scoreboard.
 		switch(player.getName().toLowerCase()){
 		case "unenergizer":
+			player.setScoreboard(scoreboardUtil.getBoard());
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.DEV);
 			break;
 		case "cloudfr":
+			player.setScoreboard(scoreboardUtil.getBoard());
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.MOD);
 			break;
 		case "trainedtotroll":
+			player.setScoreboard(scoreboardUtil.getBoard());
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.MOD);
 			scoreboardUtil.addPoint(player, 1);
 			//scoreboardUtil.removePoints(player);
 			break;
 		default:
+			player.setScoreboard(scoreboardUtil.getBoard());
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.LOBBY);
 			break;
 		}
 		
 		//Display important game information in the scoreboard.
-		scoreboardUtil.updateLobbyText(player);
+		scoreboardUtil.updateLobbyText();
 		
 		//Monster bar @ top of screen.
 		BarAPI.removeBar(player);
@@ -220,8 +224,8 @@ public class LobbyManager {
 	}
 	
 	//Update the scoreboard for the given player.
-	public static void updatePlayerScoreboard(Player player) {
-		scoreboardUtil.updateLobbyText(player);
+	public static void updatePlayerScoreboard() {
+		scoreboardUtil.updateLobbyText();
 	}
 	
 	//A player has left, lets remove them from the following.
@@ -240,7 +244,7 @@ public class LobbyManager {
 		} catch (NullPointerException exception) {}
 	}
 	
-	//Starts the countdown that will teleoport the players to the arena.
+	//Starts the countdown that will teleport the players to the arena.
 	public static void startGameCountdown() {
 		lobbyCountdownStarted = true;
 		
