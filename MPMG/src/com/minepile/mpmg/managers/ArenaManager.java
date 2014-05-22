@@ -130,6 +130,9 @@ public class ArenaManager {
 		//Clear player kit selection.
 		KitManager.resetAllPlayerKits();
 		
+		//Clear player team selection.
+		TeamManager.resetAllPlayerTeams();
+		
 		//Setup the game lobby. Also teleports players back to lobby).
 		LobbyManager.setupLobby();
 	}

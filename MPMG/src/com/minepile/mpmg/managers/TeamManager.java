@@ -3,6 +3,7 @@ package com.minepile.mpmg.managers;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -48,9 +49,12 @@ public class TeamManager {
 	
 	public void setup(MPMG plugin) {
 		this.plugin = plugin;
+		
+		//Reload catcher.  Clear team selection.
+		resetAllPlayerTeams();
 	}
 	
-	public static void resetTeams() {
+	public static void resetAllPlayerTeams() {
 		playerTeam.clear();
 	}
 	
@@ -114,4 +118,35 @@ public class TeamManager {
 		}
 		return winner;
 	}
+
+	public static void setupAllPlayers() {
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			//Set proper team based on minigame. Setup player Team.
+			setupPlayer(player);
+		}
+	}
+	public static void setupPlayer(Player player) {
+		//Set proper team based on minigame. Setup player Team.
+		switch(GameManager.getCurrentMiniGame()){
+		case ONEINTHECHAMBER:
+			TeamManager.setPlayerTeam(player, ArenaTeams.PLAYER);
+			break;
+		case TEAMDEATHMATCH:
+			int redTeam = TeamManager.getTeamSize(ArenaTeams.RED);
+			int blueTeam = TeamManager.getTeamSize(ArenaTeams.BLUE);
+			if (TeamManager.getPlayerTeam(player) == null) {
+				if (redTeam > blueTeam) {
+					TeamManager.setPlayerTeam(player, ArenaTeams.BLUE);
+				} else if (blueTeam > redTeam) {
+					TeamManager.setPlayerTeam(player, ArenaTeams.RED);
+				} else {
+					TeamManager.setPlayerTeam(player, ArenaTeams.BLUE);
+				}
+			}
+			break;
+		default:
+			break;
+		}
+	}
+	
 }

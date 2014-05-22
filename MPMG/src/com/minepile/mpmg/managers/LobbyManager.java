@@ -31,7 +31,7 @@ public class LobbyManager {
 	private static ScoreboardUtil scoreboardUtil = new ScoreboardUtil();
 	
 	private static boolean lobbyCountdownStarted = false;
-	private static int lobbyCountdownTime = 600;	// TODO : Default 90
+	private static int lobbyCountdownTime = 30;	// TODO : Default 90
 	private static int currentCountdownTime = lobbyCountdownTime;
 	private static int lastCountdownTime = 0;
 	private static int taskID; 
@@ -71,7 +71,7 @@ public class LobbyManager {
 		scoreboardUtil.setupTeam(ScoreboardTeam.MOD, true, true, ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "mod");
 		
 		//Reload catcher.  If server is reloaded reset teams and setup all players.
-		TeamManager.resetTeams();
+		TeamManager.setupAllPlayers();
 		for(Player players : Bukkit.getOnlinePlayers()) {
 			setupPlayer(players);
 		}
@@ -111,29 +111,9 @@ public class LobbyManager {
 		//Setup player inventory.
 		setupPlayerInventory(player);
 		
-		//TODO : Set proper team based on gamemode. Setup player Team.
-		if (TeamManager.containsPlayer(player) == false) {
-			switch(GameManager.getCurrentMiniGame()){
-			case ONEINTHECHAMBER:
-				TeamManager.setPlayerTeam(player, ArenaTeams.PLAYER);
-				break;
-			case TEAMDEATHMATCH:
-				int redTeam = TeamManager.getTeamSize(ArenaTeams.RED);
-				int blueTeam = TeamManager.getTeamSize(ArenaTeams.BLUE);
-				if (TeamManager.getPlayerTeam(player) == null) {
-					if (redTeam > blueTeam) {
-						TeamManager.setPlayerTeam(player, ArenaTeams.BLUE);
-					} else if (blueTeam > redTeam) {
-						TeamManager.setPlayerTeam(player, ArenaTeams.RED);
-					} else {
-						TeamManager.setPlayerTeam(player, ArenaTeams.BLUE);
-					}
-				}
-				break;
-			default:
-				break;
-			}
-		}
+		//Set proper team based on minigame. Setup player Team.
+		TeamManager.setupPlayer(player);
+		
 		
 		//Setup kit.
 		if (KitManager.containsPlayer(player) == false) {
@@ -152,9 +132,9 @@ public class LobbyManager {
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.MOD);
 			break;
 		case "trainedtotroll":
-			player.setScoreboard(scoreboardUtil.getBoard());
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.MOD);
 			scoreboardUtil.addPoint(player, 1);
+			player.setScoreboard(scoreboardUtil.getBoard());
 			//scoreboardUtil.removePoints(player);
 			break;
 		default:

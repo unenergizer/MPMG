@@ -23,6 +23,7 @@ public class GameManager {
 	private static String pluginVersion = "0.3.5";	//Plugin version.
 	private static int minPlayers = 2;				//Minimal players needed to start a game.
 	private static int maxPlayers = 16;				//Maximum players allowed in a game.
+	private static MiniGameType lastGame = MiniGameType.ONEINTHECHAMBER;
 	
 	public enum MiniGameType {
 		
@@ -53,7 +54,13 @@ public class GameManager {
 	}
 	
 	public static void selectNextGame() {
-		selectGame(MiniGameType.TEAMDEATHMATCH);
+		if(lastGame.equals(MiniGameType.ONEINTHECHAMBER)) {
+			selectGame(MiniGameType.TEAMDEATHMATCH);
+			setLastGame(MiniGameType.TEAMDEATHMATCH);
+		} else if (lastGame.equals(MiniGameType.TEAMDEATHMATCH)) {
+			selectGame(MiniGameType.ONEINTHECHAMBER);
+			setLastGame(MiniGameType.ONEINTHECHAMBER);
+		}
 	}
 	
 	public static void selectGame(MiniGameType game) {
@@ -101,6 +108,14 @@ public class GameManager {
 	public static int getMinPlayers() { return minPlayers; }
 	
 	public static int getMaxPlayers() { return maxPlayers; }
+
+	public static MiniGameType getLastGame() {
+		return lastGame;
+	}
+
+	public static void setLastGame(MiniGameType lastGame) {
+		GameManager.lastGame = lastGame;
+	}
 
 	public static String getPluginVersion() { return pluginVersion; }
 }

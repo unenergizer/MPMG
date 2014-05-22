@@ -22,7 +22,7 @@ public class TeamDeathMatch extends MiniGame {
 
 	@Override
 	public void setupGame() {
-		setWorldName("MapTDM01");
+		setWorldName("MapOITC01");
 		setGameName("Team Death Match");
 		setCanPlaceBlocks(false);
 		setCanDropItems(false);

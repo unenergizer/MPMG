@@ -53,7 +53,6 @@ public class KitManager {
 		resetAllPlayerKits();
 	}
 	
-	// TODO : Move kit code into here.
 	public static void setPlayerKit(Player player, Kits kit) {
 		String playerName = player.getName();
 		playerKit.put(playerName, kit);
@@ -102,6 +101,10 @@ public class KitManager {
 		String playerName = player.getName();
 		Kits selectedKit = playerKit.get(playerName);
 		String kitName = "";
+		if(selectedKit == null) {
+			setPlayerKit(player, Kits.KIT0);
+			selectedKit = playerKit.get(playerName);
+		}
 		switch(selectedKit){
 		case KIT0:
 			kitName = getKit0();
