@@ -58,7 +58,7 @@ public class TeamManager {
 		String playerName = player.getName();
 		
 		playerTeam.put(playerName, team);
-		player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MP" + ChatColor.GOLD + "> You joined the " + team.getName() + ChatColor.GOLD + " team.");
+		player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> You joined the " + team.getName() + ChatColor.GOLD + " team.");
 		player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1, 10);
 		
 	}

@@ -60,25 +60,25 @@ public class KitManager {
 		player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1, 10);
 		switch(kit) {
 		case KIT0:
-			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MP" + ChatColor.GOLD + "> You chose " + getKit0() + ChatColor.GOLD + "!");
+			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> You chose " + getKit0() + ChatColor.GOLD + "!");
 			break;
 		case KIT1:
-			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MP" + ChatColor.GOLD + "> You chose " + getKit1() + ChatColor.GOLD + "!");
+			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> You chose " + getKit1() + ChatColor.GOLD + "!");
 			break;
 		case KIT2:
-			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MP" + ChatColor.GOLD + "> You chose " + getKit2() + ChatColor.GOLD + "!");
+			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> You chose " + getKit2() + ChatColor.GOLD + "!");
 			break;
 		case KIT3:
-			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MP" + ChatColor.GOLD + "> You chose " + getKit3() + ChatColor.GOLD + "!");
+			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> You chose " + getKit3() + ChatColor.GOLD + "!");
 			break;
 		case KIT4:
-			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MP" + ChatColor.GOLD + "> You chose " + getKit4() + ChatColor.GOLD + "!");
+			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> You chose " + getKit4() + ChatColor.GOLD + "!");
 			break;
 		case KIT5:
-			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MP" + ChatColor.GOLD + "> You chose " + getKit5() + ChatColor.GOLD + "!");
+			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> You chose " + getKit5() + ChatColor.GOLD + "!");
 			break;
 		case KIT6:
-			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MP" + ChatColor.GOLD + "> You chose " + getKit6() + ChatColor.GOLD + "!");
+			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> You chose " + getKit6() + ChatColor.GOLD + "!");
 			break;
 		default:
 			break;

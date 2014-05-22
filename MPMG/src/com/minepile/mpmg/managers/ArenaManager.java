@@ -184,8 +184,7 @@ public class ArenaManager {
 			
 			//Teleport players.
 			worldUtil.teleportPlayer(player, x + .5, y, z + .5, yaw, pitch);
-			player.sendMessage(ChatColor.RED + "<<< DEBUG >>> you have spawned in the " + getWorldName() + " world." );
-			
+	
 			//Save users spawn location for later.
 			//This location will be used to teleport player back to this point during countdowns.
 			playerSpawnID.put(player.getName(), spawnID);

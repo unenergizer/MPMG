@@ -118,7 +118,7 @@ public class LobbyManager {
 		
 		//Setup kit.
 		if (KitManager.containsPlayer(player) == false) {
-			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MP" + ChatColor.GOLD + "> No kit selected.  Auto selecting a kit for you now.");
+			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> No kit selected.  Auto selecting a kit for you now.");
 			KitManager.setPlayerKit(player, Kits.KIT0);
 		}
 		
@@ -254,7 +254,7 @@ public class LobbyManager {
 				if (Bukkit.getOnlinePlayers().length < GameManager.getMinPlayers()) {
 					Bukkit.getScheduler().cancelTask(taskID); 		//cancel repeating task
 					BarAPI.setMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "Not enough players! Pausing countdown.");
-					Bukkit.broadcastMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "[!]Not enough players! Pausing countdown.");
+					Bukkit.broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> " + ChatColor.RED + "Not enough players! Pausing countdown.");
 					lobbyCountdownStarted = false;
 				}
 				
