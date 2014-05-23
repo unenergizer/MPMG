@@ -17,7 +17,6 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.minepile.mpmg.MPMG;
 import com.minepile.mpmg.managers.KitManager.Kits;
-import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
 import com.minepile.mpmg.util.ChatUtil;
 import com.minepile.mpmg.util.ScoreboardUtil;
 import com.minepile.mpmg.util.ScoreboardUtil.ScoreboardTeam;
@@ -31,7 +30,7 @@ public class LobbyManager {
 	private static ScoreboardUtil scoreboardUtil = new ScoreboardUtil();
 	
 	private static boolean lobbyCountdownStarted = false;
-	private static int lobbyCountdownTime = 30;	// TODO : Default 90
+	private static int lobbyCountdownTime = 90;	// TODO : Default 90
 	private static int currentCountdownTime = lobbyCountdownTime;
 	private static int lastCountdownTime = 0;
 	private static int taskID; 

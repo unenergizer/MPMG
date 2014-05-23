@@ -1,11 +1,9 @@
 package com.minepile.mpmg.listeners;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -30,15 +28,17 @@ public class DeathListener implements Listener {
 			final Player player = (Player) event.getEntity();
 			final Player killer = player.getKiller();
 			
-			//if the killer is an instance of class Player and 
-			//if the player killed is not equal to the killer, then
-			//update the killers inventory.
-			if (killer instanceof Player && player != killer) {
-				ArenaManager.addPoint(killer, 1);
-				ArenaManager.updatePlayerInventory(killer);
-			}
-			
-			if (GameManager.isGameRunning() == true) {
+			if (GameManager.isGameRunning() == true) { 
+				//Game arena code.
+				
+				//if the killer is an instance of class Player and 
+				//if the player killed is not equal to the killer, then
+				//update the killers inventory.
+				if (killer instanceof Player && player != killer) {
+					ArenaManager.addPoint(killer, 1);
+					ArenaManager.updatePlayerInventory(killer);
+				}
+				
 				player.getInventory().clear();
 				player.setHealth(20);
 				
@@ -52,7 +52,6 @@ public class DeathListener implements Listener {
 				}.runTaskLater(this.plugin, 1); //run after 1 tick
 			} else { // Lobby code.
 				LobbyManager.setupPlayer(player);
-				Bukkit.broadcastMessage(player.getName() + " has died.");
 			}
 		}
 	}
@@ -61,7 +60,6 @@ public class DeathListener implements Listener {
 	public void death(PlayerDeathEvent event){
 		Player player = (Player) event.getEntity();
 		Player killer = player.getKiller();
-		DamageCause damage = null;
 		String playerName = player.getName();
 		String killerName = "";
 		String deathCause = "";
@@ -143,7 +141,7 @@ public class DeathListener implements Listener {
 			}
 		} else {
 			killerName = killer.getName();
-			deathCause = ChatColor.GOLD + "by " + ChatColor.AQUA + killerName + "'s " + ChatColor.GOLD + "attack";
+			deathCause = ChatColor.GOLD + "by " + ChatColor.AQUA + killerName;
 		}
 		
 		event.setDeathMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> " 

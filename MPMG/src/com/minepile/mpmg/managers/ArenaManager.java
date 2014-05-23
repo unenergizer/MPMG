@@ -43,7 +43,7 @@ public class ArenaManager {
 	//Setup variables.
 	private static String worldName;
 	private static String gameName;
-	private static boolean arenaCountdownStarted = false;
+	private static boolean arenaCountdownActive = false;
 	private static int maxScore = 5;
 	private static int arenaCountdownTime = 20;
 	private static int currentCountdownTime = arenaCountdownTime;
@@ -106,7 +106,7 @@ public class ArenaManager {
 			setupPlayer(player);
 		}
 		
-		// TODO : Show some game specific info.
+		//Show some game specific info.
 		infoUtil.setTitleSlot(getGameName()); 	//Game Name
 		infoUtil.setInfoSlot1(GameManager.miniGame.getInfoSlot1());
 		infoUtil.setInfoSlot2(GameManager.miniGame.getInfoSlot2());
@@ -167,7 +167,7 @@ public class ArenaManager {
 	public static void spawnPlayer(Player player, boolean spectator) {
 		if (spectator == true) {
 			
-			// TODO : Replace this spawning location with location from game
+			// TODO : Replace this spawning location with location from config.
 			worldUtil.teleportPlayer(player, -230.5, 80, -27.5, 180f, 2f);
 			
 			player.setHealth(20);					//Set health to 100%.
@@ -200,6 +200,7 @@ public class ArenaManager {
 			if (TeamManager.getNonSpectatorsTotal() <= 1) {
 				endGame();
 			}
+			
 		} else { //Spawn player in game.		
 			GameManager.getMiniGame().setupPlayer(player);
 			
@@ -311,7 +312,7 @@ public class ArenaManager {
 	//Starts the countdown for the game.  
 	//Also displays messages and prevents players from moving.
 	private static void startGameCountdown() {
-		arenaCountdownStarted = true;
+		arenaCountdownActive = true;
 		
 		//Lets start a repeating task
 		arenaTaskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
@@ -335,7 +336,7 @@ public class ArenaManager {
 				//Start the game! 
 				if (currentCountdownTime < 0) {
 					Bukkit.getScheduler().cancelTask(arenaTaskID); 		//cancel repeating task
-					arenaCountdownStarted = false;
+					arenaCountdownActive = false;
 					currentCountdownTime = arenaCountdownTime;
 					//Remove the countdown bar at the top.
 					for(Player player : Bukkit.getOnlinePlayers()){
@@ -349,15 +350,15 @@ public class ArenaManager {
 	
 	//This method returns if the game countdown has started.
 	public static boolean hasCountdownStarted() {
-		return arenaCountdownStarted;
+		return arenaCountdownActive;
 	}
 	
 	//Adds a point to the scoreboard.
 	public static void addPoint(Player player, int points) {
 		if (player != null) {
 			
-			int tempScore = 0;
 			String tempName = "";
+			int tempScore = 0;
 			
 			player.playSound(player.getLocation(), Sound.ANVIL_BREAK, 1, 10); //Play a sound.
 			//Add a point to the scoreboard.
@@ -381,19 +382,18 @@ public class ArenaManager {
 			//TODO : Remove win message and code from here.
 			//If the players points on the scoreboard are great than or equal to the max Score, trigger a win.
 			if (tempScore >= maxScore) {
-				
+				//Show win message for X amount of seconds.
 				Bukkit.broadcastMessage(ChatColor.GOLD + "✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "✰ " + ChatColor.GREEN + "" + ChatColor.BOLD + tempName + " has won the game!");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰");
-				
-				//Show win message for X amount of seconds.
 				new BukkitRunnable() {
 					@Override
 			    	public void run() {
-						endGame();	//Runs the methods to end the game code.
+						//Runs the methods to end the game code.
+						endGame();
 					}
 				}.runTaskLater(plugin, 5*20); //run after 5 seconds.
 			}
