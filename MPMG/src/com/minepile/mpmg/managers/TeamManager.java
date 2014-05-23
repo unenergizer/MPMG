@@ -18,6 +18,7 @@ public class TeamManager {
 	@SuppressWarnings("unused")
 	private MPMG plugin;
 	
+	//Different type's of joinable teams.
 	public enum ArenaTeams {
 		
 		SPECTATOR(ChatColor.GOLD + "Spectator"),

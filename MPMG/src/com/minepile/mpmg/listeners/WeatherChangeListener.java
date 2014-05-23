@@ -17,6 +17,7 @@ public class WeatherChangeListener  implements Listener {
 	
 	@EventHandler
 	public void onPlayerQuit(WeatherChangeEvent event) {
+		//Cancel weather changes.
 		event.setCancelled(true);
 	}
 }

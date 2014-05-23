@@ -26,11 +26,6 @@ import com.minepile.mpmg.util.ScoreboardUtil.ScoreboardTeam;
 import com.minepile.mpmg.util.WorldUtil;
 
 public class ArenaManager {
-	//get/load map
-	//set player team and spectator spawns
-	//show player game/map info
-	//start count-down
-	//count-down end, game start
 	
 	//Utility Imports.
 	static ArenaManager arenaInstance = new ArenaManager();

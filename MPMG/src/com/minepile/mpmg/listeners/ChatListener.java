@@ -21,6 +21,8 @@ public class ChatListener implements Listener {
 	@EventHandler
 	public void onChat(AsyncPlayerChatEvent event) {
 		Player player = event.getPlayer();
+		
+		//Pick player's name color based on the team they have joined.
 		switch(TeamManager.getPlayerTeam(player)){
 		case BLUE:
 			event.setFormat(ChatColor.BLUE + "%s" + ChatColor.GRAY + ": " + ChatColor.WHITE + "%s");

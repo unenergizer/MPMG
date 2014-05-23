@@ -7,6 +7,7 @@ public abstract class MiniGame {
 	private final int gameID = 0;
 	private int lastGame = -1;
 	
+	//Override this with minigame.
 	private String worldName = "";
 	private String gameName = "";
 	private String infoSlot1 = "";
@@ -24,6 +25,7 @@ public abstract class MiniGame {
 	private boolean canFoodLevelChange = false;
 	private int maxLives = 0;			//0 = unlimited lives
 	
+	//Override this with minigame.
 	public void setupGame() {}
 	public void setupPlayer(Player player){}
 	public void setupPlayerInventory(Player player){}

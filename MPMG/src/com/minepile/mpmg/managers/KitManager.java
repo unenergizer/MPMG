@@ -54,9 +54,16 @@ public class KitManager {
 	}
 	
 	public static void setPlayerKit(Player player, Kits kit) {
+		//Get player name.
 		String playerName = player.getName();
+		
+		//Save player's kit ENUM for loading later.
 		playerKit.put(playerName, kit);
+		
+		//Play a sound when a kit is selected.
 		player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1, 10);
+		
+		//Send different message based on the kit the player chose.
 		switch(kit) {
 		case KIT0:
 			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> You chose " + getKit0() + ChatColor.GOLD + "!");
@@ -86,9 +93,12 @@ public class KitManager {
 	}
 	
 	public static Kits getPlayerKit(Player player) {
+		//Get players name.
 		String playerName = player.getName();
+		//Get players kit from hashmap.
 		Kits selectedKit = playerKit.get(playerName);
 		
+		//If the player does not have a kit, assign them one.
 		if (selectedKit == null) {
 			setPlayerKit(player, Kits.KIT0);
 			selectedKit = playerKit.get(playerName);
@@ -98,9 +108,13 @@ public class KitManager {
 	}
 	
 	public static String getPlayerKitName(Player player) {
+		//Get players name.
 		String playerName = player.getName();
+		//Get players kit from hashmap.
 		Kits selectedKit = playerKit.get(playerName);
+		//Saves the kit's name.
 		String kitName = "";
+		//If the player does not have a kit, assign them one.
 		if(selectedKit == null) {
 			setPlayerKit(player, Kits.KIT0);
 			selectedKit = playerKit.get(playerName);
@@ -136,15 +150,17 @@ public class KitManager {
 	
 	public static boolean containsPlayer(Player player) {
 		String playerName = player.getName();
+		//Check hashmap for player name.
 		return playerKit.containsKey(playerName);
 	}
 	
 	public static void resetAllPlayerKits() {
-		playerKit.clear();
+		playerKit.clear(); //Clear the hashmap.
 	}
 	
 	public static void removePlayerKit(Player player) {
 		String playerName = player.getName();
+		//Remove player from hashmap.
 		playerKit.remove(playerName);
 	}
 

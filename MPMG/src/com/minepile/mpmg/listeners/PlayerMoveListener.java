@@ -19,11 +19,11 @@ public class PlayerMoveListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerMove(final PlayerMoveEvent event) {
-		if (GameManager.isGameRunning() == true) {
-			if (ArenaManager.hasCountdownStarted() == true) {
-
+		if (GameManager.isGameRunning() == true) { //Has the game started?
+			if (ArenaManager.hasCountdownStarted() == true) { //Has the countdown started?
+				//If the countdown has started, then let the player look around.
 				if (!event.getFrom().toVector().equals(event.getTo().toVector())) {
-				 
+					//If the player moves during the countdown, lets teleport them back to their spawn location.
 					ArenaManager.playerMoveCountdown(event.getPlayer());
 				}
 			}

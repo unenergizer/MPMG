@@ -6,10 +6,6 @@ import com.minepile.mpmg.minigames.OneInTheChamber;
 import com.minepile.mpmg.minigames.TeamDeathMatch;
 
 public class GameManager {
-	// TODO
-	//set current game
-	//save last game played
-	//load random game
 	
 	//Load objects.
 	static GameManager gameManagerInstance = new GameManager();
@@ -25,6 +21,7 @@ public class GameManager {
 	private static int maxPlayers = 16;				//Maximum players allowed in a game.
 	private static MiniGameType lastGame = MiniGameType.ONEINTHECHAMBER;
 	
+	//Different types of Minigames.
 	public enum MiniGameType {
 		
 		ONEINTHECHAMBER("One In The Chamber"),

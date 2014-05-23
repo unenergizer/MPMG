@@ -109,7 +109,7 @@ public class TeamDeathMatch extends MiniGame {
 		//Spawn player kit.
 		switch (kit) {
 		case KIT0: {
-			ItemStack item0 = new ItemStack(Material.APPLE, 1);
+			ItemStack item0 = new ItemStack(Material.WOOD_AXE, 1);
 			player.getInventory().setItem(0, item0);
 			ItemStack item1 = new ItemStack(Material.BOW, 1);
 			ItemMeta itemMeta = item1.getItemMeta();
@@ -121,7 +121,7 @@ public class TeamDeathMatch extends MiniGame {
 		}
 			break;
 		case KIT1: {
-			ItemStack item0 = new ItemStack(Material.BAKED_POTATO, 1);
+			ItemStack item0 = new ItemStack(Material.WOOD_SWORD, 1);
 			player.getInventory().setItem(0, item0);
 			ItemStack item1 = new ItemStack(Material.BOW, 1);
 			ItemMeta itemMeta = item1.getItemMeta();

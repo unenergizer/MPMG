@@ -28,8 +28,10 @@ public class QuitListener implements Listener {
 		String playerName = player.getName();
 		
 		if (GameManager.isGameRunning() == true) {
+			//If the player is in the arena, remove them.
 			ArenaManager.removePlayer(player);
 		} else { // Lobby code.
+			//If the player is in the lobby remove them.
 			LobbyManager.removePlayer(player);
 			
 			//If 0 players are online, do not update scoreboard.
