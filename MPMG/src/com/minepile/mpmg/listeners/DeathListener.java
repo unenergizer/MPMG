@@ -1,10 +1,13 @@
 package com.minepile.mpmg.listeners;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.minepile.mpmg.MPMG;
@@ -27,9 +30,6 @@ public class DeathListener implements Listener {
 			final Player player = (Player) event.getEntity();
 			final Player killer = player.getKiller();
 			
-			//Lets do a lightning strike because the player died!
-			player.getWorld().strikeLightningEffect(player.getLocation());
-			
 			//if the killer is an instance of class Player and 
 			//if the player killed is not equal to the killer, then
 			//update the killers inventory.
@@ -45,6 +45,7 @@ public class DeathListener implements Listener {
 				new BukkitRunnable() {
 					@Override
 			    	public void run() {
+						//Respawn dead player.
 						ArenaManager.spawnPlayer(player, false);
 						ArenaManager.updatePlayerInventory(player);
 					}
@@ -54,5 +55,98 @@ public class DeathListener implements Listener {
 				Bukkit.broadcastMessage(player.getName() + " has died.");
 			}
 		}
+	}
+	
+	@EventHandler
+	public void death(PlayerDeathEvent event){
+		Player player = (Player) event.getEntity();
+		Player killer = player.getKiller();
+		DamageCause damage = null;
+		String playerName = player.getName();
+		String killerName = "";
+		String deathCause = "";
+		
+		//Lets do a lightning strike because the player died!
+		player.getWorld().strikeLightningEffect(player.getLocation());
+		
+		if(!(killer instanceof Player)){
+			//Get damage type so we can build a death message.
+			switch(player.getLastDamageCause().getCause()){
+			case BLOCK_EXPLOSION:
+				deathCause = "from an explosion";
+				break;
+			case CONTACT:
+				deathCause = "from huging a cactus";
+				break;
+			case CUSTOM:
+				deathCause = "from something awesome";
+				break;
+			case DROWNING:
+				deathCause = "from not taking a breath";
+				break;
+			case ENTITY_ATTACK:
+				deathCause = "from being attacked";
+				break;
+			case ENTITY_EXPLOSION:
+				deathCause = " by playing with a creeper";
+				break;
+			case FALL:
+				deathCause = "by bungee jumping without a cord";
+				break;
+			case FALLING_BLOCK:
+				deathCause = "by being smooshed";
+				break;
+			case FIRE:
+				deathCause = "after jumping into a campfire";
+				break;
+			case FIRE_TICK:
+				deathCause = "after jumping into a campfire";
+				break;
+			case LAVA:
+				deathCause = "from swimming in lava";
+				break;
+			case LIGHTNING:
+				deathCause = "by flying a kite in an electrical storm";
+				break;
+			case MAGIC:
+				deathCause = "by playing with magic";
+				break;
+			case MELTING:
+				deathCause = "from thawing";
+				break;
+			case POISON:
+				deathCause = "by drinking poison";
+				break;
+			case PROJECTILE:
+				deathCause = "from being was shot";
+				break;
+			case STARVATION:
+				deathCause = "forgot to eat";
+				break;
+			case SUFFOCATION:
+				deathCause = "from not taking a breath";
+				break;
+			case SUICIDE:
+				deathCause = "by taking the easy way out";
+				break;
+			case THORNS:
+				deathCause = "from being poked";
+				break;
+			case VOID:
+				deathCause = "fell into the void";
+				break;
+			case WITHER:
+				deathCause = "because they danced with the wither";
+				break;
+			default:
+				break;
+			}
+		} else {
+			killerName = killer.getName();
+			deathCause = ChatColor.GOLD + "by " + ChatColor.AQUA + killerName + "'s " + ChatColor.GOLD + "attack";
+		}
+		
+		event.setDeathMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> " 
+		+ ChatColor.RED + playerName + ChatColor.GOLD + " was killed " + ChatColor.GREEN + deathCause + ChatColor.GOLD + "!");
 	}
 }
