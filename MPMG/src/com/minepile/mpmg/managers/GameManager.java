@@ -16,7 +16,7 @@ public class GameManager {
 	private static MPMG plugin;
 	
 	private static boolean gameRunning = false;		//Mini-game is running? (default = false)
-	private static String pluginVersion = "0.3.7";	//Plugin version.
+	private static String pluginVersion = "0.3.8";	//Plugin version.
 	private static int minPlayers = 2;				//Minimal players needed to start a game.
 	private static int maxPlayers = 16;				//Maximum players allowed in a game.
 	private static MiniGameType lastGame = MiniGameType.TEAMDEATHMATCH;
