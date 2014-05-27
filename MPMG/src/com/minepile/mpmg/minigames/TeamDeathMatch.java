@@ -71,11 +71,6 @@ public class TeamDeathMatch extends MiniGame {
 				ChatColor.BLUE, "Blue Team", ArenaTeams.BLUE);
 		NPCManager.setupNPC(NPCManager.team1Location, EntityType.SHEEP,
 				ChatColor.RED, "Red Team", ArenaTeams.RED);
-
-		// Setup all players.
-		for (Player player : Bukkit.getOnlinePlayers()) {
-			setupPlayer(player);
-		}
 	}
 
 	@Override

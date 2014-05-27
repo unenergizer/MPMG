@@ -126,6 +126,7 @@ public class TeamManager {
 			setupPlayer(player);
 		}
 	}
+	
 	public static void setupPlayer(Player player) {
 		//Set proper team based on minigame. Setup player Team.
 		switch(GameManager.getCurrentMiniGame()){

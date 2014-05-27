@@ -24,9 +24,7 @@ public class PlayerDropItemListener  implements Listener {
 		if (GameManager.isGameRunning() == true) {
 			// TODO
 			//Game is running, what do we do when player drops items?
-			if (!(player.isOp())) { //Cancel event if not Operator
-				event.setCancelled(true);
-		    }
+			
 		} else { // Lobby code.
 			//If player is in the lobby, prevent them from dropping items (compass).
 			if (!(player.isOp())) { //Cancel event if not Operator

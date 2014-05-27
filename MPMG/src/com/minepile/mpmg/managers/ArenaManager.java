@@ -355,46 +355,51 @@ public class ArenaManager {
 	public static void addPoint(Player player, int points) {
 		if (player != null) {
 			
-			String tempName = "";
-			int tempScore = 0;
+			//If the players current score is not less than the max score
+			//Then lets add a point for the player.
+			if (scoreboardUtil.getPoits(player) <= maxScore) {
 			
-			player.playSound(player.getLocation(), Sound.ANVIL_BREAK, 1, 10); //Play a sound.
-			//Add a point to the scoreboard.
-			
-				switch(GameManager.getCurrentMiniGame()) {
-				case ONEINTHECHAMBER:
-					scoreboardUtil.addPoint(player, points);	//Add a point to the scoreboard.
-					scoreboardUtil.updateAllScoreboards();		//Update the scoreboard for all players.
-					tempScore = scoreboardUtil.getPoits(player);
-					tempName = player.getName();
-					break;
-				case TEAMDEATHMATCH:
-					scoreboardUtil.addPoint(player, Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team"), points);	//Add a point to the scoreboard.
-					tempScore = scoreboardUtil.getPoits(Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team"));
-					tempName = Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team").getName();
-					break;
-				default:
-					break;
-				}
-			
-					
-			//TODO : Remove win message and code from here.
-			//If the players points on the scoreboard are great than or equal to the max Score, trigger a win.
-			if (tempScore == maxScore) {
-				//Show win message for X amount of seconds.
-				Bukkit.broadcastMessage(ChatColor.GOLD + "✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰");
-				Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
-				Bukkit.broadcastMessage(ChatColor.GOLD + "✰ " + ChatColor.GREEN + "" + ChatColor.BOLD + tempName + " has won the game!");
-				Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
-				Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
-				Bukkit.broadcastMessage(ChatColor.GOLD + "✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰");
-				new BukkitRunnable() {
-					@Override
-			    	public void run() {
-						//Runs the methods to end the game code.
-						endGame();
+				String tempName = "";
+				int tempScore = 0;
+				
+				player.playSound(player.getLocation(), Sound.ANVIL_BREAK, 1, 10); //Play a sound.
+				//Add a point to the scoreboard.
+				
+					switch(GameManager.getCurrentMiniGame()) {
+					case ONEINTHECHAMBER:
+						scoreboardUtil.addPoint(player, points);	//Add a point to the scoreboard.
+						scoreboardUtil.updateAllScoreboards();		//Update the scoreboard for all players.
+						tempScore = scoreboardUtil.getPoits(player);
+						tempName = player.getName();
+						break;
+					case TEAMDEATHMATCH:
+						scoreboardUtil.addPoint(player, Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team"), points);	//Add a point to the scoreboard.
+						tempScore = scoreboardUtil.getPoits(Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team"));
+						tempName = Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team").getName();
+						break;
+					default:
+						break;
 					}
-				}.runTaskLater(plugin, 5*20); //run after 5 seconds.
+				
+						
+				//TODO : Remove win message and code from here.
+				//If the players points on the scoreboard are great than or equal to the max Score, trigger a win.
+				if (tempScore == maxScore) {
+					//Show win message for X amount of seconds.
+					Bukkit.broadcastMessage(ChatColor.GOLD + "✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰");
+					Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
+					Bukkit.broadcastMessage(ChatColor.GOLD + "✰ " + ChatColor.GREEN + "" + ChatColor.BOLD + tempName + " has won the game!");
+					Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
+					Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
+					Bukkit.broadcastMessage(ChatColor.GOLD + "✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰");
+					new BukkitRunnable() {
+						@Override
+				    	public void run() {
+							//Runs the methods to end the game code.
+							endGame();
+						}
+					}.runTaskLater(plugin, 5*20); //run after 5 seconds.
+				}
 			}
 		}
 		

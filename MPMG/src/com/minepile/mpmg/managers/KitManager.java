@@ -2,6 +2,7 @@ package com.minepile.mpmg.managers;
 
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -51,6 +52,13 @@ public class KitManager {
 		
 		//Reload catcher.  Clear player kit selection.
 		resetAllPlayerKits();
+	}
+	
+	public static void setupAllPlayerKits() {
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			//Set proper kit based on minigame.
+			setPlayerKit(player, Kits.KIT0);
+		}
 	}
 	
 	public static void setPlayerKit(Player player, Kits kit) {

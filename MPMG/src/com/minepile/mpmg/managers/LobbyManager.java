@@ -60,8 +60,8 @@ public class LobbyManager {
 		//Remove players and set some defaults before we begin setting up the game.
 		GameManager.setGameRunning(false);		//Make sure the game is not running when in the lobby.
 		scoreboardUtil.removeAllScoreboards();	//Clear the scoreboard
-		KitManager.resetAllPlayerKits();		//Clear player kit selection.
 		TeamManager.resetAllPlayerTeams();		//Clear player team selection.
+		KitManager.resetAllPlayerKits();		//Clear player kit selection.
 
 		
 		//Setup scoreboard.
@@ -71,6 +71,8 @@ public class LobbyManager {
 		scoreboardUtil.setupTeam(ScoreboardTeam.MOD, true, true, ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "mod");
 		
 		//Reload catcher.  If server is reloaded reset and setup all players.
+		TeamManager.setupAllPlayers();	//Setup all player teams. Prevents null pointer exception on reload.
+		KitManager.setupAllPlayerKits();//Setup all player kits. Should prevent double kit message.
 		for(Player players : Bukkit.getOnlinePlayers()) {
 			setupPlayer(players);
 		}
@@ -111,10 +113,11 @@ public class LobbyManager {
 		setupPlayerInventory(player);
 		
 		//Set proper team based on minigame. Setup player Team.
-		TeamManager.setupPlayer(player);
+		if (TeamManager.containsPlayer(player) == false) {
+			TeamManager.setupPlayer(player);
+		}
 		
-		
-		//Setup kit.
+		//Setup proper kit based on minigame.
 		if (KitManager.containsPlayer(player) == false) {
 			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> No kit selected.  Auto selecting a kit for you now.");
 			KitManager.setPlayerKit(player, Kits.KIT0);
