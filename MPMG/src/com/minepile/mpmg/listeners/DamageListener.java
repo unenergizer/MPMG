@@ -91,7 +91,9 @@ public class DamageListener  implements Listener {
 
 		} else {
 			//If the entity is not a player, cancel their damage.
-			event.setCancelled(true);
+			if (GameManager.isGameRunning() == false) {
+				event.setCancelled(true);
+			}
 		}
     }
 	

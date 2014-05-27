@@ -59,7 +59,7 @@ public class OneInTheChamber extends MiniGame {
 		NPCManager.setupNPC(NPCManager.kit6Location, EntityType.SKELETON, KitManager.getKit6(), Kits.KIT6);
 
 		//Setup join-able teams.
-		NPCManager.setupNPC(NPCManager.team0Location, EntityType.COW, ChatColor.GREEN, "Player Team", ArenaTeams.PLAYER);		
+		NPCManager.setupNPC(NPCManager.team2Location, EntityType.SHEEP, ChatColor.GREEN, "Player Team", ArenaTeams.PLAYER);		
 	}
 	
 	@Override
@@ -93,7 +93,7 @@ public class OneInTheChamber extends MiniGame {
 		//Spawn player kit.
 		switch (kit) {
 		case KIT0: {
-			ItemStack item0 = new ItemStack(Material.APPLE, 1);
+			ItemStack item0 = new ItemStack(Material.WOOD_AXE, 1);
 			player.getInventory().setItem(0, item0);
 			ItemStack item1 = new ItemStack(Material.BOW, 1);
 			ItemMeta itemMeta = item1.getItemMeta();
@@ -105,7 +105,7 @@ public class OneInTheChamber extends MiniGame {
 		}
 			break;
 		case KIT1: {
-			ItemStack item0 = new ItemStack(Material.BAKED_POTATO, 1);
+			ItemStack item0 = new ItemStack(Material.WOOD_SWORD, 1);
 			player.getInventory().setItem(0, item0);
 			ItemStack item1 = new ItemStack(Material.BOW, 1);
 			ItemMeta itemMeta = item1.getItemMeta();

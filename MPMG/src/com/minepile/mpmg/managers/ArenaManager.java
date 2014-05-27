@@ -39,7 +39,7 @@ public class ArenaManager {
 	private static String worldName;
 	private static String gameName;
 	private static boolean arenaCountdownActive = false;
-	private static int maxScore = 5;
+	private static int maxScore = 2;
 	private static int arenaCountdownTime = 20;
 	private static int currentCountdownTime = arenaCountdownTime;
 	private static int spawnID = 0;
@@ -141,6 +141,7 @@ public class ArenaManager {
 		switch(GameManager.currentMiniGame){
 		case ONEINTHECHAMBER:
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.PLAYER);
+			scoreboardUtil.addPoint(player, 0);
 			break;
 		case TEAMDEATHMATCH:
 			if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.BLUE)){
@@ -148,6 +149,8 @@ public class ArenaManager {
 			} else {
 				scoreboardUtil.addPlayer(player, ScoreboardTeam.TEAM1);
 			}
+			//Add teams to scoreboard.
+			scoreboardUtil.setPoints(player, Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team"), 0);
 			break;
 		default:
 			break;
@@ -361,6 +364,7 @@ public class ArenaManager {
 				switch(GameManager.getCurrentMiniGame()) {
 				case ONEINTHECHAMBER:
 					scoreboardUtil.addPoint(player, points);	//Add a point to the scoreboard.
+					scoreboardUtil.updateAllScoreboards();		//Update the scoreboard for all players.
 					tempScore = scoreboardUtil.getPoits(player);
 					tempName = player.getName();
 					break;
@@ -376,7 +380,7 @@ public class ArenaManager {
 					
 			//TODO : Remove win message and code from here.
 			//If the players points on the scoreboard are great than or equal to the max Score, trigger a win.
-			if (tempScore >= maxScore) {
+			if (tempScore == maxScore) {
 				//Show win message for X amount of seconds.
 				Bukkit.broadcastMessage(ChatColor.GOLD + "✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰");
 				Bukkit.broadcastMessage(ChatColor.GOLD + "✰");

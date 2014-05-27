@@ -22,7 +22,7 @@ public class TeamDeathMatch extends MiniGame {
 
 	@Override
 	public void setupGame() {
-		setWorldName("MapOITC01");
+		setWorldName("MapTDM01");
 		setGameName("Team Death Match");
 		setCanPlaceBlocks(false);
 		setCanDropItems(false);
@@ -51,25 +51,25 @@ public class TeamDeathMatch extends MiniGame {
 		KitManager.setKit6(ChatColor.DARK_PURPLE + "Death Bringer");
 
 		// Spawn Kit NPC's.
-		NPCManager.setupNPC(NPCManager.kit0Location, EntityType.COW,
+		NPCManager.setupNPC(NPCManager.kit0Location, EntityType.CAVE_SPIDER,
 				KitManager.getKit0(), Kits.KIT0);
-		NPCManager.setupNPC(NPCManager.kit1Location, EntityType.COW,
+		NPCManager.setupNPC(NPCManager.kit1Location, EntityType.CHICKEN,
 				KitManager.getKit1(), Kits.KIT1);
 		NPCManager.setupNPC(NPCManager.kit2Location, EntityType.COW,
 				KitManager.getKit2(), Kits.KIT2);
-		NPCManager.setupNPC(NPCManager.kit3Location, EntityType.COW,
+		NPCManager.setupNPC(NPCManager.kit3Location, EntityType.CREEPER,
 				KitManager.getKit3(), Kits.KIT3);
-		NPCManager.setupNPC(NPCManager.kit4Location, EntityType.COW,
+		NPCManager.setupNPC(NPCManager.kit4Location, EntityType.PIG,
 				KitManager.getKit4(), Kits.KIT4);
-		NPCManager.setupNPC(NPCManager.kit5Location, EntityType.COW,
+		NPCManager.setupNPC(NPCManager.kit5Location, EntityType.IRON_GOLEM,
 				KitManager.getKit5(), Kits.KIT5);
-		NPCManager.setupNPC(NPCManager.kit6Location, EntityType.COW,
+		NPCManager.setupNPC(NPCManager.kit6Location, EntityType.WOLF,
 				KitManager.getKit6(), Kits.KIT6);
 
 		// Setup join-able teams.
-		NPCManager.setupNPC(NPCManager.team0Location, EntityType.COW,
+		NPCManager.setupNPC(NPCManager.team0Location, EntityType.SHEEP,
 				ChatColor.BLUE, "Blue Team", ArenaTeams.BLUE);
-		NPCManager.setupNPC(NPCManager.team1Location, EntityType.COW,
+		NPCManager.setupNPC(NPCManager.team1Location, EntityType.SHEEP,
 				ChatColor.RED, "Red Team", ArenaTeams.RED);
 
 		// Setup all players.
@@ -195,7 +195,6 @@ public class TeamDeathMatch extends MiniGame {
 		default:
 			break;
 		}
-
 	}
 
 	public void updatePlayerInventory(Player player) {

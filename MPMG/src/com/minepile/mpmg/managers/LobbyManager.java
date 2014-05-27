@@ -7,7 +7,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
@@ -45,23 +44,25 @@ public class LobbyManager {
 	public void setup(MPMG plugin) {
 		this.plugin = plugin;
 		
-		//Setup world.
-		worldUtil.loadWorld("world");
-		worldUtil.setWorldProperties(false, false, 0, 6, 6000);
-		
 		//Setup scoreboard.
 		setupLobby();
 	}
 	
 	public static void setupLobby() {
+		//Setup lobby world. Default lobby world folder name "world"
+		worldUtil.loadWorld("world");
+		worldUtil.setWorldProperties(false, false, 0, 6, 6000);
+		
 		//Select game to load in lobby.
 		//Select the next game to load.
 		GameManager.selectNextGame();
 				
-		//Remove player from these mechanics before new setup.
-		for (Player player : Bukkit.getOnlinePlayers()) {
-			removePlayer(player);
-		}
+		//Remove players and set some defaults before we begin setting up the game.
+		GameManager.setGameRunning(false);		//Make sure the game is not running when in the lobby.
+		scoreboardUtil.removeAllScoreboards();	//Clear the scoreboard
+		KitManager.resetAllPlayerKits();		//Clear player kit selection.
+		TeamManager.resetAllPlayerTeams();		//Clear player team selection.
+
 		
 		//Setup scoreboard.
 		scoreboardUtil.setup("Lobby", "MiniGame Lobby");
@@ -69,8 +70,7 @@ public class LobbyManager {
 		scoreboardUtil.setupTeam(ScoreboardTeam.DEV, true, true, ChatColor.RED + "" + ChatColor.BOLD + "dev");
 		scoreboardUtil.setupTeam(ScoreboardTeam.MOD, true, true, ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "mod");
 		
-		//Reload catcher.  If server is reloaded reset teams and setup all players.
-		TeamManager.setupAllPlayers();
+		//Reload catcher.  If server is reloaded reset and setup all players.
 		for(Player players : Bukkit.getOnlinePlayers()) {
 			setupPlayer(players);
 		}
@@ -125,10 +125,12 @@ public class LobbyManager {
 		case "unenergizer":
 			player.setScoreboard(scoreboardUtil.getBoard());
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.DEV);
+			scoreboardUtil.addPoint(player, 1);
 			break;
 		case "cloudfr":
 			player.setScoreboard(scoreboardUtil.getBoard());
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.MOD);
+			scoreboardUtil.addPoint(player, 1);
 			break;
 		case "trainedtotroll":
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.MOD);
@@ -263,18 +265,14 @@ public class LobbyManager {
 				//Start game if time is less than 0.
 				if (currentCountdownTime < 0) {
 					Bukkit.getScheduler().cancelTask(taskID); 		//cancel repeating task
-					GameManager.setGameRunning(true);
-					scoreboardUtil.removeAllScoreboards();
-					ArenaManager.setupGame();
-					lobbyCountdownStarted = false;
-					currentCountdownTime = lobbyCountdownTime;
+					GameManager.setGameRunning(true);				//Set the game to start running.
+					scoreboardUtil.removeAllScoreboards();			//Removes the lobby scoreboard.
+					ArenaManager.setupGame();						//Set's up the game.
+					lobbyCountdownStarted = false;					//Stops the lobby countdown.
+					currentCountdownTime = lobbyCountdownTime;		//Reset the time.
 					
 					//Despawn any animals or monsters.
-					for (Entity entity : Bukkit.getWorld("World").getEntities()) {
-						if (!(entity instanceof Player)) {
-							entity.remove();
-						}
-					}
+					worldUtil.clearEntities();
 				}
 				
 			} //END Run method.

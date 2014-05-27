@@ -52,13 +52,19 @@ public class WorldUtil {
 		this.world.setTime(time);
 
 		// Despawn any animals or monsters.
+		clearEntities();
+	}
+	
+	//Removes entities from the world.
+	public void clearEntities(){
+		// Despawn any animals or monsters.
 		for (Entity entity : this.world.getEntities()) {
 			if (!(entity instanceof Player)) {
 				entity.remove();
 			}
 		}
 	}
-
+	
 	// Remove a world from memory.
 	public void unloadWorld() {
 		Bukkit.getServer().unloadWorld(this.world, true);

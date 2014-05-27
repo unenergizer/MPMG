@@ -24,7 +24,7 @@ public class PlayerPickupItemListener   implements Listener {
 		if (GameManager.isGameRunning() == true) {
 			// TODO
 			//Game is running, what do we do when player picks up an item?
-			
+			event.setCancelled(true);
 		} else { // Lobby code.
 			//If player is in the lobby, prevent them from picking up items.
 			if (!(player.isOp())) { //Cancel event if not Operator

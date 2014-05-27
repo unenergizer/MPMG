@@ -236,6 +236,14 @@ public class ScoreboardUtil {
 		updateScoreboard(player);
 	}
 	
+	public void addPointUpdateAll(Player player, OfflinePlayer offlinePlayer, int points) {
+		for(Player onlinePlayers : Bukkit.getOnlinePlayers()) {
+			Score score = objective.getScore(offlinePlayer);
+			score.setScore(score.getScore() + points);
+			updateScoreboard(onlinePlayers);
+		}
+	}
+	
 	public void setPoints(Player player, OfflinePlayer offlinePlayer, int points) {
 		Score score = objective.getScore(offlinePlayer);
 		score.setScore(points);

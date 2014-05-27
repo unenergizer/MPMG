@@ -35,9 +35,10 @@ public class NPCManager {
 	public static Location kit4Location = new Location(world, 8, 74, -18);
 	public static Location kit5Location = new Location(world, 12, 74, -18);
 	public static Location kit6Location = new Location(world, 16, 74, -18);
-	public static Location npc0Location = new Location(world, 0.5, 72, 11.5);
-	public static Location team0Location = new Location(world, 7, 74, -10);
-	public static Location team1Location = new Location(world, 11, 74, -10);
+	public static Location npc0Location = new Location(world, 11.5, 78, 14);
+	public static Location team0Location = new Location(world, 4.5, 73, 11.5);
+	public static Location team1Location = new Location(world, -3.5, 73, 11.5);
+	public static Location team2Location = new Location(world, 0.5, 73, 15.5);
 
 	private static MPMG plugin;
 
@@ -63,7 +64,11 @@ public class NPCManager {
 	}
 	
 	public static void setupNPC(Location location, EntityType entity, ChatColor nameColor, String kitName, ArenaTeams team) {
-		spawnerUtil.spawnEntity(world.getName(), location, entity, nameColor + kitName);
+		if(entity.equals(EntityType.SHEEP)){
+			spawnerUtil.spawnEntity(world.getName(), location, entity, nameColor, nameColor + kitName);
+		} else {
+			spawnerUtil.spawnEntity(world.getName(), location, entity, nameColor + kitName);
+		}
 		entityLocation.put(spawnerUtil.getEntityID(), location);
 		entityTeam.put(spawnerUtil.getEntityID(), team);
 	}
