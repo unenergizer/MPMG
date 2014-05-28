@@ -1,6 +1,7 @@
 package com.minepile.mpmg.managers;
 
 import com.minepile.mpmg.MPMG;
+import com.minepile.mpmg.minigames.Infection;
 import com.minepile.mpmg.minigames.MiniGame;
 import com.minepile.mpmg.minigames.OneInTheChamber;
 import com.minepile.mpmg.minigames.TeamDeathMatch;
@@ -24,6 +25,7 @@ public class GameManager {
 	//Different types of Minigames.
 	public enum MiniGameType {
 		
+		INFECTION("Infection"),
 		ONEINTHECHAMBER("One In The Chamber"),
 		TEAMDEATHMATCH("Team Deathmatch");
 
@@ -51,19 +53,20 @@ public class GameManager {
 	}
 	
 	public static void selectNextGame() {
-		if(lastGame.equals(MiniGameType.ONEINTHECHAMBER)) {
-			selectGame(MiniGameType.TEAMDEATHMATCH);
-			setLastGame(MiniGameType.TEAMDEATHMATCH);
-		} else if (lastGame.equals(MiniGameType.TEAMDEATHMATCH)) {
-			selectGame(MiniGameType.ONEINTHECHAMBER);
-			setLastGame(MiniGameType.ONEINTHECHAMBER);
-		}
+		//TODO : set way to select game.
+		selectGame(MiniGameType.INFECTION);
+		
 	}
 	
 	public static void selectGame(MiniGameType game) {
 		
 		//Select the minigame and then start it up.
 		switch(game) {
+			case INFECTION:
+				setCurrentMiniGame(MiniGameType.INFECTION);
+				miniGame = new Infection();
+				miniGame.setupGame();
+				break;
 			case ONEINTHECHAMBER:
 				setCurrentMiniGame(MiniGameType.ONEINTHECHAMBER);
 				miniGame = new OneInTheChamber();

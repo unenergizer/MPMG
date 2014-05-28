@@ -39,6 +39,7 @@ public class ArenaManager {
 	private static String worldName;
 	private static String gameName;
 	private static boolean arenaCountdownActive = false;
+	private static boolean gameEnding = false;
 	private static int maxScore = 2;
 	private static int arenaCountdownTime = 20;
 	private static int currentCountdownTime = arenaCountdownTime;
@@ -78,6 +79,10 @@ public class ArenaManager {
 		//Setup scoreboard.
 		scoreboardUtil.setup("Lobby", getGameName());
 		switch(GameManager.currentMiniGame){
+		case INFECTION:
+			scoreboardUtil.setupTeam(ScoreboardTeam.TEAM0, true, false, ChatColor.GREEN + "");
+			scoreboardUtil.setupTeam(ScoreboardTeam.TEAM1, true, false, ChatColor.RED + "");
+			break;
 		case ONEINTHECHAMBER:
 			scoreboardUtil.setupTeam(ScoreboardTeam.PLAYER, true, true, ChatColor.GREEN + "");
 			break;
@@ -117,6 +122,7 @@ public class ArenaManager {
 	
 	//The game has ended and needs to be cleaned up and removed.
 	public static void endGame() {
+		//Let the game manager know the game is not running.
 		GameManager.setGameRunning(false);
 		
 		//Clear the scoreboard
@@ -130,6 +136,10 @@ public class ArenaManager {
 		
 		//Setup the game lobby. Also teleports players back to lobby).
 		LobbyManager.setupLobby();
+		
+		//The plugin is running endGame() method.
+		//It should now be safe to reset gameEnding to false.
+		setGameEnding(false);
 	}
 	
 	//Setup a player in the arena.
@@ -139,6 +149,15 @@ public class ArenaManager {
 		
 		//Set scoreboard info.
 		switch(GameManager.currentMiniGame){
+		case INFECTION:
+			if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.PLAYER)){
+				scoreboardUtil.addPlayer(player, ScoreboardTeam.TEAM0);
+				scoreboardUtil.addPoint(player, 2);
+			} else {
+				scoreboardUtil.addPlayer(player, ScoreboardTeam.TEAM1);
+				scoreboardUtil.addPoint(player, 1);
+			}
+			break;
 		case ONEINTHECHAMBER:
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.PLAYER);
 			scoreboardUtil.addPoint(player, 0);
@@ -357,7 +376,7 @@ public class ArenaManager {
 			
 			//If the players current score is not less than the max score
 			//Then lets add a point for the player.
-			if (scoreboardUtil.getPoits(player) <= maxScore) {
+			if (scoreboardUtil.getPoits(player) >= maxScore) {
 			
 				String tempName = "";
 				int tempScore = 0;
@@ -366,6 +385,11 @@ public class ArenaManager {
 				//Add a point to the scoreboard.
 				
 					switch(GameManager.getCurrentMiniGame()) {
+					case INFECTION:
+						scoreboardUtil.addPoint(player, points);	//Add a point to the scoreboard.
+						tempScore = scoreboardUtil.getPoits(player);
+						tempName = player.getName();
+						break;
 					case ONEINTHECHAMBER:
 						scoreboardUtil.addPoint(player, points);	//Add a point to the scoreboard.
 						scoreboardUtil.updateAllScoreboards();		//Update the scoreboard for all players.
@@ -383,8 +407,11 @@ public class ArenaManager {
 				
 						
 				//TODO : Remove win message and code from here.
-				//If the players points on the scoreboard are great than or equal to the max Score, trigger a win.
-				if (tempScore == maxScore) {
+				//If the players points on the scoreboard are equal to the max Score show win message and end game.
+				if (isGameEnding() == false) {
+					//Set game is ending. This prevents endGame() from running more than once.
+					setGameEnding(true);
+					
 					//Show win message for X amount of seconds.
 					Bukkit.broadcastMessage(ChatColor.GOLD + "✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰");
 					Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
@@ -392,6 +419,8 @@ public class ArenaManager {
 					Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
 					Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
 					Bukkit.broadcastMessage(ChatColor.GOLD + "✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰");
+					
+					//Run the code to end the game.
 					new BukkitRunnable() {
 						@Override
 				    	public void run() {
@@ -423,6 +452,14 @@ public class ArenaManager {
 	//Set the name of the GameMode to be played.
 	public static void setGameName(String gameName) {
 		ArenaManager.gameName = gameName;
+	}
+
+	public static boolean isGameEnding() {
+		return gameEnding;
+	}
+
+	public static void setGameEnding(boolean gameEnding) {
+		ArenaManager.gameEnding = gameEnding;
 	}
 
 	public static int getMaxScore() {

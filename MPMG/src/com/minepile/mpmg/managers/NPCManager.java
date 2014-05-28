@@ -51,12 +51,6 @@ public class NPCManager {
 		this.plugin = plugin;		
 	}
 
-	// TODO : Spawn in kits.
-
-	public void setupKit() {
-
-	}
-
 	public static void setupNPC(Location location, EntityType entity, String kitName, Kits kit) {
 		spawnerUtil.spawnEntity(world.getName(), location, entity, kitName);
 		entityLocation.put(spawnerUtil.getEntityID(), location);
