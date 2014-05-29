@@ -14,6 +14,7 @@ import com.minepile.mpmg.managers.GameManager;
 import com.minepile.mpmg.managers.KitManager;
 import com.minepile.mpmg.managers.KitManager.Kits;
 import com.minepile.mpmg.managers.LobbyManager;
+import com.minepile.mpmg.managers.TeamManager;
 import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
 import com.minepile.mpmg.util.ScoreboardUtil.ScoreboardTeam;
 
@@ -54,10 +55,15 @@ public class DeathListener implements Listener {
 						case INFECTION:
 							//Switch player team.  If player is on "players" team switch to red "zombies" team.
 							//Update the scoreboard.  The zombie team is Team1.
-							ArenaManager.switchTeam(player, ArenaTeams.RED, ScoreboardTeam.TEAM1);
-							KitManager.setPlayerKit(player, Kits.KIT6); //Set hidden "Zombie" kit.
-							ArenaManager.spawnPlayer(player, false);
-							ArenaManager.updatePlayerInventory(player);
+							if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.PLAYER)){
+								ArenaManager.switchTeam(player, ArenaTeams.RED, ScoreboardTeam.TEAM1);
+								KitManager.setPlayerKit(player, Kits.KIT6); //Set hidden "Zombie" kit.
+								ArenaManager.spawnPlayer(player, false);
+								ArenaManager.updatePlayerInventory(player);
+							} else {
+								ArenaManager.spawnPlayer(player, false);
+								ArenaManager.updatePlayerInventory(player);
+							}
 							break;
 						default:
 							ArenaManager.spawnPlayer(player, false);
