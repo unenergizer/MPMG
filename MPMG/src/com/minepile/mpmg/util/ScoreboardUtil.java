@@ -250,12 +250,12 @@ public class ScoreboardUtil {
 		updateScoreboard(player);
 	}
 	
-	public int getPoits(Player player) {
+	public int getPoints(Player player) {
 		int points = objective.getScore(player).getScore();
 		return points;
 	}
 	
-	public int getPoits(OfflinePlayer offlinePlayer) {
+	public int getOfflinePlayerPoints(OfflinePlayer offlinePlayer) {
 		int points = objective.getScore(offlinePlayer).getScore();
 		return points;
 	}

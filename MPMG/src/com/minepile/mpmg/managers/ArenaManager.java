@@ -40,7 +40,7 @@ public class ArenaManager {
 	private static String gameName;
 	private static boolean arenaCountdownActive = false;
 	private static boolean gameEnding = false;
-	private static int maxScore = 2;
+	private static int maxScore = 17;
 	private static int arenaCountdownTime = 20;
 	private static int currentCountdownTime = arenaCountdownTime;
 	private static int spawnID = 0;
@@ -152,7 +152,7 @@ public class ArenaManager {
 		case INFECTION:
 			if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.PLAYER)){
 				scoreboardUtil.addPlayer(player, ScoreboardTeam.TEAM0);
-				scoreboardUtil.addPoint(player, 2);
+				scoreboardUtil.addPoint(player, 1);
 			} else {
 				scoreboardUtil.addPlayer(player, ScoreboardTeam.TEAM1);
 				scoreboardUtil.addPoint(player, 1);
@@ -370,35 +370,40 @@ public class ArenaManager {
 		return arenaCountdownActive;
 	}
 	
+	//Switches the players team and scoreboard score.
+	public static void switchTeam(Player player, ArenaTeams newTeam, ScoreboardTeam newSBTeam) {
+		int oldPoints = scoreboardUtil.getPoints(player);
+		
+		scoreboardUtil.removePlayer(player);		//Remove player from the current scoreboard.
+		TeamManager.setPlayerTeam(player, newTeam);	//Set the players new team.
+		scoreboardUtil.addPlayer(player, newSBTeam);//Add the players to scoreboard with the new team.
+		scoreboardUtil.addPoint(player, oldPoints);	//Add the players points back to the scoreboard.
+	}
+	
 	//Adds a point to the scoreboard.
 	public static void addPoint(Player player, int points) {
 		if (player != null) {
 			
 			//If the players current score is not less than the max score
 			//Then lets add a point for the player.
-			if (scoreboardUtil.getPoits(player) >= maxScore) {
+			if (scoreboardUtil.getPoints(player) < maxScore) {
 			
 				String tempName = "";
-				int tempScore = 0;
 				
 				player.playSound(player.getLocation(), Sound.ANVIL_BREAK, 1, 10); //Play a sound.
-				//Add a point to the scoreboard.
-				
+			
+				//Add a point to the scoreboard.	
 					switch(GameManager.getCurrentMiniGame()) {
 					case INFECTION:
 						scoreboardUtil.addPoint(player, points);	//Add a point to the scoreboard.
-						tempScore = scoreboardUtil.getPoits(player);
 						tempName = player.getName();
 						break;
 					case ONEINTHECHAMBER:
 						scoreboardUtil.addPoint(player, points);	//Add a point to the scoreboard.
-						scoreboardUtil.updateAllScoreboards();		//Update the scoreboard for all players.
-						tempScore = scoreboardUtil.getPoits(player);
 						tempName = player.getName();
 						break;
 					case TEAMDEATHMATCH:
 						scoreboardUtil.addPoint(player, Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team"), points);	//Add a point to the scoreboard.
-						tempScore = scoreboardUtil.getPoits(Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team"));
 						tempName = Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team").getName();
 						break;
 					default:
@@ -408,7 +413,7 @@ public class ArenaManager {
 						
 				//TODO : Remove win message and code from here.
 				//If the players points on the scoreboard are equal to the max Score show win message and end game.
-				if (isGameEnding() == false) {
+				if (scoreboardUtil.getPoints(player) == maxScore && isGameEnding() == false) {
 					//Set game is ending. This prevents endGame() from running more than once.
 					setGameEnding(true);
 					

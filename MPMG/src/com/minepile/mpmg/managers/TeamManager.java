@@ -9,6 +9,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import com.minepile.mpmg.MPMG;
+import com.minepile.mpmg.managers.KitManager.Kits;
 
 public class TeamManager {
 	
@@ -60,12 +61,14 @@ public class TeamManager {
 	}
 	
 	public static void setPlayerTeam(Player player, ArenaTeams team) {
-		String playerName = player.getName();
-		
-		playerTeam.put(playerName, team);
-		player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> You joined the " + team.getName() + ChatColor.GOLD + " team.");
-		player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1, 10);
-		
+		//Cancel this if the team being set, is the players current team.
+		if(getPlayerTeam(player) == null || !getPlayerTeam(player).equals(team)) {
+			String playerName = player.getName();
+			
+			playerTeam.put(playerName, team);
+			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> You joined the " + team.getName() + ChatColor.GOLD + " team.");
+			player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1, 10);
+		}
 	}
 	
 	public static void removePlayer(Player player) {
@@ -82,7 +85,7 @@ public class TeamManager {
 	}
 	
 	public static ArenaTeams getPlayerTeam(Player player) {
-		String playerName = player.getName();
+		String playerName = player.getName();	
 		return playerTeam.get(playerName);
 	}
 	

@@ -40,13 +40,13 @@ public class Infection extends MiniGame {
 		setInfoSlot6("");
 		
 		//Setup Kit names.
-		KitManager.setKit0(ChatColor.RED + "Wooden Club");
-		KitManager.setKit1(ChatColor.GOLD + "Zombie Slayer");
+		KitManager.setKit0(ChatColor.RED + "Zombie Slayer");
+		KitManager.setKit1(ChatColor.GOLD + "Smack Attack");
 		KitManager.setKit2(ChatColor.YELLOW + "Sharp Shooter");
 		//KitManager.setKit3(ChatColor.GREEN + "Stone Sword");
 		//KitManager.setKit4(ChatColor.AQUA + "Iron Axe");
 		//KitManager.setKit5(ChatColor.BLUE + "Iron Spade");
-		//KitManager.setKit6(ChatColor.DARK_PURPLE + "Death Bringer");
+		KitManager.setKit6(ChatColor.RED + "Zombie Kit");
 		
 		//Spawn Kit NPC's.
 		NPCManager.setupNPC(NPCManager.kit0Location, EntityType.ZOMBIE, KitManager.getKit0(), Kits.KIT0);
@@ -94,32 +94,41 @@ public class Infection extends MiniGame {
 		switch (kit) {
 		case KIT0: {
 			//Set item
-			ItemStack item0 = new ItemStack(Material.WOOD_SPADE, 1);
+			ItemStack item0 = new ItemStack(Material.GOLD_SWORD, 1);
+			//Set enchantment
+			ItemMeta itemMeta = item0.getItemMeta();
+			itemMeta.addEnchant(Enchantment.KNOCKBACK, 1, true);
+			item0.setItemMeta(itemMeta);
 			//Set player slot
 			player.getInventory().setItem(0, item0);
 		}
 			break;
 		case KIT1: {
 			//Set item
-			ItemStack item0 = new ItemStack(Material.GOLD_SWORD, 1);
-			//Set enchantment
-			ItemMeta itemMeta = item0.getItemMeta();
-			itemMeta.addEnchant(Enchantment.KNOCKBACK, 20, true);
-			item0.setItemMeta(itemMeta);
+			ItemStack item0 = new ItemStack(Material.DIAMOND_AXE, 1);
 			//Set player slot
 			player.getInventory().setItem(0, item0);
+			//Set item
+			ItemStack item1 = new ItemStack(Material.FISHING_ROD, 1);
+			//Set enchantment
+			ItemMeta itemMeta = item1.getItemMeta();
+			itemMeta.addEnchant(Enchantment.KNOCKBACK, 2, true);
+			item1.setItemMeta(itemMeta);
+			//Set player slot
+			player.getInventory().setItem(1, item1);
+			
 		}
 			break;
 		case KIT2: {
 			//Set item
-			ItemStack item0 = new ItemStack(Material.WOOD_SPADE, 1);
+			ItemStack item0 = new ItemStack(Material.STONE_SWORD, 1);
 			//Set player slot
 			player.getInventory().setItem(0, item0);
 			//Set item
 			ItemStack item1 = new ItemStack(Material.BOW, 1);
 			//Set enchantment
 			ItemMeta itemMeta = item1.getItemMeta();
-			itemMeta.addEnchant(Enchantment.ARROW_KNOCKBACK, 10, true);
+			itemMeta.addEnchant(Enchantment.ARROW_KNOCKBACK, 3, true);
 			item1.setItemMeta(itemMeta);
 			//Set player slot
 			player.getInventory().setItem(1, item1);
@@ -135,7 +144,12 @@ public class Infection extends MiniGame {
 			break;
 		case KIT5:
 			break;
-		case KIT6:
+		case KIT6: { //This is the Zombie player kit.
+				//Set item
+				ItemStack item0 = new ItemStack(Material.GOLD_AXE, 1);
+				//Set player slot
+				player.getInventory().setItem(0, item0);
+			}
 			break;
 		default:
 			break;

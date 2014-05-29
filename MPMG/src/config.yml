@@ -218,15 +218,15 @@ MapINF01:
     yaw: 180
     pitch: 1
   4:
-    x: -32
+    x: -29
     y: 78
-    z: -13
+    z: -12
     yaw: 180
     pitch: 3
   5:
-    x: -15
+    x: -16
     y: 79
-    z: -27
+    z: -28
     yaw: 180
     pitch: 0
   6:

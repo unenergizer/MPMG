@@ -11,7 +11,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.minepile.mpmg.MPMG;
 import com.minepile.mpmg.managers.ArenaManager;
 import com.minepile.mpmg.managers.GameManager;
+import com.minepile.mpmg.managers.KitManager;
+import com.minepile.mpmg.managers.KitManager.Kits;
 import com.minepile.mpmg.managers.LobbyManager;
+import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
+import com.minepile.mpmg.util.ScoreboardUtil.ScoreboardTeam;
 
 public class DeathListener implements Listener {
 	
@@ -46,8 +50,20 @@ public class DeathListener implements Listener {
 					@Override
 			    	public void run() {
 						//Respawn dead player.
-						ArenaManager.spawnPlayer(player, false);
-						ArenaManager.updatePlayerInventory(player);
+						switch(GameManager.getCurrentMiniGame()){
+						case INFECTION:
+							//Switch player team.  If player is on "players" team switch to red "zombies" team.
+							//Update the scoreboard.  The zombie team is Team1.
+							ArenaManager.switchTeam(player, ArenaTeams.RED, ScoreboardTeam.TEAM1);
+							KitManager.setPlayerKit(player, Kits.KIT6); //Set hidden "Zombie" kit.
+							ArenaManager.spawnPlayer(player, false);
+							ArenaManager.updatePlayerInventory(player);
+							break;
+						default:
+							ArenaManager.spawnPlayer(player, false);
+							ArenaManager.updatePlayerInventory(player);
+							break;
+						}
 					}
 				}.runTaskLater(this.plugin, 1); //run after 1 tick
 			} else { // Lobby code.
