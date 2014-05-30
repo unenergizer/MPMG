@@ -46,36 +46,45 @@ public class DeathListener implements Listener {
 				
 				player.getInventory().clear();
 				player.setHealth(20);
+
+				//Respawn dead player.
+				switch(GameManager.getCurrentMiniGame()){
+				case INFECTION:
+					//Switch player team.  If player is on "players" team switch to red "zombies" team.
+					//Update the scoreboard.  The zombie team is Team1.
+					if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.PLAYER)){
+						ArenaManager.switchTeam(player, ArenaTeams.RED, ScoreboardTeam.TEAM1);
+						KitManager.setPlayerKit(player, Kits.KIT6); //Set hidden "Zombie" kit.
+						respawnPlayer(player, false);
+					} else {
+						respawnPlayer(player, true);
+					}
+					break;
+				default:
+					respawnPlayer(player, true);
+					break;
+				}
 				
 				new BukkitRunnable() {
 					@Override
 			    	public void run() {
-						//Respawn dead player.
-						switch(GameManager.getCurrentMiniGame()){
-						case INFECTION:
-							//Switch player team.  If player is on "players" team switch to red "zombies" team.
-							//Update the scoreboard.  The zombie team is Team1.
-							if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.PLAYER)){
-								ArenaManager.switchTeam(player, ArenaTeams.RED, ScoreboardTeam.TEAM1);
-								KitManager.setPlayerKit(player, Kits.KIT6); //Set hidden "Zombie" kit.
-								ArenaManager.spawnPlayer(player, false);
-								ArenaManager.updatePlayerInventory(player);
-							} else {
-								ArenaManager.spawnPlayer(player, false);
-								ArenaManager.updatePlayerInventory(player);
-							}
-							break;
-						default:
-							ArenaManager.spawnPlayer(player, false);
-							ArenaManager.updatePlayerInventory(player);
-							break;
-						}
+
 					}
 				}.runTaskLater(this.plugin, 1); //run after 1 tick
 			} else { // Lobby code.
 				LobbyManager.setupPlayer(player);
 			}
 		}
+	}
+	
+	public void respawnPlayer(final Player player, final boolean teleportPlayer) {
+		new BukkitRunnable() {
+			@Override
+	    	public void run() {
+				ArenaManager.spawnPlayer(player, false, teleportPlayer);
+				ArenaManager.updatePlayerInventory(player);
+			}
+		}.runTaskLater(this.plugin, 1); //run after 1 tick
 	}
 	
 	@EventHandler

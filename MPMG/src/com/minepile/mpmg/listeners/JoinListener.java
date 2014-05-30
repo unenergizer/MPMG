@@ -46,7 +46,7 @@ public class JoinListener implements Listener {
 		//Teleport player based on game status.
 		if (GameManager.isGameRunning() == true) {
 			//Spawn spectator.
-			ArenaManager.spawnPlayer(player, true); //Spectator true;
+			ArenaManager.spawnPlayer(player, true, true); //Spectator true, teleport player true;
 		} else { // Lobby code.
 			//spawn player in lobby
 			LobbyManager.setupPlayer(player);

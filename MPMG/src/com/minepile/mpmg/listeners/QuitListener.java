@@ -39,7 +39,8 @@ public class QuitListener implements Listener {
 				new BukkitRunnable() {
 					@Override
 			    	public void run() {
-						//Update lobby scoreboard with accurate Player count.
+						//Update lobby scoreboard with accurate Player count and
+						//other useful game information.
 						LobbyManager.updatePlayerScoreboard();
 					}
 				}.runTaskLater(this.plugin, 1); //run after 1 tick

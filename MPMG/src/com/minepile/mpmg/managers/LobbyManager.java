@@ -1,6 +1,7 @@
 package com.minepile.mpmg.managers;
 
 import me.confuser.barapi.BarAPI;
+import me.libraryaddict.disguise.DisguiseAPI;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -91,6 +92,11 @@ public class LobbyManager {
 	
 	//This will setup a player in the mini-game lobby.
 	public static void setupPlayer(Player player) {
+		//Remove the players disguise if they have one.
+		try{
+			DisguiseAPI.undisguiseToAll(player);
+		} catch (NullPointerException e){}
+		
 		//Teleport player to lobby spawn point.
 		worldUtil.teleportPlayer(player, 0.5, 76, 0.5, 180f, 2f);
 		

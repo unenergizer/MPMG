@@ -3,6 +3,7 @@ package com.minepile.mpmg.managers;
 import java.util.HashMap;
 
 import me.confuser.barapi.BarAPI;
+import me.libraryaddict.disguise.DisguiseAPI;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,6 +19,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.minepile.mpmg.MPMG;
+import com.minepile.mpmg.managers.GameManager.MiniGameType;
 import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
 import com.minepile.mpmg.util.ChatUtil;
 import com.minepile.mpmg.util.InfoUtil;
@@ -40,7 +42,7 @@ public class ArenaManager {
 	private static String gameName;
 	private static boolean arenaCountdownActive = false;
 	private static boolean gameEnding = false;
-	private static int maxScore = 17;
+	private static int maxScore = 5;
 	private static int arenaCountdownTime = 20;
 	private static int currentCountdownTime = arenaCountdownTime;
 	private static int spawnID = 0;
@@ -78,6 +80,9 @@ public class ArenaManager {
 		
 		//Setup scoreboard.
 		scoreboardUtil.setup("Lobby", getGameName());
+		//Set spectator scoreboard team for every game.
+		scoreboardUtil.setupTeam(ScoreboardTeam.SPECTATOR, true, true, ChatColor.GRAY + "");
+		//Set scoreboard team based on game.
 		switch(GameManager.currentMiniGame){
 		case INFECTION:
 			scoreboardUtil.setupTeam(ScoreboardTeam.TEAM0, true, false, ChatColor.GREEN + "");
@@ -122,24 +127,32 @@ public class ArenaManager {
 	
 	//The game has ended and needs to be cleaned up and removed.
 	public static void endGame() {
-		//Let the game manager know the game is not running.
-		GameManager.setGameRunning(false);
+		final int delayTime = 5; //Seconds
 		
-		//Clear the scoreboard
-		scoreboardUtil.removeAllScoreboards();
-		
-		//Clear player kit selection.
-		KitManager.resetAllPlayerKits();
-		
-		//Clear player team selection.
-		TeamManager.resetAllPlayerTeams();
-		
-		//Setup the game lobby. Also teleports players back to lobby).
-		LobbyManager.setupLobby();
-		
-		//The plugin is running endGame() method.
-		//It should now be safe to reset gameEnding to false.
-		setGameEnding(false);
+		//Delay the end game code by X amount of seconds
+		new BukkitRunnable() {
+			@Override
+	    	public void run() {
+				//Let the game manager know the game is not running.
+				GameManager.setGameRunning(false);
+				
+				//Clear the scoreboard
+				scoreboardUtil.removeAllScoreboards();
+				
+				//Clear player kit selection.
+				KitManager.resetAllPlayerKits();
+				
+				//Clear player team selection.
+				TeamManager.resetAllPlayerTeams();
+				
+				//Setup the game lobby. Also teleports players back to lobby).
+				LobbyManager.setupLobby();
+				
+				//The plugin is running endGame() method.
+				//It should now be safe to reset gameEnding to false.
+				setGameEnding(false);
+			}
+		}.runTaskLater(plugin, delayTime * 20);
 	}
 	
 	//Setup a player in the arena.
@@ -177,15 +190,22 @@ public class ArenaManager {
 		}
 		
 		//Spawn player
-		spawnPlayer(player, false);
+		spawnPlayer(player, false, true);
 	}
 	
 	//This will spawn a player in the arena.  
-	public static void spawnPlayer(Player player, boolean spectator) {
+	public static void spawnPlayer(Player player, boolean spectator, boolean teleportPlayer) {
 		if (spectator == true) {
 			
-			// TODO : Replace this spawning location with location from config.
-			worldUtil.teleportPlayer(player, -230.5, 80, -27.5, 180f, 2f);
+			//Spawn player using cords from config file.
+			int x = (int) plugin.getConfig().get(getWorldName() + "." + "Spectator" + ".x"); //Loads x coordinate from file.
+			int y = (int) plugin.getConfig().get(getWorldName() + "." + "Spectator" + ".y"); //Loads y coordinate from file.
+			int z = (int) plugin.getConfig().get(getWorldName() + "." + "Spectator" + ".z"); //Loads z coordinate from file.
+			int yaw = (int) plugin.getConfig().get(getWorldName() + "." + "Spectator" + ".yaw"); //Loads yaw from file.
+			int pitch = (int) plugin.getConfig().get(getWorldName() + "." + "Spectator" + ".pitch"); //Loads pitch from file.
+			
+			//Teleport players.
+			worldUtil.teleportPlayer(player, x + .5, y, z + .5, yaw, pitch);
 			
 			player.setHealth(20);					//Set health to 100%.
 			player.setHealthScale(40);				//Set health to 200%.
@@ -199,6 +219,9 @@ public class ArenaManager {
 			
 			//Set player team.
 			TeamManager.setPlayerTeam(player, ArenaTeams.SPECTATOR);
+			
+			//Setup scoreboard
+			scoreboardUtil.addPlayer(player, ScoreboardTeam.SPECTATOR);
 			
 			//Monster bar @ top of screen.
 			BarAPI.removeBar(player);
@@ -221,16 +244,20 @@ public class ArenaManager {
 		} else { //Spawn player in game.		
 			GameManager.getMiniGame().setupPlayer(player);
 			
-			//Spawn player using cords from config file.
-			int x = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".x"); //Loads x coordinate from file.
-			int y = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".y"); //Loads y coordinate from file.
-			int z = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".z"); //Loads z coordinate from file.
-			int yaw = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".yaw"); //Loads yaw from file.
-			int pitch = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".pitch"); //Loads pitch from file.
+			//Some games may not want to teleport the player.
+			//Example, in "Infection" a player is changed to a zombie when killed.
+			if (teleportPlayer == true) {
+				//Spawn player using cords from config file.
+				int x = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".x"); //Loads x coordinate from file.
+				int y = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".y"); //Loads y coordinate from file.
+				int z = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".z"); //Loads z coordinate from file.
+				int yaw = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".yaw"); //Loads yaw from file.
+				int pitch = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".pitch"); //Loads pitch from file.
+				
+				//Teleport players.
+				worldUtil.teleportPlayer(player, x + .5, y, z + .5, yaw, pitch);
+			}
 			
-			//Teleport players.
-			worldUtil.teleportPlayer(player, x + .5, y, z + .5, yaw, pitch);
-	
 			//Save users spawn location for later.
 			//This location will be used to teleport player back to this point during countdowns.
 			playerSpawnID.put(player.getName(), spawnID);
@@ -253,30 +280,37 @@ public class ArenaManager {
 	//Removes a player from the scoreboard.
 	public static void removePlayer(Player player) {
 		scoreboardUtil.removePlayer(player);
+		playerSpawnID.remove(player.getName());
+		//Remove the players disguise.
+		try{
+			DisguiseAPI.undisguiseToAll(player);
+		} catch (NullPointerException e){}
 	}
 	
 	//This will respawn the player if they move during the countdown.
 	public static void playerMoveCountdown(final Player player) {
-		new BukkitRunnable() {
-       	 
-            @Override
-            public void run() {
-        		
-            	//Spawn player using cords from config file.
-        		float tempYaw = player.getLocation().getYaw();		//Gets players in-game yaw.
-        		float tempPitch = player.getLocation().getPitch();	//Gets players in-game pitch.
-        		int playerSpawnID = getPlayerSpawnID(player.getName());	//Gets the players spawn location.
-        		
-        		int x = (int) plugin.getConfig().get(getWorldName() + "." + playerSpawnID + ".x"); //Loads x coordinate from file.
-        		int y = (int) plugin.getConfig().get(getWorldName() + "." + playerSpawnID + ".y"); //Loads y coordinate from file.
-        		int z = (int) plugin.getConfig().get(getWorldName() + "." + playerSpawnID + ".z"); //Loads z coordinate from file.
-        		
-        		//Teleport the player to their original spawn location.
-        		//Players camera does not change.
-        		worldUtil.teleportPlayer(player, x + .5, y, z + .5, tempYaw, tempPitch);
-            }
- 
-        }.runTaskLater(plugin, 1);
+		if (!TeamManager.getPlayerTeam(player).equals(ArenaTeams.SPECTATOR)) {
+			new BukkitRunnable() {
+	       	 
+	            @Override
+	            public void run() {
+	        		
+	            	//Spawn player using cords from config file.
+	        		float tempYaw = player.getLocation().getYaw();		//Gets players in-game yaw.
+	        		float tempPitch = player.getLocation().getPitch();	//Gets players in-game pitch.
+	        		int playerSpawnID = getPlayerSpawnID(player.getName());	//Gets the players spawn location.
+	        		
+	        		int x = (int) plugin.getConfig().get(getWorldName() + "." + playerSpawnID + ".x"); //Loads x coordinate from file.
+	        		int y = (int) plugin.getConfig().get(getWorldName() + "." + playerSpawnID + ".y"); //Loads y coordinate from file.
+	        		int z = (int) plugin.getConfig().get(getWorldName() + "." + playerSpawnID + ".z"); //Loads z coordinate from file.
+	        		
+	        		//Teleport the player to their original spawn location.
+	        		//Players camera does not change.
+	        		worldUtil.teleportPlayer(player, x + .5, y, z + .5, tempYaw, tempPitch);
+	            }
+	 
+	        }.runTaskLater(plugin, 1);
+		}
 	}
 	
 	//Returns the location the player was spawned from the config file.
@@ -378,6 +412,7 @@ public class ArenaManager {
 		TeamManager.setPlayerTeam(player, newTeam);	//Set the players new team.
 		scoreboardUtil.addPlayer(player, newSBTeam);//Add the players to scoreboard with the new team.
 		scoreboardUtil.addPoint(player, oldPoints);	//Add the players points back to the scoreboard.
+		GameManager.getMiniGame().setupPlayer(player);	//Let's setup the player again.
 	}
 	
 	//Adds a point to the scoreboard.
@@ -386,57 +421,71 @@ public class ArenaManager {
 			
 			//If the players current score is not less than the max score
 			//Then lets add a point for the player.
-			if (scoreboardUtil.getPoints(player) < maxScore) {
+			String tempName = "";
 			
-				String tempName = "";
-				
-				player.playSound(player.getLocation(), Sound.ANVIL_BREAK, 1, 10); //Play a sound.
+			player.playSound(player.getLocation(), Sound.ANVIL_BREAK, 1, 10); //Play a sound.
+		
+			//Add a point to the scoreboard.	
+			switch(GameManager.getCurrentMiniGame()) {
+			case TEAMDEATHMATCH:
+				scoreboardUtil.addPoint(player, Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team"), points);	//Add a point to the scoreboard.
+				tempName = Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team").getName();
+				break;
+			default:
+				scoreboardUtil.addPoint(player, points);	//Add a point to the scoreboard.
+				tempName = player.getName();				//TODO: Remove this. Sets the name that shows up in chat score screen.
+				break;
+			}
 			
-				//Add a point to the scoreboard.	
-					switch(GameManager.getCurrentMiniGame()) {
+			//Test if game has been won.
+			hasGameWon(player, tempName);
+		}
+	}
+	
+	//Win game code.
+	public static void hasGameWon(final Player player, final String tempName) {
+		new BukkitRunnable() {
+			@Override
+	    	public void run() {
+				if (isGameEnding() == false) {
+					//Define what makes a win based on miniGame type.
+					switch(GameManager.getCurrentMiniGame()){
 					case INFECTION:
-						scoreboardUtil.addPoint(player, points);	//Add a point to the scoreboard.
-						tempName = player.getName();
+						if(TeamManager.getTeamSize(ArenaTeams.PLAYER) <= 1){
+							setGameEnding(true);
+							showGameScores(tempName);
+							endGame();
+						}
 						break;
 					case ONEINTHECHAMBER:
-						scoreboardUtil.addPoint(player, points);	//Add a point to the scoreboard.
-						tempName = player.getName();
+						if(scoreboardUtil.getPoints(player) < maxScore) {
+							setGameEnding(true);
+							showGameScores(tempName);
+							endGame();
+						}
 						break;
 					case TEAMDEATHMATCH:
-						scoreboardUtil.addPoint(player, Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team"), points);	//Add a point to the scoreboard.
-						tempName = Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team").getName();
+						if(scoreboardUtil.getPoints(player) < maxScore) {
+							setGameEnding(true);
+							showGameScores(tempName);
+							endGame();
+						}
 						break;
 					default:
 						break;
 					}
-				
-						
-				//TODO : Remove win message and code from here.
-				//If the players points on the scoreboard are equal to the max Score show win message and end game.
-				if (scoreboardUtil.getPoints(player) == maxScore && isGameEnding() == false) {
-					//Set game is ending. This prevents endGame() from running more than once.
-					setGameEnding(true);
-					
-					//Show win message for X amount of seconds.
-					Bukkit.broadcastMessage(ChatColor.GOLD + "✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰");
-					Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
-					Bukkit.broadcastMessage(ChatColor.GOLD + "✰ " + ChatColor.GREEN + "" + ChatColor.BOLD + tempName + " has won the game!");
-					Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
-					Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
-					Bukkit.broadcastMessage(ChatColor.GOLD + "✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰");
-					
-					//Run the code to end the game.
-					new BukkitRunnable() {
-						@Override
-				    	public void run() {
-							//Runs the methods to end the game code.
-							endGame();
-						}
-					}.runTaskLater(plugin, 5*20); //run after 5 seconds.
 				}
 			}
-		}
-		
+		}.runTaskLater(plugin, 100); //run after 1 tick
+	}
+	
+	public static void showGameScores(String tempName) {
+		Bukkit.broadcastMessage(ChatColor.GOLD + "✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰");
+		Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
+		Bukkit.broadcastMessage(ChatColor.GOLD + "✰ " + ChatColor.GREEN + "" + ChatColor.BOLD + tempName + " has won the game!");
+		Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
+		Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
+		Bukkit.broadcastMessage(ChatColor.GOLD + "✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰");
 	}
 	
 	//Get the world currently loaded for game play.

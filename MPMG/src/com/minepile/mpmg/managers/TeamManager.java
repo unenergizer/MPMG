@@ -99,6 +99,7 @@ public class TeamManager {
 		return teamSize;
 	}
 	
+	//TODO : Change to get team total
 	public static int getNonSpectatorsTotal() {
 		int notSpectator = 0;
 		for (Entry<String, ArenaTeams> entry : playerTeam.entrySet()) {
@@ -109,8 +110,18 @@ public class TeamManager {
 		return notSpectator;
 	}
 	
+	public static int getTeamTotal(ArenaTeams team) {
+		int teamTotal = 0;
+		for (Entry<String, ArenaTeams> entry : playerTeam.entrySet()) {
+			if (entry.getValue() == team) {
+				teamTotal++;
+			}
+		}
+		return teamTotal;
+	}
+	
 	public static String getLastNonSpectatorPlayer() {
-		// TODO : Fix unused. 
+		// TODO : Fix unused.
 		@SuppressWarnings("unused")
 		int notSpectator = 0;
 		String winner = "";

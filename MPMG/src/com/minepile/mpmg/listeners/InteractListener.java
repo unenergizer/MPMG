@@ -14,6 +14,8 @@ import com.minepile.mpmg.MPMG;
 import com.minepile.mpmg.managers.ArenaManager;
 import com.minepile.mpmg.managers.GameManager;
 import com.minepile.mpmg.managers.StatsManager;
+import com.minepile.mpmg.managers.TeamManager;
+import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
 
 public class InteractListener implements Listener {
 	
@@ -43,7 +45,10 @@ public class InteractListener implements Listener {
 				//Make sure the item being clicked ins't a bow or a fishing rod.
 				if (!blockClicked.getType().equals(Material.BOW) || !blockClicked.getType().equals(Material.FISHING_ROD)) {
 					//Here we handle what happens when a user left clicks a block item.
-					if (action == Action.LEFT_CLICK_BLOCK && ArenaManager.hasCountdownStarted() == false) {
+					//Also make sure spectators can't break blocks.
+					if (action == Action.LEFT_CLICK_BLOCK && ArenaManager.hasCountdownStarted() == false 
+							&& !TeamManager.getPlayerTeam(player).equals(ArenaTeams.SPECTATOR)) {
+						
 						switch(blockClicked.getType()) {
 						case BROWN_MUSHROOM:
 							event.setCancelled(false);

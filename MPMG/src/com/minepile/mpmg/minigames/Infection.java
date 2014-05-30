@@ -1,5 +1,9 @@
 package com.minepile.mpmg.minigames;
 
+import me.libraryaddict.disguise.DisguiseAPI;
+import me.libraryaddict.disguise.disguisetypes.DisguiseType;
+import me.libraryaddict.disguise.disguisetypes.MobDisguise;
+
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -13,11 +17,16 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.minepile.mpmg.managers.KitManager;
 import com.minepile.mpmg.managers.KitManager.Kits;
-import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
 import com.minepile.mpmg.managers.NPCManager;
+import com.minepile.mpmg.managers.TeamManager;
+import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
+
+
 
 public class Infection extends MiniGame {
-
+	
+	MobDisguise zombieDisguise = new MobDisguise(DisguiseType.ZOMBIE);
+	
 	@Override
 	public void setupGame() {
 		setWorldName("MapINF01");
@@ -58,7 +67,7 @@ public class Infection extends MiniGame {
 		//NPCManager.setupNPC(NPCManager.kit6Location, EntityType.SKELETON, KitManager.getKit6(), Kits.KIT6);
 
 		//Setup join-able teams.
-		NPCManager.setupNPC(NPCManager.team0Location, EntityType.SHEEP, ChatColor.GREEN, "Players Team", ArenaTeams.PLAYER);
+		NPCManager.setupNPC(NPCManager.team0Location, EntityType.VILLAGER, ChatColor.GREEN, "Players Team", ArenaTeams.PLAYER);
 		NPCManager.setupNPC(NPCManager.team1Location, EntityType.ZOMBIE, ChatColor.RED, "Zombie Team", ArenaTeams.RED);		
 	}
 	
@@ -81,9 +90,25 @@ public class Infection extends MiniGame {
 		player.removePotionEffect(PotionEffectType.INVISIBILITY);
 		player.removePotionEffect(PotionEffectType.JUMP);
 		player.removePotionEffect(PotionEffectType.SPEED);
-		
-	    //play a sound
-	    player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1, 10);
+	    
+	    //If the player is on the red team, lets do some additional setup for them.
+	    if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.RED)) {
+	    	
+	    	//Force these players to use the zombie kit.
+	    	KitManager.setPlayerKit(player, Kits.KIT6);
+	    	
+	    	//If player needs a disguise, give one to them now.
+	    	DisguiseAPI.disguiseToAll(player, zombieDisguise);
+	    	DisguiseAPI.disguiseEntity(player, zombieDisguise);
+	    	
+	    	//play a sound
+		    player.playSound(player.getLocation(), Sound.WITHER_SPAWN, 1, 10);
+	    } else {
+	    	//If the player is on the "Players" team lets do some additional setup.
+	    	
+	    	//play a sound
+		    player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1, 10);
+	    }
 	}
 
 	public void setupPlayerInventory(Player player, Kits kit) {

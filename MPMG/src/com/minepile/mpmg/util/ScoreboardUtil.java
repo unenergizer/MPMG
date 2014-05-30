@@ -18,7 +18,7 @@ public class ScoreboardUtil {
 	
 	private Scoreboard board;
 	private Objective objective;
-	private Team team0, team1, team2, team3, team4, lobby, global, dev, mod;
+	private Team team0, team1, team2, team3, team4, spectator, lobby, global, dev, mod;
 	private String tempObjectiveName, tempDisplayName;
 	
 	public enum ScoreboardTeam {
@@ -29,6 +29,7 @@ public class ScoreboardUtil {
 		TEAM3("team3"),
 		TEAM4("team4"),
 		PLAYER("player"),
+		SPECTATOR("spectator"),
 		LOBBY("lobby"),
 		MOD("mod"),
 		DEV("dev");
@@ -145,6 +146,11 @@ public class ScoreboardUtil {
 				team4.setAllowFriendlyFire(allowFriendlyFire);
 				team4.setPrefix(prefix);
 				break;
+			case SPECTATOR:
+				spectator = board.registerNewTeam("global");
+				spectator.setCanSeeFriendlyInvisibles(canSeeFriendlyInvisibles);
+				spectator.setAllowFriendlyFire(allowFriendlyFire);
+				break;
 			case LOBBY:
 				lobby = board.registerNewTeam("lobby");
 				lobby.setCanSeeFriendlyInvisibles(canSeeFriendlyInvisibles);
@@ -187,6 +193,9 @@ public class ScoreboardUtil {
 				break;
 			case TEAM4: 
 				team4.addPlayer(player);
+				break;
+			case SPECTATOR:
+				spectator.addPlayer(player);
 				break;
 			case LOBBY: 
 				lobby.addPlayer(player); 

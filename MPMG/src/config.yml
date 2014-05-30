@@ -1,4 +1,10 @@
 MapOITC01:
+  Spectator:
+    x: -230
+    y: 100
+    z: -27
+    yaw: 180
+    pitch: 2  
   0:
     x: -165
     y: 82
@@ -96,6 +102,12 @@ MapOITC01:
     yaw: 180
     pitch: 2
 MapTDM01:
+  Spectator:
+    x: 0
+    y: 110
+    z: 0
+    yaw: 180
+    pitch: 2  
   0:
     x: -7
     y: 85
@@ -193,6 +205,12 @@ MapTDM01:
     yaw: 180
     pitch: 0
 MapINF01:
+  Spectator:
+    x: 0
+    y: 110
+    z: 0
+    yaw: 180
+    pitch: 2  
   0:
     x: -19
     y: 81
@@ -260,7 +278,7 @@ MapINF01:
     yaw: 180
     pitch: 2
   11:
-    x: -33
+    x: -34
     y: 78
     z: 8
     yaw: 180
