@@ -2,6 +2,8 @@ package com.minepile.mpmg.minigames;
 
 import org.bukkit.entity.Player;
 
+import com.minepile.mpmg.managers.KitManager.Kits;
+
 public abstract class MiniGame {
 	
 	private final int gameID = 0;
@@ -29,6 +31,7 @@ public abstract class MiniGame {
 	public void setupGame() {}
 	public void setupPlayer(Player player){}
 	public void setupPlayerInventory(Player player){}
+	public void setupPlayerInventory(Player player, Kits kit){}
 	public void updatePlayerInventory(Player player){}
 	public void spawnPlayer(Player player){}
 

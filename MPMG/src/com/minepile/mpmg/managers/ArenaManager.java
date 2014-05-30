@@ -242,6 +242,8 @@ public class ArenaManager {
 			}
 			
 		} else { //Spawn player in game.		
+			
+			//Run game specific player setup.
 			GameManager.getMiniGame().setupPlayer(player);
 			
 			//Some games may not want to teleport the player.

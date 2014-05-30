@@ -110,7 +110,8 @@ public class Infection extends MiniGame {
 		    player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1, 10);
 	    }
 	}
-
+	
+	@Override
 	public void setupPlayerInventory(Player player, Kits kit) {
 		 // Clear current inventory before kits are given.
 		player.getInventory().clear();
