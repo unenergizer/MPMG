@@ -4,6 +4,7 @@ import com.minepile.mpmg.MPMG;
 import com.minepile.mpmg.minigames.Infection;
 import com.minepile.mpmg.minigames.MiniGame;
 import com.minepile.mpmg.minigames.OneInTheChamber;
+import com.minepile.mpmg.minigames.Spleef;
 import com.minepile.mpmg.minigames.TeamDeathMatch;
 
 public class GameManager {
@@ -17,8 +18,8 @@ public class GameManager {
 	private static MPMG plugin;
 	
 	private static boolean gameRunning = false;		//Mini-game is running? (default = false)
-	private static String pluginVersion = "0.3.8";	//Plugin version.
-	private static int minPlayers = 3;				//Minimal players needed to start a game.
+	private static String pluginVersion = "0.3.9";	//Plugin version.
+	private static int minPlayers = 1;				//Minimal players needed to start a game.
 	private static int maxPlayers = 16;				//Maximum players allowed in a game.
 	private static MiniGameType lastGame = MiniGameType.TEAMDEATHMATCH;
 	
@@ -27,6 +28,7 @@ public class GameManager {
 		
 		INFECTION("Infection"),
 		ONEINTHECHAMBER("One In The Chamber"),
+		SPLEEF("Spleef"),
 		TEAMDEATHMATCH("Team Deathmatch");
 
 		private String name;
@@ -54,7 +56,7 @@ public class GameManager {
 	
 	public static void selectNextGame() {
 		//TODO : set way to select game.
-		selectGame(MiniGameType.INFECTION);
+		selectGame(MiniGameType.SPLEEF);
 		
 	}
 	
@@ -70,6 +72,11 @@ public class GameManager {
 			case ONEINTHECHAMBER:
 				setCurrentMiniGame(MiniGameType.ONEINTHECHAMBER);
 				miniGame = new OneInTheChamber();
+				miniGame.setupGame();
+				break;
+			case SPLEEF:
+				setCurrentMiniGame(MiniGameType.SPLEEF);
+				miniGame = new Spleef();
 				miniGame.setupGame();
 				break;
 			case TEAMDEATHMATCH:

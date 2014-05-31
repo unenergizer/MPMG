@@ -9,7 +9,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import com.minepile.mpmg.MPMG;
-import com.minepile.mpmg.managers.KitManager.Kits;
 
 public class TeamManager {
 	
@@ -160,6 +159,9 @@ public class TeamManager {
 			}
 			break;
 		case ONEINTHECHAMBER:
+			TeamManager.setPlayerTeam(player, ArenaTeams.PLAYER);
+			break;
+		case SPLEEF:
 			TeamManager.setPlayerTeam(player, ArenaTeams.PLAYER);
 			break;
 		case TEAMDEATHMATCH:

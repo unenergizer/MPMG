@@ -80,6 +80,9 @@ public class InteractListener implements Listener {
 						case SNOW_BLOCK:
 							event.setCancelled(false);
 							break;
+						case STAINED_GLASS:
+							event.setCancelled(false);
+							break;
 						case SUGAR_CANE:
 							event.setCancelled(false);
 							break;

@@ -91,6 +91,9 @@ public class ArenaManager {
 		case ONEINTHECHAMBER:
 			scoreboardUtil.setupTeam(ScoreboardTeam.PLAYER, true, true, ChatColor.GREEN + "");
 			break;
+		case SPLEEF:
+			scoreboardUtil.setupTeam(ScoreboardTeam.PLAYER, true, true, ChatColor.GREEN + "");
+			break;
 		case TEAMDEATHMATCH:
 			scoreboardUtil.setupTeam(ScoreboardTeam.TEAM0, true, false, ChatColor.BLUE + "");
 			scoreboardUtil.setupTeam(ScoreboardTeam.TEAM1, true, false, ChatColor.RED + "");
@@ -174,6 +177,11 @@ public class ArenaManager {
 		case ONEINTHECHAMBER:
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.PLAYER);
 			scoreboardUtil.addPoint(player, 0);
+			break;
+		case SPLEEF:
+			scoreboardUtil.addPlayer(player, ScoreboardTeam.PLAYER);
+			scoreboardUtil.addPoint(player, 1);
+			scoreboardUtil.addPoint(player, -1);
 			break;
 		case TEAMDEATHMATCH:
 			if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.BLUE)){
@@ -461,6 +469,13 @@ public class ArenaManager {
 						break;
 					case ONEINTHECHAMBER:
 						if(scoreboardUtil.getPoints(player) < maxScore) {
+							setGameEnding(true);
+							showGameScores(tempName);
+							endGame();
+						}
+						break;
+					case SPLEEF:
+						if(TeamManager.getTeamSize(ArenaTeams.PLAYER) <= 1){
 							setGameEnding(true);
 							showGameScores(tempName);
 							endGame();

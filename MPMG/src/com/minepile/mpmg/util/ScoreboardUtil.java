@@ -18,7 +18,7 @@ public class ScoreboardUtil {
 	
 	private Scoreboard board;
 	private Objective objective;
-	private Team team0, team1, team2, team3, team4, spectator, lobby, global, dev, mod;
+	private Team team0, team1, team2, team3, team4, spectator, lobby, player, dev, mod;
 	private String tempObjectiveName, tempDisplayName;
 	
 	public enum ScoreboardTeam {
@@ -157,9 +157,9 @@ public class ScoreboardUtil {
 				lobby.setAllowFriendlyFire(allowFriendlyFire);
 				break;
 			case PLAYER:
-				global = board.registerNewTeam("global");
-				global.setCanSeeFriendlyInvisibles(canSeeFriendlyInvisibles);
-				global.setAllowFriendlyFire(allowFriendlyFire);
+				player = board.registerNewTeam("player");
+				player.setCanSeeFriendlyInvisibles(canSeeFriendlyInvisibles);
+				player.setAllowFriendlyFire(allowFriendlyFire);
 				break;
 			case DEV:
 				dev = board.registerNewTeam("dev");
@@ -177,37 +177,37 @@ public class ScoreboardUtil {
 		}
 	}
 	
-	public void addPlayer(Player player, ScoreboardTeam team) {
+	public void addPlayer(Player onlinePlayer, ScoreboardTeam team) {
 		switch (team) {
 			case TEAM0: 
-				team0.addPlayer(player);
+				team0.addPlayer(onlinePlayer);
 				break;
 			case TEAM1: 
-				team1.addPlayer(player);
+				team1.addPlayer(onlinePlayer);
 				break;
 			case TEAM2: 
-				team2.addPlayer(player);
+				team2.addPlayer(onlinePlayer);
 				break;
 			case TEAM3: 
-				team3.addPlayer(player);
+				team3.addPlayer(onlinePlayer);
 				break;
 			case TEAM4: 
-				team4.addPlayer(player);
+				team4.addPlayer(onlinePlayer);
 				break;
 			case SPECTATOR:
-				spectator.addPlayer(player);
+				spectator.addPlayer(onlinePlayer);
 				break;
 			case LOBBY: 
-				lobby.addPlayer(player); 
+				lobby.addPlayer(onlinePlayer); 
 				break;
 			case PLAYER: 
-				global.addPlayer(player); 
+				player.addPlayer(onlinePlayer); 
 				break;
 			case DEV: 
-				dev.addPlayer(player); 
+				dev.addPlayer(onlinePlayer); 
 				break;
 			case MOD: 
-				mod.addPlayer(player);
+				mod.addPlayer(onlinePlayer);
 				break;
 			default:
 		}
