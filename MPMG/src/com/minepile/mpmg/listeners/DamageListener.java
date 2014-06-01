@@ -37,6 +37,24 @@ public class DamageListener  implements Listener {
 			//This is for kit selection.
 			if (GameManager.isGameRunning() == true) {
 				
+				switch(GameManager.getCurrentMiniGame()) {
+				case INFECTION:
+					event.setCancelled(false);
+					break;
+				case ONEINTHECHAMBER:
+					event.setCancelled(false);
+					break;
+				case SPLEEF:
+					event.setCancelled(true);
+					break;
+				case TEAMDEATHMATCH:
+					event.setCancelled(false);
+					break;
+				default:
+					event.setCancelled(false);
+					break;
+				}
+				
 				//Stop spectators from harming in-game players.
 				if (TeamManager.getPlayerTeam(attacker) == ArenaTeams.SPECTATOR) {
 					event.setCancelled(true);

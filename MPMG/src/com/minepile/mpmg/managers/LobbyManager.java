@@ -30,7 +30,7 @@ public class LobbyManager {
 	private static ScoreboardUtil scoreboardUtil = new ScoreboardUtil();
 	
 	private static boolean lobbyCountdownStarted = false;
-	private static int lobbyCountdownTime = 20;	// TODO : Default 90
+	private static int lobbyCountdownTime = 10;	// TODO : Default 90
 	private static int currentCountdownTime = lobbyCountdownTime;
 	private static int lastCountdownTime = 0;
 	private static int taskID; 
@@ -135,21 +135,25 @@ public class LobbyManager {
 			player.setScoreboard(scoreboardUtil.getBoard());
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.DEV);
 			scoreboardUtil.addPoint(player, 1);
+			scoreboardUtil.addPoint(player, -1);
 			break;
 		case "cloudfr":
 			player.setScoreboard(scoreboardUtil.getBoard());
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.MOD);
 			scoreboardUtil.addPoint(player, 1);
+			scoreboardUtil.addPoint(player, -1);
 			break;
 		case "trainedtotroll":
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.MOD);
 			scoreboardUtil.addPoint(player, 1);
-			player.setScoreboard(scoreboardUtil.getBoard());
-			//scoreboardUtil.removePoints(player);
+			scoreboardUtil.addPoint(player, 1);
+			scoreboardUtil.addPoint(player, -1);
 			break;
 		default:
 			player.setScoreboard(scoreboardUtil.getBoard());
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.LOBBY);
+			scoreboardUtil.addPoint(player, 1);
+			scoreboardUtil.addPoint(player, -1);
 			break;
 		}
 		

@@ -19,7 +19,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.minepile.mpmg.MPMG;
-import com.minepile.mpmg.managers.GameManager.MiniGameType;
 import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
 import com.minepile.mpmg.util.ChatUtil;
 import com.minepile.mpmg.util.InfoUtil;
@@ -169,14 +168,17 @@ public class ArenaManager {
 			if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.PLAYER)){
 				scoreboardUtil.addPlayer(player, ScoreboardTeam.TEAM0);
 				scoreboardUtil.addPoint(player, 1);
+				scoreboardUtil.addPoint(player, -1);
 			} else {
 				scoreboardUtil.addPlayer(player, ScoreboardTeam.TEAM1);
 				scoreboardUtil.addPoint(player, 1);
+				scoreboardUtil.addPoint(player, -1);
 			}
 			break;
 		case ONEINTHECHAMBER:
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.PLAYER);
-			scoreboardUtil.addPoint(player, 0);
+			scoreboardUtil.addPoint(player, 1);
+			scoreboardUtil.addPoint(player, -1);
 			break;
 		case SPLEEF:
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.PLAYER);
@@ -190,6 +192,7 @@ public class ArenaManager {
 				scoreboardUtil.addPlayer(player, ScoreboardTeam.TEAM1);
 			}
 			//Add teams to scoreboard.
+			scoreboardUtil.setPoints(player, Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team"), 1);
 			scoreboardUtil.setPoints(player, Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team"), 0);
 			break;
 		default:
@@ -204,6 +207,11 @@ public class ArenaManager {
 	//This will spawn a player in the arena.  
 	public static void spawnPlayer(Player player, boolean spectator, boolean teleportPlayer) {
 		if (spectator == true) {
+			
+			//Check if the game was won.
+			if(GameManager.isGameRunning() == true) {
+				hasGameWon(player, player.getName());
+			}
 			
 			//Spawn player using cords from config file.
 			int x = (int) plugin.getConfig().get(getWorldName() + "." + "Spectator" + ".x"); //Loads x coordinate from file.
@@ -244,12 +252,7 @@ public class ArenaManager {
 			PotionEffect potionEffect = new PotionEffect(PotionEffectType.INVISIBILITY, 60*60*20, 0);
 			potionEffect.apply(player);
 			
-			//Check teams for players.  If all players are on spectator, end the game.
-			if (TeamManager.getNonSpectatorsTotal() <= 1) {
-				endGame();
-			}
-			
-		} else { //Spawn player in game.		
+		} else { //Spawn player in game.
 			
 			//Run game specific player setup.
 			GameManager.getMiniGame().setupPlayer(player);
@@ -468,7 +471,7 @@ public class ArenaManager {
 						}
 						break;
 					case ONEINTHECHAMBER:
-						if(scoreboardUtil.getPoints(player) < maxScore) {
+						if(scoreboardUtil.getPoints(player) >= maxScore) {
 							setGameEnding(true);
 							showGameScores(tempName);
 							endGame();
@@ -477,12 +480,12 @@ public class ArenaManager {
 					case SPLEEF:
 						if(TeamManager.getTeamSize(ArenaTeams.PLAYER) <= 1){
 							setGameEnding(true);
-							showGameScores(tempName);
+							showGameScores("test");
 							endGame();
 						}
 						break;
 					case TEAMDEATHMATCH:
-						if(scoreboardUtil.getPoints(player) < maxScore) {
+						if(scoreboardUtil.getOfflinePlayerPoints((Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team"))) >= maxScore) {
 							setGameEnding(true);
 							showGameScores(tempName);
 							endGame();

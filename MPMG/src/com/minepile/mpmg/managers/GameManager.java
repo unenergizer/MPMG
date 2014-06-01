@@ -19,7 +19,7 @@ public class GameManager {
 	
 	private static boolean gameRunning = false;		//Mini-game is running? (default = false)
 	private static String pluginVersion = "0.3.9";	//Plugin version.
-	private static int minPlayers = 1;				//Minimal players needed to start a game.
+	private static int minPlayers = 2;				//Minimal players needed to start a game.
 	private static int maxPlayers = 16;				//Maximum players allowed in a game.
 	private static MiniGameType lastGame = MiniGameType.TEAMDEATHMATCH;
 	
@@ -56,8 +56,18 @@ public class GameManager {
 	
 	public static void selectNextGame() {
 		//TODO : set way to select game.
-		selectGame(MiniGameType.SPLEEF);
-		
+		if (lastGame == MiniGameType.INFECTION) {
+			selectGame(MiniGameType.ONEINTHECHAMBER);
+		} else if (lastGame == MiniGameType.ONEINTHECHAMBER) {
+			selectGame(MiniGameType.TEAMDEATHMATCH);
+		} else if (lastGame == MiniGameType.TEAMDEATHMATCH) {
+			selectGame(MiniGameType.SPLEEF);
+		}  else if (lastGame == MiniGameType.SPLEEF) {
+			selectGame(MiniGameType.INFECTION);
+		} else {
+			//Select default starting game.
+			selectGame(MiniGameType.ONEINTHECHAMBER);
+		}
 	}
 	
 	public static void selectGame(MiniGameType game) {
@@ -68,26 +78,31 @@ public class GameManager {
 				setCurrentMiniGame(MiniGameType.INFECTION);
 				miniGame = new Infection();
 				miniGame.setupGame();
+				lastGame = MiniGameType.INFECTION;
 				break;
 			case ONEINTHECHAMBER:
 				setCurrentMiniGame(MiniGameType.ONEINTHECHAMBER);
 				miniGame = new OneInTheChamber();
 				miniGame.setupGame();
+				lastGame = MiniGameType.ONEINTHECHAMBER;
 				break;
 			case SPLEEF:
 				setCurrentMiniGame(MiniGameType.SPLEEF);
 				miniGame = new Spleef();
 				miniGame.setupGame();
+				lastGame = MiniGameType.SPLEEF;
 				break;
 			case TEAMDEATHMATCH:
 				setCurrentMiniGame(MiniGameType.TEAMDEATHMATCH);
 				miniGame = new TeamDeathMatch();
 				miniGame.setupGame();
+				lastGame = MiniGameType.TEAMDEATHMATCH;
 				break;
 			default:
 				setCurrentMiniGame(MiniGameType.ONEINTHECHAMBER);
 				miniGame = new OneInTheChamber();
 				miniGame.setupGame();
+				lastGame = MiniGameType.INFECTION;
 				break;
 		}
 	}

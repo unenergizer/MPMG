@@ -1,5 +1,6 @@
 package com.minepile.mpmg.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -47,9 +48,17 @@ public class JoinListener implements Listener {
 		if (GameManager.isGameRunning() == true) {
 			//Spawn spectator.
 			ArenaManager.spawnPlayer(player, true, true); //Spectator true, teleport player true;
-		} else { // Lobby code.
-			//spawn player in lobby
-			LobbyManager.setupPlayer(player);
+		
+		} else { 
+			// Lobby code.
+			
+			//If no players found, end the game.
+			if (Bukkit.getOnlinePlayers().length <= 1) {
+				ArenaManager.endGame();
+			} else {
+				//spawn player in lobby
+				LobbyManager.setupPlayer(player);
+			}
 		}
 	}
 	

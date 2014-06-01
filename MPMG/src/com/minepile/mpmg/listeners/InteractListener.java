@@ -15,6 +15,7 @@ import com.minepile.mpmg.managers.ArenaManager;
 import com.minepile.mpmg.managers.GameManager;
 import com.minepile.mpmg.managers.StatsManager;
 import com.minepile.mpmg.managers.TeamManager;
+import com.minepile.mpmg.managers.GameManager.MiniGameType;
 import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
 
 public class InteractListener implements Listener {
@@ -81,7 +82,12 @@ public class InteractListener implements Listener {
 							event.setCancelled(false);
 							break;
 						case STAINED_GLASS:
-							event.setCancelled(false);
+							if(GameManager.getCurrentMiniGame() == MiniGameType.SPLEEF){
+								event.getClickedBlock().setType(Material.AIR);
+								event.setCancelled(false);
+							} else {
+								event.setCancelled(true);
+							}
 							break;
 						case SUGAR_CANE:
 							event.setCancelled(false);
@@ -108,7 +114,7 @@ public class InteractListener implements Listener {
 							event.setCancelled(true);
 							break;
 						}
-					} else if (action != Action.RIGHT_CLICK_BLOCK) {
+					} else if (action != Action.RIGHT_CLICK_BLOCK && action != Action.PHYSICAL) {
 						//If ArenaCountdown is active, cancel all left click interactions.
 						event.setCancelled(true);
 					}
@@ -257,7 +263,7 @@ public class InteractListener implements Listener {
 							event.setCancelled(true);
 							break;
 						}
-					}  else if (action != Action.LEFT_CLICK_BLOCK) {
+					}  else if (action != Action.LEFT_CLICK_BLOCK && action != Action.PHYSICAL) {
 						//If ArenaCountdown is active, cancel all right click interactions.
 						event.setCancelled(true);
 					}

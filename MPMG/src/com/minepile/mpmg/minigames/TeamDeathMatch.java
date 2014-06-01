@@ -1,5 +1,11 @@
 package com.minepile.mpmg.minigames;
 
+import me.libraryaddict.disguise.DisguiseAPI;
+import me.libraryaddict.disguise.disguisetypes.Disguise;
+import me.libraryaddict.disguise.disguisetypes.DisguiseType;
+import me.libraryaddict.disguise.disguisetypes.MobDisguise;
+import me.libraryaddict.disguise.disguisetypes.watchers.LivingWatcher;
+
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -9,16 +15,21 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import com.minepile.mpmg.managers.ArenaManager;
 import com.minepile.mpmg.managers.KitManager;
+import com.minepile.mpmg.managers.TeamManager;
 import com.minepile.mpmg.managers.KitManager.Kits;
 import com.minepile.mpmg.managers.NPCManager;
 import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
 
 public class TeamDeathMatch extends MiniGame {
-
+	
+	MobDisguise wolfDisguise = new MobDisguise(DisguiseType.WOLF);
+	MobDisguise pigDisguise = new MobDisguise(DisguiseType.PIG);
+	
 	@Override
 	public void setupGame() {
 		setWorldName("MapTDM01");
@@ -66,9 +77,9 @@ public class TeamDeathMatch extends MiniGame {
 				KitManager.getKit6(), Kits.KIT6);
 
 		// Setup join-able teams.
-		NPCManager.setupNPC(NPCManager.team0Location, EntityType.SHEEP,
+		NPCManager.setupNPC(NPCManager.team0Location, EntityType.PIG,
 				ChatColor.BLUE, "Blue Team", ArenaTeams.BLUE);
-		NPCManager.setupNPC(NPCManager.team1Location, EntityType.SHEEP,
+		NPCManager.setupNPC(NPCManager.team1Location, EntityType.WOLF,
 				ChatColor.RED, "Red Team", ArenaTeams.RED);
 	}
 
@@ -80,8 +91,8 @@ public class TeamDeathMatch extends MiniGame {
 		player.setHealth(20);
 		player.setFoodLevel(20);
 		player.setGameMode(GameMode.SURVIVAL);
-		player.setAllowFlight(true);
-		player.setFlying(true);
+		player.setAllowFlight(false);
+		player.setFlying(false);
 		player.getInventory().clear();
 
 		// Setup player inventory.
@@ -94,6 +105,28 @@ public class TeamDeathMatch extends MiniGame {
 
 		// play a sound
 		player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1, 10);
+		
+	    //If the player is on the red team, lets do some additional setup for them.
+	    if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.RED)) {
+	    	
+	    	//If player needs a disguise, give one to them now.
+	    	DisguiseAPI.disguiseToAll(player, wolfDisguise);
+	    	DisguiseAPI.disguiseEntity(player, wolfDisguise);
+	    	
+	    	//TODO: See about fixing this.  Sets the player's name.
+	    	((LivingWatcher) ((Disguise) wolfDisguise).getWatcher()).setCustomName(ChatColor.RED + player.getName());
+	    	((LivingWatcher) ((Disguise) wolfDisguise).getWatcher()).setCustomNameVisible(true);
+
+	    } else {
+	    	
+	    	//If player needs a disguise, give one to them now.
+	    	DisguiseAPI.disguiseToAll(player, pigDisguise);
+	    	DisguiseAPI.disguiseEntity(player, pigDisguise);
+	    	
+	    	//TODO: See about fixing this.  Sets the player's name.
+	    	((LivingWatcher) ((Disguise) pigDisguise).getWatcher()).setCustomName(ChatColor.BLUE + player.getName());
+	    	((LivingWatcher) ((Disguise) pigDisguise).getWatcher()).setCustomNameVisible(true);
+	    }
 	}
 
 	public void setupPlayerInventory(Player player, Kits kit) {

@@ -67,6 +67,13 @@ public class TeamManager {
 			playerTeam.put(playerName, team);
 			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> You joined the " + team.getName() + ChatColor.GOLD + " team.");
 			player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1, 10);
+			
+		} else if (GameManager.isGameRunning() == false && getPlayerTeam(player).equals(team)) {
+			
+			//Show message if they already have chosen the given kit.
+			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> You already joined the " + team.getName() + ChatColor.GOLD + " team.");
+			player.playSound(player.getLocation(), Sound.NOTE_BASS_DRUM, 1, 10);
+			
 		}
 	}
 	

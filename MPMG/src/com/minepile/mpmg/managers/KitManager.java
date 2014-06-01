@@ -99,6 +99,11 @@ public class KitManager {
 			default:
 				break;
 			}
+		} else if (GameManager.isGameRunning() == false && getPlayerKit(player).equals(kit)) {
+			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> You already chose this kit!");
+			//Play a sound when the same kit is selected.
+			player.playSound(player.getLocation(), Sound.NOTE_BASS_DRUM, 1, 10);
+			
 		}
 	}
 	

@@ -55,13 +55,22 @@ public class DeathListener implements Listener {
 					if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.PLAYER)){
 						ArenaManager.switchTeam(player, ArenaTeams.RED, ScoreboardTeam.TEAM1);
 						KitManager.setPlayerKit(player, Kits.KIT6); //Set hidden "Zombie" kit.
-						respawnPlayer(player, false);
+						respawnPlayer(player, false, false);
 					} else {
-						respawnPlayer(player, true);
+						respawnPlayer(player, false, true);
+					}
+					break;
+				case SPLEEF:
+					if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.PLAYER)){
+						ArenaManager.switchTeam(player, ArenaTeams.SPECTATOR, ScoreboardTeam.SPECTATOR);
+						respawnPlayer(player, true, true);	//respawn player as a spectator
+						
+					} else {
+						respawnPlayer(player, false, true);
 					}
 					break;
 				default:
-					respawnPlayer(player, true);
+					respawnPlayer(player, false, true);
 					break;
 				}
 				
@@ -77,11 +86,11 @@ public class DeathListener implements Listener {
 		}
 	}
 	
-	public void respawnPlayer(final Player player, final boolean teleportPlayer) {
+	public void respawnPlayer(final Player player,final boolean isSpectator, final boolean teleportPlayer) {
 		new BukkitRunnable() {
 			@Override
 	    	public void run() {
-				ArenaManager.spawnPlayer(player, false, teleportPlayer);
+				ArenaManager.spawnPlayer(player, isSpectator, teleportPlayer);
 				ArenaManager.updatePlayerInventory(player);
 			}
 		}.runTaskLater(this.plugin, 1); //run after 1 tick
