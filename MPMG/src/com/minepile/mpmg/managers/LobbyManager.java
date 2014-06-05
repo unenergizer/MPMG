@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
@@ -110,7 +109,6 @@ public class LobbyManager {
 		player.setFoodLevel(20);		//Sets the players food level.
 		player.setAllowFlight(false);	//Sets the players ability to fly.
 		player.setFlying(false);		//Set player whether or not player is flying when spawned.
-		player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1, 10); //Play a sound
 	    player.removePotionEffect(PotionEffectType.INVISIBILITY);	//Remove spectators potion effects.
 		player.removePotionEffect(PotionEffectType.JUMP);			//Remove lobby players potion effects.
 		player.removePotionEffect(PotionEffectType.SPEED);			//Remove lobby players potion effects.
@@ -180,6 +178,7 @@ public class LobbyManager {
 	//Sets up the inventory specific to the mini-game lobby.
 	public static void setupPlayerInventory(Player player) {
 		player.getInventory().clear();	//Clear any existing items before we spawn new items.
+		player.getInventory().setHelmet(null);//Clear player helm.
 		
 		//Server Selector
 		ItemStack compass = new ItemStack(Material.COMPASS, 1);

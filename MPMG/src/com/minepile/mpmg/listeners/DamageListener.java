@@ -2,6 +2,7 @@ package com.minepile.mpmg.listeners;
 
 import java.util.UUID;
 
+import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,10 +14,14 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import com.minepile.mpmg.MPMG;
 import com.minepile.mpmg.managers.ArenaManager;
 import com.minepile.mpmg.managers.GameManager;
+import com.minepile.mpmg.managers.KitManager;
 import com.minepile.mpmg.managers.NPCManager;
 import com.minepile.mpmg.managers.LobbyManager;
 import com.minepile.mpmg.managers.TeamManager;
+import com.minepile.mpmg.managers.KitManager.Kits;
 import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
+import com.minepile.mpmg.util.ParticleEffect;
+import com.minepile.mpmg.util.ScoreboardUtil.ScoreboardTeam;
 
 public class DamageListener  implements Listener {
 	
@@ -29,7 +34,8 @@ public class DamageListener  implements Listener {
 	
 	@EventHandler
 	public void onEntityDamage(EntityDamageByEntityEvent event) {
-		if (event.getDamager() instanceof Player) {
+		if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
+			Player player = (Player) event.getEntity();
 			Player attacker = (Player) event.getDamager();
 			
 			
@@ -38,6 +44,29 @@ public class DamageListener  implements Listener {
 			if (GameManager.isGameRunning() == true) {
 				
 				switch(GameManager.getCurrentMiniGame()) {
+				case HOTPOTATO:
+					event.setCancelled(true);
+					//Switch player team.  If player is on "players" team switch to red "zombies" team.
+					//Update the scoreboard.  The zombie team is Team1.
+					if (TeamManager.getPlayerTeam(attacker).equals(ArenaTeams.RED)){
+						//Player is now holding tnt potato:
+						
+						//Lets do a lightning strike because the player died!
+						player.getWorld().strikeLightningEffect(player.getLocation());
+						player.playSound(player.getLocation(), Sound.VILLAGER_DEATH, 1, 10);
+						
+						//ParticleEffect.LARGE_EXPLODE.display(player.getLocation(), 1, 1, 1, 1, 30);
+						ParticleEffect.ANGRY_VILLAGER.display(player.getLocation(), 1, 1, 1, 1, 30);
+						
+						//Switch players kit and team.
+						ArenaManager.switchTeam(player, ArenaTeams.RED, ScoreboardTeam.TEAM1);
+						KitManager.setPlayerKit(player, Kits.KIT0); //Set hidden "TNT Potato" kit.
+						
+						//Switch attackers kit and team:
+						ArenaManager.switchTeam(attacker, ArenaTeams.PLAYER, ScoreboardTeam.TEAM0);
+						KitManager.setPlayerKit(attacker, Kits.KIT6); //Set hidden "TNT Potato" kit.
+					}
+					break;
 				case INFECTION:
 					event.setCancelled(false);
 					break;

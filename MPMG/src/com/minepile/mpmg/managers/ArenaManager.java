@@ -82,7 +82,11 @@ public class ArenaManager {
 		//Set spectator scoreboard team for every game.
 		scoreboardUtil.setupTeam(ScoreboardTeam.SPECTATOR, true, true, ChatColor.GRAY + "");
 		//Set scoreboard team based on game.
-		switch(GameManager.currentMiniGame){
+		switch(GameManager.currentMiniGame) {
+		case HOTPOTATO:
+			scoreboardUtil.setupTeam(ScoreboardTeam.TEAM0, true, false, ChatColor.GREEN + "");
+			scoreboardUtil.setupTeam(ScoreboardTeam.TEAM1, true, false, ChatColor.RED + "");
+			break;
 		case INFECTION:
 			scoreboardUtil.setupTeam(ScoreboardTeam.TEAM0, true, false, ChatColor.GREEN + "");
 			scoreboardUtil.setupTeam(ScoreboardTeam.TEAM1, true, false, ChatColor.RED + "");
@@ -99,7 +103,6 @@ public class ArenaManager {
 			break;
 		default:
 			break;
-		
 		}
 		
 		//Setup all players.
@@ -164,7 +167,7 @@ public class ArenaManager {
 		
 		//Set scoreboard info.
 		switch(GameManager.currentMiniGame){
-		case INFECTION:
+		case HOTPOTATO:
 			if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.PLAYER)){
 				scoreboardUtil.addPlayer(player, ScoreboardTeam.TEAM0);
 				scoreboardUtil.addPoint(player, 1);
@@ -288,6 +291,7 @@ public class ArenaManager {
 	//Updates a players inventory.
 	public static void updatePlayerInventory(Player player) {
 		GameManager.getMiniGame().updatePlayerInventory(player);
+		player.updateInventory();
 	}
 	
 	//Removes a player from the scoreboard.
@@ -336,6 +340,7 @@ public class ArenaManager {
 	//If a player is a spectator, spawn them with this inventory contents.
 	private static void setupSpectatorInventory(Player player) {
 		player.getInventory().clear();	//Clear any existing items before we spawn new items.
+		player.getInventory().setHelmet(null);//Clear player helm.
 		
 		//Server Selector
 		ItemStack compass = new ItemStack(Material.COMPASS, 1);
@@ -424,8 +429,18 @@ public class ArenaManager {
 		scoreboardUtil.removePlayer(player);		//Remove player from the current scoreboard.
 		TeamManager.setPlayerTeam(player, newTeam);	//Set the players new team.
 		scoreboardUtil.addPlayer(player, newSBTeam);//Add the players to scoreboard with the new team.
-		scoreboardUtil.addPoint(player, oldPoints);	//Add the players points back to the scoreboard.
+		
+		//If the players current points are 0 add a point then remove it to update the scoreboard.
+		if (oldPoints == 0) {
+			scoreboardUtil.addPoint(player, 1);	//Add the players points back to the scoreboard.
+			scoreboardUtil.addPoint(player, -1);	//Add the players points back to the scoreboard.
+			
+		} else {
+			scoreboardUtil.addPoint(player, oldPoints);	//Add the players points back to the scoreboard.
+		}
+
 		GameManager.getMiniGame().setupPlayer(player);	//Let's setup the player again.
+
 	}
 	
 	//Adds a point to the scoreboard.
@@ -463,6 +478,13 @@ public class ArenaManager {
 				if (isGameEnding() == false) {
 					//Define what makes a win based on miniGame type.
 					switch(GameManager.getCurrentMiniGame()){
+					case HOTPOTATO:
+						if(TeamManager.getTeamSize(ArenaTeams.PLAYER) <= 1){
+							setGameEnding(true);
+							showGameScores(tempName);
+							endGame();
+						}
+						break;
 					case INFECTION:
 						if(TeamManager.getTeamSize(ArenaTeams.PLAYER) <= 1){
 							setGameEnding(true);

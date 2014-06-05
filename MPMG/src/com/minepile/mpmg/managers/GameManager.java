@@ -1,6 +1,7 @@
 package com.minepile.mpmg.managers;
 
 import com.minepile.mpmg.MPMG;
+import com.minepile.mpmg.minigames.HotPotato;
 import com.minepile.mpmg.minigames.Infection;
 import com.minepile.mpmg.minigames.MiniGame;
 import com.minepile.mpmg.minigames.OneInTheChamber;
@@ -26,6 +27,7 @@ public class GameManager {
 	//Different types of Minigames.
 	public enum MiniGameType {
 		
+		HOTPOTATO("Hot Potato"),
 		INFECTION("Infection"),
 		ONEINTHECHAMBER("One In The Chamber"),
 		SPLEEF("Spleef"),
@@ -56,6 +58,8 @@ public class GameManager {
 	
 	public static void selectNextGame() {
 		//TODO : set way to select game.
+		selectGame(MiniGameType.HOTPOTATO);
+		/*
 		if (lastGame == MiniGameType.INFECTION) {
 			selectGame(MiniGameType.ONEINTHECHAMBER);
 		} else if (lastGame == MiniGameType.ONEINTHECHAMBER) {
@@ -68,12 +72,19 @@ public class GameManager {
 			//Select default starting game.
 			selectGame(MiniGameType.ONEINTHECHAMBER);
 		}
+		*/
 	}
 	
 	public static void selectGame(MiniGameType game) {
 		
 		//Select the minigame and then start it up.
 		switch(game) {
+			case HOTPOTATO:
+				setCurrentMiniGame(MiniGameType.HOTPOTATO);
+				miniGame = new HotPotato();
+				miniGame.setupGame();
+				lastGame = MiniGameType.HOTPOTATO;
+				break;
 			case INFECTION:
 				setCurrentMiniGame(MiniGameType.INFECTION);
 				miniGame = new Infection();

@@ -150,6 +150,21 @@ public class TeamManager {
 	public static void setupPlayer(Player player) {
 		//Set proper team based on minigame. Setup player Team.
 		switch(GameManager.getCurrentMiniGame()){
+		case HOTPOTATO:
+			{
+				int redTeam = TeamManager.getTeamSize(ArenaTeams.RED);
+				int playerTeam = TeamManager.getTeamSize(ArenaTeams.PLAYER);
+				if (TeamManager.getPlayerTeam(player) == null) {
+					if (redTeam > playerTeam) {
+						TeamManager.setPlayerTeam(player, ArenaTeams.PLAYER);
+					} else if (playerTeam > redTeam) {
+						TeamManager.setPlayerTeam(player, ArenaTeams.RED);
+					} else {
+						TeamManager.setPlayerTeam(player, ArenaTeams.PLAYER);
+					}
+				}
+			}
+			break;
 		case INFECTION:
 			{
 				int redTeam = TeamManager.getTeamSize(ArenaTeams.RED);

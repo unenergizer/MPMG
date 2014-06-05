@@ -35,10 +35,12 @@ public class JoinListener implements Listener {
 		//Show message to all player.
 		switch(playerName) {
 		case "unenergizer":
-			event.setJoinMessage(ChatColor.RED + "" + ChatColor.BOLD + " >> Developer " + playerName + " has joined the game!");
+			event.setJoinMessage(chatManager.playerJoinMessage(playerName));
+			Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + " >> Developer " + playerName + " has joined the game!");
 			break;
 		case "cloudfr":
-			event.setJoinMessage(ChatColor.DARK_AQUA + "" + ChatColor.BOLD + " >> Moderator " + player.getName() + " has joined the game!");
+			event.setJoinMessage(chatManager.playerJoinMessage(playerName));
+			Bukkit.broadcastMessage(ChatColor.DARK_AQUA + "" + ChatColor.BOLD + " >> Moderator " + player.getName() + " has joined the game!");
 		default:
 			event.setJoinMessage(chatManager.playerJoinMessage(playerName));
 			break;
@@ -48,17 +50,17 @@ public class JoinListener implements Listener {
 		if (GameManager.isGameRunning() == true) {
 			//Spawn spectator.
 			ArenaManager.spawnPlayer(player, true, true); //Spectator true, teleport player true;
-		
-		} else { 
-			// Lobby code.
 			
 			//If no players found, end the game.
 			if (Bukkit.getOnlinePlayers().length <= 1) {
 				ArenaManager.endGame();
-			} else {
-				//spawn player in lobby
-				LobbyManager.setupPlayer(player);
 			}
+		} else { 
+			// Lobby code.
+			
+			//spawn player in lobby
+			LobbyManager.setupPlayer(player);
+			
 		}
 	}
 	
