@@ -66,6 +66,8 @@ public class KitManager {
 		if (getPlayerKit(player) == null || !getPlayerKit(player).equals(kit)) {
 			//Get player name.
 			String playerName = player.getName();
+			String messagePrefix = ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> You chose ";
+			String messageSuffix = ChatColor.GOLD + " kit!";
 			
 			//Save player's kit ENUM for loading later.
 			playerKit.put(playerName, kit);
@@ -76,31 +78,31 @@ public class KitManager {
 			//Send different message based on the kit the player chose.
 			switch(kit) {
 			case KIT0:
-				player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> You chose " + getKit0() + ChatColor.GOLD + "!");
+				player.sendMessage(messagePrefix + getKit0() + messageSuffix);
 				break;
 			case KIT1:
-				player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> You chose " + getKit1() + ChatColor.GOLD + "!");
+				player.sendMessage(messagePrefix + getKit1() + messageSuffix);
 				break;
 			case KIT2:
-				player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> You chose " + getKit2() + ChatColor.GOLD + "!");
+				player.sendMessage(messagePrefix + getKit2() + messageSuffix);
 				break;
 			case KIT3:
-				player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> You chose " + getKit3() + ChatColor.GOLD + "!");
+				player.sendMessage(messagePrefix + getKit3() + messageSuffix);
 				break;
 			case KIT4:
-				player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> You chose " + getKit4() + ChatColor.GOLD + "!");
+				player.sendMessage(messagePrefix + getKit4() + messageSuffix);
 				break;
 			case KIT5:
-				player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> You chose " + getKit5() + ChatColor.GOLD + "!");
+				player.sendMessage(messagePrefix + getKit5() + messageSuffix);
 				break;
 			case KIT6:
-				player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> You chose " + getKit6() + ChatColor.GOLD + "!");
+				player.sendMessage(messagePrefix + getKit6() + messageSuffix);
 				break;
 			default:
 				break;
 			}
 		} else if (GameManager.isGameRunning() == false && getPlayerKit(player).equals(kit)) {
-			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> You already chose this kit!");
+			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> You already chose " + getPlayerKitName(player) + ChatColor.GOLD + " kit!");
 			//Play a sound when the same kit is selected.
 			player.playSound(player.getLocation(), Sound.NOTE_BASS_DRUM, 1, 10);
 			
