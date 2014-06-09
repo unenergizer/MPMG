@@ -58,9 +58,8 @@ public class GameManager {
 	
 	public static void selectNextGame() {
 		//TODO : set way to select game.
-		selectGame(MiniGameType.HOTPOTATO);
-		/*
-		if (lastGame == MiniGameType.INFECTION) {
+		
+		if (lastGame == MiniGameType.HOTPOTATO) {
 			selectGame(MiniGameType.ONEINTHECHAMBER);
 		} else if (lastGame == MiniGameType.ONEINTHECHAMBER) {
 			selectGame(MiniGameType.TEAMDEATHMATCH);
@@ -68,11 +67,13 @@ public class GameManager {
 			selectGame(MiniGameType.SPLEEF);
 		}  else if (lastGame == MiniGameType.SPLEEF) {
 			selectGame(MiniGameType.INFECTION);
+		} else if (lastGame == MiniGameType.INFECTION) {
+			selectGame(MiniGameType.HOTPOTATO);
 		} else {
 			//Select default starting game.
 			selectGame(MiniGameType.ONEINTHECHAMBER);
 		}
-		*/
+		
 	}
 	
 	public static void selectGame(MiniGameType game) {

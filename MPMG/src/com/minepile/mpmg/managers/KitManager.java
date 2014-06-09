@@ -104,8 +104,7 @@ public class KitManager {
 		} else if (GameManager.isGameRunning() == false && getPlayerKit(player).equals(kit)) {
 			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> You already chose " + getPlayerKitName(player) + ChatColor.GOLD + " kit!");
 			//Play a sound when the same kit is selected.
-			player.playSound(player.getLocation(), Sound.NOTE_BASS_DRUM, 1, 10);
-			
+			player.playSound(player.getLocation(), Sound.NOTE_BASS_DRUM, 1, 10);	
 		}
 	}
 	

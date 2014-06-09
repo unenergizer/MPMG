@@ -116,16 +116,6 @@ public class TeamManager {
 		return notSpectator;
 	}
 	
-	public static int getTeamTotal(ArenaTeams team) {
-		int teamTotal = 0;
-		for (Entry<String, ArenaTeams> entry : playerTeam.entrySet()) {
-			if (entry.getValue() == team) {
-				teamTotal++;
-			}
-		}
-		return teamTotal;
-	}
-	
 	public static String getLastNonSpectatorPlayer() {
 		// TODO : Fix unused.
 		@SuppressWarnings("unused")

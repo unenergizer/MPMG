@@ -20,8 +20,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.minepile.mpmg.MPMG;
 import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
+import com.minepile.mpmg.runnables.HotPotatoTimer;
 import com.minepile.mpmg.util.ChatUtil;
 import com.minepile.mpmg.util.InfoUtil;
+import com.minepile.mpmg.util.ParticleEffect;
 import com.minepile.mpmg.util.ScoreboardUtil;
 import com.minepile.mpmg.util.ScoreboardUtil.ScoreboardTeam;
 import com.minepile.mpmg.util.WorldUtil;
@@ -411,10 +413,49 @@ public class ArenaManager {
 					for(Player player : Bukkit.getOnlinePlayers()){
 						BarAPI.removeBar(player);
 					}
+					
+					//Run any game-specific Runnables.
+					switch(GameManager.getCurrentMiniGame()){
+					case HOTPOTATO:
+						for (Player player : Bukkit.getOnlinePlayers()) {
+							if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.RED)){
+								miniGameRunnable(player);
+							}
+						}
+						break;
+					case INFECTION:
+						break;
+					case ONEINTHECHAMBER:
+						break;
+					case SPLEEF:
+						break;
+					case TEAMDEATHMATCH:
+						break;
+					default:
+						break;
+					
+					}
 				}
 				
 			} //END Run method.
 		}, 0, 20); //(20 ticks = 1 second)
+	}
+	
+	//Gets the nearest player.
+	public static Player getNearestPlayer(Player checkNear) {
+	    Player nearest = null;
+	    for (Player onlinePlayer : checkNear.getWorld().getPlayers()) {
+	    	//If the player is not a spectator and not the player we are checking, then continue.
+	    	if (!TeamManager.getPlayerTeam(onlinePlayer).equals(ArenaTeams.SPECTATOR) && !onlinePlayer.equals(checkNear)) {
+		        if (nearest == null) {
+		        	nearest = onlinePlayer;
+		        } else if (onlinePlayer.getLocation().distance(checkNear.getLocation()) 
+		        		< nearest.getLocation().distance(checkNear.getLocation())) {
+		        	nearest = onlinePlayer;
+		        }
+	    	}
+	    }
+	    return nearest;
 	}
 	
 	//This method returns if the game countdown has started.
@@ -431,7 +472,8 @@ public class ArenaManager {
 		scoreboardUtil.addPlayer(player, newSBTeam);//Add the players to scoreboard with the new team.
 		
 		//If the players current points are 0 add a point then remove it to update the scoreboard.
-		if (oldPoints == 0) {
+		//Make sure we are not giving spectators points.
+		if (oldPoints == 0 && !TeamManager.getPlayerTeam(player).equals(ArenaTeams.SPECTATOR)) {
 			scoreboardUtil.addPoint(player, 1);	//Add the players points back to the scoreboard.
 			scoreboardUtil.addPoint(player, -1);	//Add the players points back to the scoreboard.
 			
@@ -470,6 +512,41 @@ public class ArenaManager {
 		}
 	}
 	
+	public static void killPlayer(Player player) {
+		//Damage Player
+		player.damage(19);
+		
+		//Lets do a lightning strike because the player died!
+		player.playSound(player.getLocation(), Sound.EXPLODE, 1, 10);
+		
+		//ParticleEffect.LARGE_EXPLODE.display(player.getLocation(), 1, 1, 1, 1, 30);
+		ParticleEffect.LARGE_EXPLODE.display(player.getLocation(), 1, 1, 1, 1, 30);
+		
+		//Switch team and scoreboard teams
+		switchTeam(player, ArenaTeams.SPECTATOR, ScoreboardTeam.SPECTATOR);
+		
+		//Spawn as spectator
+		spawnPlayer(player, true, true);
+	}
+	
+	public static void miniGameRunnable(Player player) {
+		switch(GameManager.getCurrentMiniGame()) {
+		case HOTPOTATO:
+			new HotPotatoTimer(20, true, true, player).runTaskTimer(plugin, 0L, 20L);
+			break;
+		case INFECTION:
+			break;
+		case ONEINTHECHAMBER:
+			break;
+		case SPLEEF:
+			break;
+		case TEAMDEATHMATCH:
+			break;
+		default:
+			break;
+		}
+	}
+	
 	//Win game code.
 	public static void hasGameWon(final Player player, final String tempName) {
 		new BukkitRunnable() {
@@ -479,7 +556,7 @@ public class ArenaManager {
 					//Define what makes a win based on miniGame type.
 					switch(GameManager.getCurrentMiniGame()){
 					case HOTPOTATO:
-						if(TeamManager.getTeamSize(ArenaTeams.PLAYER) <= 1){
+						if(TeamManager.getTeamSize(ArenaTeams.PLAYER) <= 1 && TeamManager.getTeamSize(ArenaTeams.RED) <= 0){
 							setGameEnding(true);
 							showGameScores(tempName);
 							endGame();

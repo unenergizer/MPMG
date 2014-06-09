@@ -1,7 +1,6 @@
 package com.minepile.mpmg.listeners;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Effect;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -92,8 +91,8 @@ public class DeathListener implements Listener {
 						//ParticleEffect.LARGE_EXPLODE.display(player.getLocation(), 1, 1, 1, 1, 30);
 						ParticleEffect.ANGRY_VILLAGER.display(player.getLocation(), 1, 1, 1, 1, 30);
 						
-						ArenaManager.switchTeam(player, ArenaTeams.RED, ScoreboardTeam.TEAM1);
 						KitManager.setPlayerKit(player, Kits.KIT6); //Set hidden "Zombie" kit.
+						ArenaManager.switchTeam(player, ArenaTeams.RED, ScoreboardTeam.TEAM1);
 						respawnPlayer(player, false, false);
 					} else {
 						//Zombie death:
@@ -234,6 +233,7 @@ public class DeathListener implements Listener {
 				deathCause = "because they danced with the wither";
 				break;
 			default:
+				deathCause = "by something crazy";
 				break;
 			}
 		} else {

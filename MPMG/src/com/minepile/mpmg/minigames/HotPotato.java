@@ -12,14 +12,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.minepile.mpmg.managers.ArenaManager;
 import com.minepile.mpmg.managers.KitManager;
 import com.minepile.mpmg.managers.NPCManager;
 import com.minepile.mpmg.managers.TeamManager;
 import com.minepile.mpmg.managers.KitManager.Kits;
 import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
 
-public class HotPotato  extends MiniGame {
+public class HotPotato extends MiniGame {
 	
 	@Override
 	public void setupGame() {
@@ -92,15 +91,8 @@ public class HotPotato  extends MiniGame {
 	    	//Force these players to use the zombie kit.
 	    	KitManager.setPlayerKit(player, Kits.KIT6);
 	    	
-	    	if (ArenaManager.hasCountdownStarted() == true){
-				PotionEffect potionEffect = new PotionEffect(PotionEffectType.SLOW, 35*20, 0);
-				potionEffect.apply(player);
-				PotionEffect potionEffect2 = new PotionEffect(PotionEffectType.BLINDNESS, 35*20, 0);
-				potionEffect2.apply(player);	
-	    	}
-	    	
 	    	//play a sound
-		    player.playSound(player.getLocation(), Sound.WITHER_SPAWN, 1, 10);
+		    player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1, 10);
 	    } else {
 	    	//If the player is on the "Players" team lets do some additional setup.
 			PotionEffect potionEffect = new PotionEffect(PotionEffectType.SPEED, 25*20, 0);
@@ -152,18 +144,6 @@ public class HotPotato  extends MiniGame {
 			ItemStack item0 = new ItemStack(Material.GRILLED_PORK, 1);
 			//Set player slot
 			player.getInventory().setItem(0, item0);
-			//Set item
-			ItemStack item1 = new ItemStack(Material.BOW, 1);
-			//Set enchantment
-			ItemMeta itemMeta = item1.getItemMeta();
-			itemMeta.addEnchant(Enchantment.ARROW_KNOCKBACK, 2, true);
-			item1.setItemMeta(itemMeta);
-			//Set player slot
-			player.getInventory().setItem(1, item1);
-			//Set item
-			ItemStack item2 = new ItemStack(Material.ARROW, 64);
-			//Set player slot
-			player.getInventory().setItem(2, item2);
 		}
 			break;
 		case KIT3:

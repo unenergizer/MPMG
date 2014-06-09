@@ -34,6 +34,7 @@ public abstract class MiniGame {
 	public void setupPlayerInventory(Player player, Kits kit){}
 	public void updatePlayerInventory(Player player){}
 	public void spawnPlayer(Player player){}
+	public void doRunnable(Player player){}
 
 	public int getGameID() {
 		return gameID;
