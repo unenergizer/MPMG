@@ -3,6 +3,7 @@ package com.minepile.mpmg.managers;
 import com.minepile.mpmg.MPMG;
 import com.minepile.mpmg.minigames.HotPotato;
 import com.minepile.mpmg.minigames.Infection;
+import com.minepile.mpmg.minigames.LastMobStanding;
 import com.minepile.mpmg.minigames.MiniGame;
 import com.minepile.mpmg.minigames.OneInTheChamber;
 import com.minepile.mpmg.minigames.Spleef;
@@ -29,6 +30,7 @@ public class GameManager {
 		
 		HOTPOTATO("Hot Potato"),
 		INFECTION("Infection"),
+		LASTMOBSTANDING("Last Mob Standing"),
 		ONEINTHECHAMBER("One In The Chamber"),
 		SPLEEF("Spleef"),
 		TEAMDEATHMATCH("Team Deathmatch");
@@ -59,7 +61,7 @@ public class GameManager {
 	public static void selectNextGame() {
 		//TODO : set way to select game.
 		
-		if (lastGame == MiniGameType.HOTPOTATO) {
+		if (lastGame == MiniGameType.LASTMOBSTANDING) {
 			selectGame(MiniGameType.ONEINTHECHAMBER);
 		} else if (lastGame == MiniGameType.ONEINTHECHAMBER) {
 			selectGame(MiniGameType.TEAMDEATHMATCH);
@@ -69,6 +71,8 @@ public class GameManager {
 			selectGame(MiniGameType.INFECTION);
 		} else if (lastGame == MiniGameType.INFECTION) {
 			selectGame(MiniGameType.HOTPOTATO);
+		} else if (lastGame == MiniGameType.HOTPOTATO) {
+			selectGame(MiniGameType.LASTMOBSTANDING);
 		} else {
 			//Select default starting game.
 			selectGame(MiniGameType.ONEINTHECHAMBER);
@@ -91,6 +95,12 @@ public class GameManager {
 				miniGame = new Infection();
 				miniGame.setupGame();
 				lastGame = MiniGameType.INFECTION;
+				break;
+			case LASTMOBSTANDING:
+				setCurrentMiniGame(MiniGameType.LASTMOBSTANDING);
+				miniGame = new LastMobStanding();
+				miniGame.setupGame();
+				lastGame = MiniGameType.LASTMOBSTANDING;
 				break;
 			case ONEINTHECHAMBER:
 				setCurrentMiniGame(MiniGameType.ONEINTHECHAMBER);

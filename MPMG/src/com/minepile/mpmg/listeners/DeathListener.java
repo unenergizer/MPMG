@@ -182,7 +182,7 @@ public class DeathListener implements Listener {
 				deathCause = "from being attacked";
 				break;
 			case ENTITY_EXPLOSION:
-				deathCause = " by playing with a creeper";
+				deathCause = "by playing with a creeper";
 				break;
 			case FALL:
 				deathCause = "by bungee jumping without a cord";
@@ -215,7 +215,7 @@ public class DeathListener implements Listener {
 				deathCause = "from being was shot";
 				break;
 			case STARVATION:
-				deathCause = "forgot to eat";
+				deathCause = "from forgetting to eat";
 				break;
 			case SUFFOCATION:
 				deathCause = "from not taking a breath";
@@ -227,7 +227,7 @@ public class DeathListener implements Listener {
 				deathCause = "from being poked";
 				break;
 			case VOID:
-				deathCause = "fell into the void";
+				deathCause = "from falling into the void";
 				break;
 			case WITHER:
 				deathCause = "because they danced with the wither";

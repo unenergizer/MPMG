@@ -19,20 +19,24 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.minepile.mpmg.managers.ArenaManager;
 import com.minepile.mpmg.managers.KitManager;
-import com.minepile.mpmg.managers.TeamManager;
 import com.minepile.mpmg.managers.KitManager.Kits;
-import com.minepile.mpmg.managers.NPCManager;
 import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
+import com.minepile.mpmg.managers.NPCManager;
 
-public class TeamDeathMatch extends MiniGame {
+public class LastMobStanding extends MiniGame {
 	
-	MobDisguise wolfDisguise = new MobDisguise(DisguiseType.WOLF);
-	MobDisguise pigDisguise = new MobDisguise(DisguiseType.PIG);
-	
+	MobDisguise skeleton = new MobDisguise(DisguiseType.SKELETON);
+	MobDisguise pigZombie = new MobDisguise(DisguiseType.SKELETON);
+	MobDisguise witherSkeleton = new MobDisguise(DisguiseType.SKELETON);
+	MobDisguise zombie = new MobDisguise(DisguiseType.SKELETON);
+	//MobDisguise wolfDisguise = new MobDisguise(DisguiseType.SKELETON);
+	//MobDisguise wolfDisguise = new MobDisguise(DisguiseType.SKELETON);
+	//MobDisguise wolfDisguise = new MobDisguise(DisguiseType.SKELETON);
+
 	@Override
 	public void setupGame() {
-		setWorldName("MapTDM01");
-		setGameName("Team Death Match");
+		setWorldName("MapLMS01");
+		setGameName("Last Mob Standing");
 		setCanPlaceBlocks(false);
 		setCanDropItems(false);
 		setCanPickupItems(false);
@@ -47,10 +51,10 @@ public class TeamDeathMatch extends MiniGame {
 		setInfoSlot2("");
 		setInfoSlot3("Kill someone and you get another arrow. >:]");
 		setInfoSlot4("");
-		setInfoSlot5("First team with " + Integer.toString(ArenaManager.getMaxScore()) + " kills wins!");
+		setInfoSlot5("First person to " + Integer.toString(ArenaManager.getMaxScore()) + " kills wins!");
 		setInfoSlot6("");
 		
-		// Setup Kit names.
+		//Setup Kit names.
 		KitManager.setKit0(ChatColor.RED + "Wooden Axe");
 		KitManager.setKit1(ChatColor.GOLD + "Wooden Sword");
 		KitManager.setKit2(ChatColor.YELLOW + "Stone Spade");
@@ -58,34 +62,24 @@ public class TeamDeathMatch extends MiniGame {
 		KitManager.setKit4(ChatColor.AQUA + "Iron Axe");
 		KitManager.setKit5(ChatColor.BLUE + "Iron Spade");
 		KitManager.setKit6(ChatColor.DARK_PURPLE + "Death Bringer");
+		
+		//Spawn Kit NPC's.
+		NPCManager.setupNPC(NPCManager.kit0Location, EntityType.ZOMBIE, KitManager.getKit0(), Kits.KIT0);
+		NPCManager.setupNPC(NPCManager.kit1Location, EntityType.ZOMBIE, KitManager.getKit1(), Kits.KIT1);
+		NPCManager.setupNPC(NPCManager.kit2Location, EntityType.ZOMBIE, KitManager.getKit2(), Kits.KIT2);
+		NPCManager.setupNPC(NPCManager.kit3Location, EntityType.ZOMBIE, KitManager.getKit3(), Kits.KIT3);
+		NPCManager.setupNPC(NPCManager.kit4Location, EntityType.ZOMBIE, KitManager.getKit4(), Kits.KIT4);
+		NPCManager.setupNPC(NPCManager.kit5Location, EntityType.ZOMBIE, KitManager.getKit5(), Kits.KIT5);
+		NPCManager.setupNPC(NPCManager.kit6Location, EntityType.SKELETON, KitManager.getKit6(), Kits.KIT6);
 
-		// Spawn Kit NPC's.
-		NPCManager.setupNPC(NPCManager.kit0Location, EntityType.CAVE_SPIDER,
-				KitManager.getKit0(), Kits.KIT0);
-		NPCManager.setupNPC(NPCManager.kit1Location, EntityType.CHICKEN,
-				KitManager.getKit1(), Kits.KIT1);
-		NPCManager.setupNPC(NPCManager.kit2Location, EntityType.COW,
-				KitManager.getKit2(), Kits.KIT2);
-		NPCManager.setupNPC(NPCManager.kit3Location, EntityType.CREEPER,
-				KitManager.getKit3(), Kits.KIT3);
-		NPCManager.setupNPC(NPCManager.kit4Location, EntityType.PIG,
-				KitManager.getKit4(), Kits.KIT4);
-		NPCManager.setupNPC(NPCManager.kit5Location, EntityType.IRON_GOLEM,
-				KitManager.getKit5(), Kits.KIT5);
-		NPCManager.setupNPC(NPCManager.kit6Location, EntityType.WOLF,
-				KitManager.getKit6(), Kits.KIT6);
-
-		// Setup join-able teams.
-		NPCManager.setupNPC(NPCManager.team0Location, EntityType.PIG,
-				ChatColor.BLUE, "Blue Team", ArenaTeams.BLUE);
-		NPCManager.setupNPC(NPCManager.team1Location, EntityType.WOLF,
-				ChatColor.RED, "Red Team", ArenaTeams.RED);
+		//Setup join-able teams.
+		NPCManager.setupNPC(NPCManager.team2Location, EntityType.SHEEP, ChatColor.GREEN, "Player Team", ArenaTeams.PLAYER);		
 	}
-
+	
 	@Override
 	public void setupPlayer(Player player) {
-
-		// Set player Mode and Health
+		
+		//Set player Mode and Health
 		player.setHealthScale(20);
 		player.setHealth(20);
 		player.setFoodLevel(20);
@@ -93,39 +87,17 @@ public class TeamDeathMatch extends MiniGame {
 		player.setAllowFlight(false);
 		player.setFlying(false);
 		player.getInventory().clear();
-
-		// Setup player inventory.
+		
+		//Setup player inventory.
 		setupPlayerInventory(player, KitManager.getPlayerKit(player));
-
-		// remove potion effects
+		
+		//remove potion effects
 		player.removePotionEffect(PotionEffectType.INVISIBILITY);
 		player.removePotionEffect(PotionEffectType.JUMP);
 		player.removePotionEffect(PotionEffectType.SPEED);
-
-		// play a sound
-		player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1, 10);
 		
-	    //If the player is on the red team, lets do some additional setup for them.
-	    if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.RED)) {
-	    	
-	    	//If player needs a disguise, give one to them now.
-	    	DisguiseAPI.disguiseToAll(player, wolfDisguise);
-	    	DisguiseAPI.disguiseEntity(player, wolfDisguise);
-	    	
-	    	//TODO: See about fixing this.  Sets the player's name.
-	    	((LivingWatcher) ((Disguise) wolfDisguise).getWatcher()).setCustomName(ChatColor.RED + player.getName());
-	    	((LivingWatcher) ((Disguise) wolfDisguise).getWatcher()).setCustomNameVisible(true);
-
-	    } else {
-	    	
-	    	//If player needs a disguise, give one to them now.
-	    	DisguiseAPI.disguiseToAll(player, pigDisguise);
-	    	DisguiseAPI.disguiseEntity(player, pigDisguise);
-	    	
-	    	//TODO: See about fixing this.  Sets the player's name.
-	    	((LivingWatcher) ((Disguise) pigDisguise).getWatcher()).setCustomName(ChatColor.BLUE + player.getName());
-	    	((LivingWatcher) ((Disguise) pigDisguise).getWatcher()).setCustomNameVisible(true);
-	    }
+	    //play a sound
+	    player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1, 10);
 	}
 
 	public void setupPlayerInventory(Player player, Kits kit) {
@@ -144,6 +116,14 @@ public class TeamDeathMatch extends MiniGame {
 			player.getInventory().setItem(1, item1);
 			ItemStack item2 = new ItemStack(Material.ARROW, 1);
 			player.getInventory().setItem(2, item2);
+			
+			//If player needs a disguise, give one to them now.
+	    	DisguiseAPI.disguiseToAll(player, wolfDisguise);
+	    	DisguiseAPI.disguiseEntity(player, wolfDisguise);
+	    	
+	    	//TODO: See about fixing this.  Sets the player's name.
+	    	((LivingWatcher) ((Disguise) wolfDisguise).getWatcher()).setCustomName(ChatColor.RED + player.getName());
+	    	((LivingWatcher) ((Disguise) wolfDisguise).getWatcher()).setCustomNameVisible(true);
 		}
 			break;
 		case KIT1: {
@@ -221,6 +201,7 @@ public class TeamDeathMatch extends MiniGame {
 		default:
 			break;
 		}
+
 	}
 
 	public void updatePlayerInventory(Player player) {

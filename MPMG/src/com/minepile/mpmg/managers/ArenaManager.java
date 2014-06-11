@@ -93,6 +93,9 @@ public class ArenaManager {
 			scoreboardUtil.setupTeam(ScoreboardTeam.TEAM0, true, false, ChatColor.GREEN + "");
 			scoreboardUtil.setupTeam(ScoreboardTeam.TEAM1, true, false, ChatColor.RED + "");
 			break;
+		case LASTMOBSTANDING:
+			scoreboardUtil.setupTeam(ScoreboardTeam.PLAYER, true, false, ChatColor.GREEN + "");
+			break;
 		case ONEINTHECHAMBER:
 			scoreboardUtil.setupTeam(ScoreboardTeam.PLAYER, true, true, ChatColor.GREEN + "");
 			break;
@@ -179,6 +182,22 @@ public class ArenaManager {
 				scoreboardUtil.addPoint(player, 1);
 				scoreboardUtil.addPoint(player, -1);
 			}
+			break;
+		case INFECTION:
+			if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.PLAYER)){
+				scoreboardUtil.addPlayer(player, ScoreboardTeam.TEAM0);
+				scoreboardUtil.addPoint(player, 1);
+				scoreboardUtil.addPoint(player, -1);
+			} else {
+				scoreboardUtil.addPlayer(player, ScoreboardTeam.TEAM1);
+				scoreboardUtil.addPoint(player, 1);
+				scoreboardUtil.addPoint(player, -1);
+			}
+			break;
+		case LASTMOBSTANDING:
+			scoreboardUtil.addPlayer(player, ScoreboardTeam.PLAYER);
+			scoreboardUtil.addPoint(player, 1);
+			scoreboardUtil.addPoint(player, -1);
 			break;
 		case ONEINTHECHAMBER:
 			scoreboardUtil.addPlayer(player, ScoreboardTeam.PLAYER);
@@ -569,6 +588,13 @@ public class ArenaManager {
 							endGame();
 						}
 						break;
+					case LASTMOBSTANDING:
+						if(TeamManager.getTeamSize(ArenaTeams.PLAYER) <= 1){
+							setGameEnding(true);
+							showGameScores(tempName);
+							endGame();
+						}
+						break;
 					case ONEINTHECHAMBER:
 						if(scoreboardUtil.getPoints(player) >= maxScore) {
 							setGameEnding(true);
@@ -603,7 +629,7 @@ public class ArenaManager {
 		Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
 		Bukkit.broadcastMessage(ChatColor.GOLD + "✰ " + ChatColor.GREEN + "" + ChatColor.BOLD + tempName + " has won the game!");
 		Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
-		Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
+		Bukkit.broadcastMessage(ChatColor.GOLD + "✰" + ChatColor.RED + "Scoring is not fully programmed and may be inaccurate.");
 		Bukkit.broadcastMessage(ChatColor.GOLD + "✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰");
 	}
 	
