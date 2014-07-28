@@ -11,6 +11,7 @@ import com.minepile.mpmg.MPMG;
 import com.minepile.mpmg.managers.ArenaManager;
 import com.minepile.mpmg.managers.GameManager;
 import com.minepile.mpmg.managers.LobbyManager;
+import com.minepile.mpmg.managers.TeamManager;
 import com.minepile.mpmg.util.ChatUtil;
 
 public class JoinListener implements Listener {
@@ -52,7 +53,7 @@ public class JoinListener implements Listener {
 			ArenaManager.spawnPlayer(player, true, true); //Spectator true, teleport player true;
 			
 			//If no players found, end the game.
-			if (Bukkit.getOnlinePlayers().length <= 1) {
+			if (Bukkit.getOnlinePlayers().length <= 1 || TeamManager.getNonSpectatorsTotal() <= 0) {
 				ArenaManager.endGame();
 			}
 		} else { 

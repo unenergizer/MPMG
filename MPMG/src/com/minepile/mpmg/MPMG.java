@@ -45,7 +45,7 @@ public class MPMG extends JavaPlugin {
         } else {
         	reloadConfig();
         }
-		
+        
 		//Setup manager instances.
 		ArenaManager.getInstance().setup(this);
 		CommandManager.getInstance().setup(this);

@@ -170,6 +170,9 @@ public class TeamManager {
 				}
 			}
 			break;
+		case LASTMOBSTANDING:
+			TeamManager.setPlayerTeam(player, ArenaTeams.PLAYER);
+			break;
 		case ONEINTHECHAMBER:
 			TeamManager.setPlayerTeam(player, ArenaTeams.PLAYER);
 			break;

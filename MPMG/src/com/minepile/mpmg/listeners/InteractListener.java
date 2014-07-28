@@ -1,5 +1,7 @@
 package com.minepile.mpmg.listeners;
 
+import java.sql.SQLException;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -290,7 +292,13 @@ public class InteractListener implements Listener {
 			}
 			
 			if (hand != null && hand.getType() == Material.WRITTEN_BOOK) {
-				StatsManager.getStatsBook(player);
+				
+				//MySQL statistics.
+				try {
+					StatsManager.getStatsBook(player);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		

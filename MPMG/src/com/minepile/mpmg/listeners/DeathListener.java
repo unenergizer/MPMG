@@ -1,5 +1,7 @@
 package com.minepile.mpmg.listeners;
 
+import java.sql.SQLException;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -15,6 +17,7 @@ import com.minepile.mpmg.managers.GameManager;
 import com.minepile.mpmg.managers.KitManager;
 import com.minepile.mpmg.managers.KitManager.Kits;
 import com.minepile.mpmg.managers.LobbyManager;
+import com.minepile.mpmg.managers.StatsManager;
 import com.minepile.mpmg.managers.TeamManager;
 import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
 import com.minepile.mpmg.util.ParticleEffect;
@@ -44,6 +47,20 @@ public class DeathListener implements Listener {
 				if (killer instanceof Player && player != killer) {
 					ArenaManager.addPoint(killer, 1);
 					ArenaManager.updatePlayerInventory(killer);
+				}
+				
+				//update killer and players stats
+				try {
+					//Add one death to the players stats.
+					StatsManager.updateStats(player, 0, 0, 0, 1);
+					
+					if(killer instanceof Player) {
+						//Add one kill to killers stats
+						StatsManager.updateStats(killer, 0, 0, 1, 0);
+					}
+					
+				} catch (SQLException e) {
+					e.printStackTrace();
 				}
 				
 				player.getInventory().clear();
@@ -104,6 +121,14 @@ public class DeathListener implements Listener {
 						
 						respawnPlayer(player, false, true);
 					}
+					break;
+				case LASTMOBSTANDING:
+					//Lets do a lightning strike because the player died!
+					player.getWorld().strikeLightningEffect(player.getLocation());
+					player.playSound(player.getLocation(), Sound.EXPLODE, 1, 10);
+					ParticleEffect.LARGE_EXPLODE.display(player.getLocation(), 1, 1, 1, 1, 30);
+					
+					respawnPlayer(player, true, true);
 					break;
 				case SPLEEF:
 					if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.PLAYER)){

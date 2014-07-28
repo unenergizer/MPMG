@@ -93,7 +93,7 @@ public class ScoreboardUtil {
 		setPoints(player, Bukkit.getOfflinePlayer("   "), 6);
 		
 		setPoints(player, Bukkit.getOfflinePlayer(ChatColor.BOLD + "Team: "), 5);
-		if(TeamManager.getPlayerTeam(player).getName().length() > 14) {
+		if(TeamManager.getPlayerTeam(player).getName().length() >= 14) {
 			setPoints(player, Bukkit.getOfflinePlayer(trimString(TeamManager.getPlayerTeam(player).getName())), 4);
 		} else {
 			setPoints(player, Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName()), 4);

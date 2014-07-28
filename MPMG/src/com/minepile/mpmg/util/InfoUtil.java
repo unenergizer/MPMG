@@ -8,16 +8,16 @@ public class InfoUtil {
 	private String titleSlot, infoSlot1, infoSlot2, infoSlot3, infoSlot4, infoSlot5, infoSlot6;
 
 	public void showInfo() {
-		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "▇    " + ChatColor.BOLD + "");
-		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "▇ " + ChatColor.GREEN + ChatColor.BOLD + "✚ " + titleSlot);
-		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "▇    " + ChatColor.WHITE + ChatColor.BOLD + "");
-		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "▇    " + ChatColor.WHITE + infoSlot1);
-		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "▇    " + ChatColor.WHITE + infoSlot2);
-		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "▇    " + ChatColor.WHITE + infoSlot3);
-		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "▇    " + ChatColor.WHITE + infoSlot4);
-		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "▇    " + ChatColor.WHITE + infoSlot5);
-		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "▇    " + ChatColor.WHITE + infoSlot6);
-		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇");
+		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "█    " + ChatColor.BOLD + "");
+		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "█ " + ChatColor.GREEN + ChatColor.BOLD + "➪ " + titleSlot);
+		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "█    " + ChatColor.WHITE + ChatColor.BOLD + "");
+		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "█    " + ChatColor.WHITE + infoSlot1);
+		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "█    " + ChatColor.WHITE + infoSlot2);
+		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "█    " + ChatColor.WHITE + infoSlot3);
+		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "█    " + ChatColor.WHITE + infoSlot4);
+		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "█    " + ChatColor.WHITE + infoSlot5);
+		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "█   " + ChatColor.WHITE + infoSlot6);
+		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "█▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇");
 	}
 
 	public void setTitleSlot(String titleSlot) {

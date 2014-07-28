@@ -20,14 +20,15 @@ public class GameManager {
 	private static MPMG plugin;
 	
 	private static boolean gameRunning = false;		//Mini-game is running? (default = false)
-	private static String pluginVersion = "0.3.9";	//Plugin version.
+	private static String pluginVersion = "0.3.9a";	//Plugin version.
 	private static int minPlayers = 2;				//Minimal players needed to start a game.
-	private static int maxPlayers = 16;				//Maximum players allowed in a game.
-	private static MiniGameType lastGame = MiniGameType.TEAMDEATHMATCH;
+	private static int maxPlayers = 32;				//Maximum players allowed in a game.
+	private static MiniGameType lastGame = MiniGameType.INFECTION;
 	
 	//Different types of Minigames.
 	public enum MiniGameType {
 		
+		BOMBARENA("Bomb Arena"),
 		HOTPOTATO("Hot Potato"),
 		INFECTION("Infection"),
 		LASTMOBSTANDING("Last Mob Standing"),

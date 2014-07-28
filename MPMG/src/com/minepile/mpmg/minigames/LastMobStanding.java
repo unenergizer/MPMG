@@ -26,12 +26,12 @@ import com.minepile.mpmg.managers.NPCManager;
 public class LastMobStanding extends MiniGame {
 	
 	MobDisguise skeleton = new MobDisguise(DisguiseType.SKELETON);
-	MobDisguise pigZombie = new MobDisguise(DisguiseType.SKELETON);
-	MobDisguise witherSkeleton = new MobDisguise(DisguiseType.SKELETON);
-	MobDisguise zombie = new MobDisguise(DisguiseType.SKELETON);
-	//MobDisguise wolfDisguise = new MobDisguise(DisguiseType.SKELETON);
-	//MobDisguise wolfDisguise = new MobDisguise(DisguiseType.SKELETON);
-	//MobDisguise wolfDisguise = new MobDisguise(DisguiseType.SKELETON);
+	MobDisguise pigZombie = new MobDisguise(DisguiseType.PIG_ZOMBIE);
+	MobDisguise witherSkeleton = new MobDisguise(DisguiseType.WITHER_SKELETON);
+	MobDisguise zombie = new MobDisguise(DisguiseType.ZOMBIE);
+	MobDisguise babyZombie = new MobDisguise(DisguiseType.ZOMBIE, true);
+	MobDisguise ironGolem = new MobDisguise(DisguiseType.IRON_GOLEM);
+	MobDisguise wither = new MobDisguise(DisguiseType.WITHER);
 
 	@Override
 	public void setupGame() {
@@ -55,22 +55,22 @@ public class LastMobStanding extends MiniGame {
 		setInfoSlot6("");
 		
 		//Setup Kit names.
-		KitManager.setKit0(ChatColor.RED + "Wooden Axe");
-		KitManager.setKit1(ChatColor.GOLD + "Wooden Sword");
-		KitManager.setKit2(ChatColor.YELLOW + "Stone Spade");
-		KitManager.setKit3(ChatColor.GREEN + "Stone Sword");
-		KitManager.setKit4(ChatColor.AQUA + "Iron Axe");
-		KitManager.setKit5(ChatColor.BLUE + "Iron Spade");
-		KitManager.setKit6(ChatColor.DARK_PURPLE + "Death Bringer");
+		KitManager.setKit0(ChatColor.RED + "Skeleton");
+		KitManager.setKit1(ChatColor.GOLD + "Pig Zombie");
+		KitManager.setKit2(ChatColor.YELLOW + "Wither Skeleton");
+		KitManager.setKit3(ChatColor.GREEN + "Zombie");
+		KitManager.setKit4(ChatColor.AQUA + "Baby Zombie");
+		KitManager.setKit5(ChatColor.BLUE + "Iron Golem");
+		KitManager.setKit6(ChatColor.DARK_PURPLE + "Wither");
 		
 		//Spawn Kit NPC's.
-		NPCManager.setupNPC(NPCManager.kit0Location, EntityType.ZOMBIE, KitManager.getKit0(), Kits.KIT0);
-		NPCManager.setupNPC(NPCManager.kit1Location, EntityType.ZOMBIE, KitManager.getKit1(), Kits.KIT1);
-		NPCManager.setupNPC(NPCManager.kit2Location, EntityType.ZOMBIE, KitManager.getKit2(), Kits.KIT2);
+		NPCManager.setupNPC(NPCManager.kit0Location, EntityType.SKELETON, KitManager.getKit0(), Kits.KIT0);
+		NPCManager.setupNPC(NPCManager.kit1Location, EntityType.PIG_ZOMBIE, KitManager.getKit1(), Kits.KIT1);
+		NPCManager.setupNPC(NPCManager.kit2Location, EntityType.SKELETON, KitManager.getKit2(), Kits.KIT2);
 		NPCManager.setupNPC(NPCManager.kit3Location, EntityType.ZOMBIE, KitManager.getKit3(), Kits.KIT3);
 		NPCManager.setupNPC(NPCManager.kit4Location, EntityType.ZOMBIE, KitManager.getKit4(), Kits.KIT4);
-		NPCManager.setupNPC(NPCManager.kit5Location, EntityType.ZOMBIE, KitManager.getKit5(), Kits.KIT5);
-		NPCManager.setupNPC(NPCManager.kit6Location, EntityType.SKELETON, KitManager.getKit6(), Kits.KIT6);
+		NPCManager.setupNPC(NPCManager.kit5Location, EntityType.IRON_GOLEM, KitManager.getKit5(), Kits.KIT5);
+		NPCManager.setupNPC(NPCManager.kit6Location, EntityType.WITHER, KitManager.getKit6(), Kits.KIT6);
 
 		//Setup join-able teams.
 		NPCManager.setupNPC(NPCManager.team2Location, EntityType.SHEEP, ChatColor.GREEN, "Player Team", ArenaTeams.PLAYER);		
@@ -118,12 +118,12 @@ public class LastMobStanding extends MiniGame {
 			player.getInventory().setItem(2, item2);
 			
 			//If player needs a disguise, give one to them now.
-	    	DisguiseAPI.disguiseToAll(player, wolfDisguise);
-	    	DisguiseAPI.disguiseEntity(player, wolfDisguise);
+	    	DisguiseAPI.disguiseToAll(player, skeleton);
+	    	DisguiseAPI.disguiseEntity(player, skeleton);
 	    	
 	    	//TODO: See about fixing this.  Sets the player's name.
-	    	((LivingWatcher) ((Disguise) wolfDisguise).getWatcher()).setCustomName(ChatColor.RED + player.getName());
-	    	((LivingWatcher) ((Disguise) wolfDisguise).getWatcher()).setCustomNameVisible(true);
+	    	((LivingWatcher) ((Disguise) skeleton).getWatcher()).setCustomName(ChatColor.RED + player.getName());
+	    	((LivingWatcher) ((Disguise) skeleton).getWatcher()).setCustomNameVisible(true);
 		}
 			break;
 		case KIT1: {
@@ -136,6 +136,14 @@ public class LastMobStanding extends MiniGame {
 			player.getInventory().setItem(1, item1);
 			ItemStack item2 = new ItemStack(Material.ARROW, 1);
 			player.getInventory().setItem(2, item2);
+			
+			//If player needs a disguise, give one to them now.
+	    	DisguiseAPI.disguiseToAll(player, pigZombie);
+	    	DisguiseAPI.disguiseEntity(player, pigZombie);
+	    	
+	    	//TODO: See about fixing this.  Sets the player's name.
+	    	((LivingWatcher) ((Disguise) pigZombie).getWatcher()).setCustomName(ChatColor.RED + player.getName());
+	    	((LivingWatcher) ((Disguise) pigZombie).getWatcher()).setCustomNameVisible(true);
 		}
 			break;
 		case KIT2: {
@@ -148,6 +156,14 @@ public class LastMobStanding extends MiniGame {
 			player.getInventory().setItem(1, item1);
 			ItemStack item2 = new ItemStack(Material.ARROW, 1);
 			player.getInventory().setItem(2, item2);
+			
+			//If player needs a disguise, give one to them now.
+	    	DisguiseAPI.disguiseToAll(player, witherSkeleton);
+	    	DisguiseAPI.disguiseEntity(player, witherSkeleton);
+	    	
+	    	//TODO: See about fixing this.  Sets the player's name.
+	    	((LivingWatcher) ((Disguise) witherSkeleton).getWatcher()).setCustomName(ChatColor.RED + player.getName());
+	    	((LivingWatcher) ((Disguise) witherSkeleton).getWatcher()).setCustomNameVisible(true);
 		}
 			break;
 		case KIT3: {
@@ -160,6 +176,14 @@ public class LastMobStanding extends MiniGame {
 			player.getInventory().setItem(1, item1);
 			ItemStack item2 = new ItemStack(Material.ARROW, 1);
 			player.getInventory().setItem(2, item2);
+			
+			//If player needs a disguise, give one to them now.
+	    	DisguiseAPI.disguiseToAll(player, zombie);
+	    	DisguiseAPI.disguiseEntity(player, zombie);
+	    	
+	    	//TODO: See about fixing this.  Sets the player's name.
+	    	((LivingWatcher) ((Disguise) zombie).getWatcher()).setCustomName(ChatColor.RED + player.getName());
+	    	((LivingWatcher) ((Disguise) zombie).getWatcher()).setCustomNameVisible(true);
 		}
 			break;
 		case KIT4: {
@@ -172,6 +196,14 @@ public class LastMobStanding extends MiniGame {
 			player.getInventory().setItem(1, item1);
 			ItemStack item2 = new ItemStack(Material.ARROW, 1);
 			player.getInventory().setItem(2, item2);
+			
+			//If player needs a disguise, give one to them now.
+	    	DisguiseAPI.disguiseToAll(player, babyZombie);
+	    	DisguiseAPI.disguiseEntity(player, babyZombie);
+	    	
+	    	//TODO: See about fixing this.  Sets the player's name.
+	    	((LivingWatcher) ((Disguise) babyZombie).getWatcher()).setCustomName(ChatColor.RED + player.getName());
+	    	((LivingWatcher) ((Disguise) babyZombie).getWatcher()).setCustomNameVisible(true);
 		}
 			break;
 		case KIT5: {
@@ -184,6 +216,14 @@ public class LastMobStanding extends MiniGame {
 			player.getInventory().setItem(1, item1);
 			ItemStack item2 = new ItemStack(Material.ARROW, 1);
 			player.getInventory().setItem(2, item2);
+			
+			//If player needs a disguise, give one to them now.
+	    	DisguiseAPI.disguiseToAll(player, ironGolem);
+	    	DisguiseAPI.disguiseEntity(player, ironGolem);
+	    	
+	    	//TODO: See about fixing this.  Sets the player's name.
+	    	((LivingWatcher) ((Disguise) ironGolem).getWatcher()).setCustomName(ChatColor.RED + player.getName());
+	    	((LivingWatcher) ((Disguise) ironGolem).getWatcher()).setCustomNameVisible(true);
 		}
 			break;
 		case KIT6: {
@@ -196,6 +236,14 @@ public class LastMobStanding extends MiniGame {
 			player.getInventory().setItem(1, item1);
 			ItemStack item2 = new ItemStack(Material.ARROW, 1);
 			player.getInventory().setItem(2, item2);
+			
+			//If player needs a disguise, give one to them now.
+	    	DisguiseAPI.disguiseToAll(player, wither);
+	    	DisguiseAPI.disguiseEntity(player, wither);
+	    	
+	    	//TODO: See about fixing this.  Sets the player's name.
+	    	((LivingWatcher) ((Disguise) wither).getWatcher()).setCustomName(ChatColor.RED + player.getName());
+	    	((LivingWatcher) ((Disguise) wither).getWatcher()).setCustomNameVisible(true);
 		}
 			break;
 		default:

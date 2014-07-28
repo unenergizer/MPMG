@@ -1,5 +1,6 @@
 package com.minepile.mpmg.managers;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 
 import me.confuser.barapi.BarAPI;
@@ -94,7 +95,7 @@ public class ArenaManager {
 			scoreboardUtil.setupTeam(ScoreboardTeam.TEAM1, true, false, ChatColor.RED + "");
 			break;
 		case LASTMOBSTANDING:
-			scoreboardUtil.setupTeam(ScoreboardTeam.PLAYER, true, false, ChatColor.GREEN + "");
+			scoreboardUtil.setupTeam(ScoreboardTeam.PLAYER, true, true, ChatColor.GREEN + "");
 			break;
 		case ONEINTHECHAMBER:
 			scoreboardUtil.setupTeam(ScoreboardTeam.PLAYER, true, true, ChatColor.GREEN + "");
@@ -226,6 +227,15 @@ public class ArenaManager {
 		
 		//Spawn player
 		spawnPlayer(player, false, true);
+		
+		//update players stats
+		try {
+			//Add 1 to "play_total"
+			StatsManager.updateStats(player, 0, 1, 0, 0);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	//This will spawn a player in the arena.  
@@ -554,6 +564,8 @@ public class ArenaManager {
 			new HotPotatoTimer(20, true, true, player).runTaskTimer(plugin, 0L, 20L);
 			break;
 		case INFECTION:
+			break;
+		case LASTMOBSTANDING:
 			break;
 		case ONEINTHECHAMBER:
 			break;
