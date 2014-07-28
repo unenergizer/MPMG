@@ -1,7 +1,9 @@
 package com.minepile.mpmg.minigames;
 
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import com.minepile.mpmg.managers.ArenaManager;
 import com.minepile.mpmg.managers.KitManager.Kits;
 
 public abstract class MiniGame {
@@ -35,6 +37,10 @@ public abstract class MiniGame {
 	public void updatePlayerInventory(Player player){}
 	public void spawnPlayer(Player player){}
 	public void doRunnable(Player player){}
+	//Just added.  Add to all minigames.
+	public void onPlayerDeath(Player player) {}
+	public void onPlayerDamage(Player player) {}
+	public void playerInteract(Player player) {}
 
 	public int getGameID() {
 		return gameID;

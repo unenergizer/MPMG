@@ -66,97 +66,7 @@ public class DeathListener implements Listener {
 				player.getInventory().clear();
 				player.setHealth(20);
 				
-				//Respawn dead player.
-				switch(GameManager.getCurrentMiniGame()){
-				case HOTPOTATO:
-					//Switch player team.  If player is on "players" team switch to red "zombies" team.
-					//Update the scoreboard.  The zombie team is Team1.
-					if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.PLAYER)){
-						//Player death:
-						
-						//Lets do a lightning strike because the player died!
-						player.getWorld().strikeLightningEffect(player.getLocation());
-						player.playSound(player.getLocation(), Sound.VILLAGER_DEATH, 1, 10);
-						
-						//ParticleEffect.LARGE_EXPLODE.display(player.getLocation(), 1, 1, 1, 1, 30);
-						ParticleEffect.ANGRY_VILLAGER.display(player.getLocation(), 1, 1, 1, 1, 30);
-						
-						ArenaManager.switchTeam(player, ArenaTeams.RED, ScoreboardTeam.TEAM1);
-						KitManager.setPlayerKit(player, Kits.KIT6); //Set hidden "Zombie" kit.
-						respawnPlayer(player, false, false);
-					} else {
-						//HotPotatoPlayer death:
-						
-						//Lets do a lightning strike because the player died!
-						player.getWorld().strikeLightningEffect(player.getLocation());
-						player.playSound(player.getLocation(), Sound.EXPLODE, 1, 10);
-						ParticleEffect.LARGE_EXPLODE.display(player.getLocation(), 1, 1, 1, 1, 30);
-						
-						respawnPlayer(player, false, true);
-					}
-					break;
-				case INFECTION:
-					//Switch player team.  If player is on "players" team switch to red "zombies" team.
-					//Update the scoreboard.  The zombie team is Team1.
-					if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.PLAYER)){
-						//Player death:
-						
-						//Lets do a lightning strike because the player died!
-						player.getWorld().strikeLightningEffect(player.getLocation());
-						player.playSound(player.getLocation(), Sound.VILLAGER_DEATH, 1, 10);
-						
-						//ParticleEffect.LARGE_EXPLODE.display(player.getLocation(), 1, 1, 1, 1, 30);
-						ParticleEffect.ANGRY_VILLAGER.display(player.getLocation(), 1, 1, 1, 1, 30);
-						
-						KitManager.setPlayerKit(player, Kits.KIT6); //Set hidden "Zombie" kit.
-						ArenaManager.switchTeam(player, ArenaTeams.RED, ScoreboardTeam.TEAM1);
-						respawnPlayer(player, false, false);
-					} else {
-						//Zombie death:
-						
-						//Lets do a lightning strike because the player died!
-						player.getWorld().strikeLightningEffect(player.getLocation());
-						player.playSound(player.getLocation(), Sound.EXPLODE, 1, 10);
-						ParticleEffect.LARGE_EXPLODE.display(player.getLocation(), 1, 1, 1, 1, 30);
-						
-						respawnPlayer(player, false, true);
-					}
-					break;
-				case LASTMOBSTANDING:
-					//Lets do a lightning strike because the player died!
-					player.getWorld().strikeLightningEffect(player.getLocation());
-					player.playSound(player.getLocation(), Sound.EXPLODE, 1, 10);
-					ParticleEffect.LARGE_EXPLODE.display(player.getLocation(), 1, 1, 1, 1, 30);
-					
-					respawnPlayer(player, true, true);
-					break;
-				case SPLEEF:
-					if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.PLAYER)){
-						//Lets do a lightning strike because the player died!
-						player.getWorld().strikeLightningEffect(player.getLocation());
-						player.playSound(player.getLocation(), Sound.EXPLODE, 1, 10);
-						ParticleEffect.LARGE_EXPLODE.display(player.getLocation(), 1, 1, 1, 1, 30);
-						
-						ArenaManager.switchTeam(player, ArenaTeams.SPECTATOR, ScoreboardTeam.SPECTATOR);
-						respawnPlayer(player, true, true);	//respawn player as a spectator
-					} else {
-						//Lets do a lightning strike because the player died!
-						player.getWorld().strikeLightningEffect(player.getLocation());
-						player.playSound(player.getLocation(), Sound.EXPLODE, 1, 10);
-						ParticleEffect.LARGE_EXPLODE.display(player.getLocation(), 1, 1, 1, 1, 30);
-						
-						respawnPlayer(player, false, true);
-					}
-					break;
-				default:
-					//Lets do a lightning strike because the player died!
-					player.getWorld().strikeLightningEffect(player.getLocation());
-					player.playSound(player.getLocation(), Sound.EXPLODE, 1, 10);
-					ParticleEffect.LARGE_EXPLODE.display(player.getLocation(), 1, 1, 1, 1, 30);
-					
-					respawnPlayer(player, false, true);
-					break;
-				}
+				GameManager.getMiniGame().onPlayerDeath(player);
 				
 				new BukkitRunnable() {
 					@Override
@@ -168,16 +78,6 @@ public class DeathListener implements Listener {
 				LobbyManager.setupPlayer(player);
 			}
 		}
-	}
-	
-	public void respawnPlayer(final Player player,final boolean isSpectator, final boolean teleportPlayer) {
-		new BukkitRunnable() {
-			@Override
-	    	public void run() {
-				ArenaManager.spawnPlayer(player, isSpectator, teleportPlayer);
-				ArenaManager.updatePlayerInventory(player);
-			}
-		}.runTaskLater(this.plugin, 1); //run after 1 tick
 	}
 	
 	@EventHandler

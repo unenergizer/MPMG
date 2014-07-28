@@ -238,6 +238,16 @@ public class ArenaManager {
 		}
 	}
 	
+	public static void respawnPlayer(final Player player,final boolean isSpectator, final boolean teleportPlayer) {
+		new BukkitRunnable() {
+			@Override
+	    	public void run() {
+				ArenaManager.spawnPlayer(player, isSpectator, teleportPlayer);
+				ArenaManager.updatePlayerInventory(player);
+			}
+		}.runTaskLater(plugin, 1); //run after 1 tick
+	}
+	
 	//This will spawn a player in the arena.  
 	public static void spawnPlayer(Player player, boolean spectator, boolean teleportPlayer) {
 		if (spectator == true) {

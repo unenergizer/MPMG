@@ -11,10 +11,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 
+import com.minepile.mpmg.managers.ArenaManager;
 import com.minepile.mpmg.managers.KitManager;
+import com.minepile.mpmg.managers.TeamManager;
 import com.minepile.mpmg.managers.KitManager.Kits;
 import com.minepile.mpmg.managers.NPCManager;
 import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
+import com.minepile.mpmg.util.ParticleEffect;
+import com.minepile.mpmg.util.ScoreboardUtil.ScoreboardTeam;
 
 
 
@@ -126,4 +130,25 @@ public class Spleef extends MiniGame {
 	public void updatePlayerInventory(Player player) {
 		//TODO: Any special player inventory updates go here.
 	}
+	
+	public void onPlayerDeath(Player player) {
+		if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.PLAYER)){
+			//Lets do a lightning strike because the player died!
+			player.getWorld().strikeLightningEffect(player.getLocation());
+			player.playSound(player.getLocation(), Sound.EXPLODE, 1, 10);
+			ParticleEffect.LARGE_EXPLODE.display(player.getLocation(), 1, 1, 1, 1, 30);
+			
+			ArenaManager.switchTeam(player, ArenaTeams.SPECTATOR, ScoreboardTeam.SPECTATOR);
+			ArenaManager.respawnPlayer(player, true, true);	//respawn player as a spectator
+		} else {
+			//Lets do a lightning strike because the player died!
+			player.getWorld().strikeLightningEffect(player.getLocation());
+			player.playSound(player.getLocation(), Sound.EXPLODE, 1, 10);
+			ParticleEffect.LARGE_EXPLODE.display(player.getLocation(), 1, 1, 1, 1, 30);
+			
+			ArenaManager.respawnPlayer(player, false, true);
+		}
+	}
+	public void onPlayerDamage(Player player) {}
+	public void playerInteract(Player player) {}
 }

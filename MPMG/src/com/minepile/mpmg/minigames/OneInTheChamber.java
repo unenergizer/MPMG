@@ -16,6 +16,7 @@ import com.minepile.mpmg.managers.KitManager;
 import com.minepile.mpmg.managers.KitManager.Kits;
 import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
 import com.minepile.mpmg.managers.NPCManager;
+import com.minepile.mpmg.util.ParticleEffect;
 
 public class OneInTheChamber extends MiniGame {
 
@@ -190,4 +191,15 @@ public class OneInTheChamber extends MiniGame {
 		ItemStack item2 = new ItemStack(Material.ARROW, 1);
 		player.getInventory().setItem(2, item2);
 	}
+	
+	public void onPlayerDeath(Player player) {
+		//Lets do a lightning strike because the player died!
+		player.getWorld().strikeLightningEffect(player.getLocation());
+		player.playSound(player.getLocation(), Sound.EXPLODE, 1, 10);
+		ParticleEffect.LARGE_EXPLODE.display(player.getLocation(), 1, 1, 1, 1, 30);
+		
+		ArenaManager.respawnPlayer(player, false, true);
+	}
+	public void onPlayerDamage(Player player) {}
+	public void playerInteract(Player player) {}
 }

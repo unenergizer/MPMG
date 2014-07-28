@@ -1,5 +1,7 @@
 package com.minepile.mpmg.listeners;
 
+import java.sql.SQLException;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -11,6 +13,7 @@ import com.minepile.mpmg.MPMG;
 import com.minepile.mpmg.managers.ArenaManager;
 import com.minepile.mpmg.managers.GameManager;
 import com.minepile.mpmg.managers.LobbyManager;
+import com.minepile.mpmg.managers.StatsManager;
 import com.minepile.mpmg.managers.TeamManager;
 import com.minepile.mpmg.util.ChatUtil;
 
@@ -45,6 +48,13 @@ public class JoinListener implements Listener {
 		default:
 			event.setJoinMessage(chatManager.playerJoinMessage(playerName));
 			break;
+		}
+		
+		//Add user to the database.
+		try {
+			StatsManager.updateStats(player, 0, 0, 0, 0);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		
 		//Teleport player based on game status.

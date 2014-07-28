@@ -12,11 +12,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import com.minepile.mpmg.managers.ArenaManager;
 import com.minepile.mpmg.managers.KitManager;
 import com.minepile.mpmg.managers.NPCManager;
 import com.minepile.mpmg.managers.TeamManager;
 import com.minepile.mpmg.managers.KitManager.Kits;
 import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
+import com.minepile.mpmg.util.ParticleEffect;
+import com.minepile.mpmg.util.ScoreboardUtil.ScoreboardTeam;
 
 public class HotPotato extends MiniGame {
 	
@@ -171,4 +174,34 @@ public class HotPotato extends MiniGame {
 	public void updatePlayerInventory(Player player) {
 		//TODO: Any special player inventory updates go here.
 	}
+	
+	public void onPlayerDeath(Player player) {
+		//Switch player team.  If player is on "players" team switch to red "zombies" team.
+		//Update the scoreboard.  The zombie team is Team1.
+		if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.PLAYER)){
+			//Player death:
+			
+			//Lets do a lightning strike because the player died!
+			player.getWorld().strikeLightningEffect(player.getLocation());
+			player.playSound(player.getLocation(), Sound.VILLAGER_DEATH, 1, 10);
+			
+			//ParticleEffect.LARGE_EXPLODE.display(player.getLocation(), 1, 1, 1, 1, 30);
+			ParticleEffect.ANGRY_VILLAGER.display(player.getLocation(), 1, 1, 1, 1, 30);
+			
+			ArenaManager.switchTeam(player, ArenaTeams.RED, ScoreboardTeam.TEAM1);
+			KitManager.setPlayerKit(player, Kits.KIT6); //Set hidden "Zombie" kit.
+			ArenaManager.respawnPlayer(player, false, false);
+		} else {
+			//HotPotatoPlayer death:
+			
+			//Lets do a lightning strike because the player died!
+			player.getWorld().strikeLightningEffect(player.getLocation());
+			player.playSound(player.getLocation(), Sound.EXPLODE, 1, 10);
+			ParticleEffect.LARGE_EXPLODE.display(player.getLocation(), 1, 1, 1, 1, 30);
+			
+			ArenaManager.respawnPlayer(player, false, true);
+		}
+	}
+	public void onPlayerDamage(Player player) {}
+	public void playerInteract(Player player) {}
 }
