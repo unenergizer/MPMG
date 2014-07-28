@@ -54,7 +54,7 @@ public class StatsManager {
 		if(!res.next()) {
 			statement.executeUpdate("INSERT INTO stats(username, win_total, play_total, kills, deaths, join_date) "
 					+ "VALUES ('" + playerName + "','0','0','0','0','" + timeStamp + "');");
-			Bukkit.broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG> " + ChatColor.RED + "Player " + playerName + " was added to databse.");
+			Bukkit.broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG> " + ChatColor.DARK_AQUA + "Player " + playerName + " was added to databse.");
 		} else {
 			
 			int newWinTotal = win_total + res.getInt("win_total");
