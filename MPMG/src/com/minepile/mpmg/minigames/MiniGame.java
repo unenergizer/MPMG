@@ -34,13 +34,11 @@ public abstract class MiniGame {
 	public void setupPlayer(Player player){}
 	public void setupPlayerInventory(Player player){}
 	public void setupPlayerInventory(Player player, Kits kit){}
+	public void setupPlayerTeam(Player player) {}
 	public void updatePlayerInventory(Player player){}
 	public void spawnPlayer(Player player){}
 	public void doRunnable(Player player){}
-	//Just added.  Add to all minigames.
 	public void onPlayerDeath(Player player) {}
-	public void onPlayerDamage(Player player) {}
-	public void playerInteract(Player player) {}
 
 	public int getGameID() {
 		return gameID;

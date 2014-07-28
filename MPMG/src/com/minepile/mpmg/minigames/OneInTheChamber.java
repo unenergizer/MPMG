@@ -13,6 +13,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.minepile.mpmg.managers.ArenaManager;
 import com.minepile.mpmg.managers.KitManager;
+import com.minepile.mpmg.managers.TeamManager;
 import com.minepile.mpmg.managers.KitManager.Kits;
 import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
 import com.minepile.mpmg.managers.NPCManager;
@@ -192,6 +193,10 @@ public class OneInTheChamber extends MiniGame {
 		player.getInventory().setItem(2, item2);
 	}
 	
+	public void setupPlayerTeam(Player player) {
+		TeamManager.setPlayerTeam(player, ArenaTeams.PLAYER);
+	}
+	
 	public void onPlayerDeath(Player player) {
 		//Lets do a lightning strike because the player died!
 		player.getWorld().strikeLightningEffect(player.getLocation());
@@ -200,6 +205,4 @@ public class OneInTheChamber extends MiniGame {
 		
 		ArenaManager.respawnPlayer(player, false, true);
 	}
-	public void onPlayerDamage(Player player) {}
-	public void playerInteract(Player player) {}
 }

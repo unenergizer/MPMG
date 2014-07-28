@@ -131,6 +131,10 @@ public class Spleef extends MiniGame {
 		//TODO: Any special player inventory updates go here.
 	}
 	
+	public void setupPlayerTeam(Player player) {
+		TeamManager.setPlayerTeam(player, ArenaTeams.PLAYER);
+	}
+	
 	public void onPlayerDeath(Player player) {
 		if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.PLAYER)){
 			//Lets do a lightning strike because the player died!
@@ -149,6 +153,4 @@ public class Spleef extends MiniGame {
 			ArenaManager.respawnPlayer(player, false, true);
 		}
 	}
-	public void onPlayerDamage(Player player) {}
-	public void playerInteract(Player player) {}
 }

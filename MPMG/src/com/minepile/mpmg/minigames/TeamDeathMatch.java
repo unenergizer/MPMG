@@ -233,6 +233,20 @@ public class TeamDeathMatch extends MiniGame {
 		player.getInventory().setItem(2, item2);
 	}
 	
+	public void setupPlayerTeam(Player player) {
+		int redTeam = TeamManager.getTeamSize(ArenaTeams.RED);
+		int blueTeam = TeamManager.getTeamSize(ArenaTeams.BLUE);
+		if (TeamManager.getPlayerTeam(player) == null) {
+			if (redTeam > blueTeam) {
+				TeamManager.setPlayerTeam(player, ArenaTeams.BLUE);
+			} else if (blueTeam > redTeam) {
+				TeamManager.setPlayerTeam(player, ArenaTeams.RED);
+			} else {
+				TeamManager.setPlayerTeam(player, ArenaTeams.BLUE);
+			}
+		}
+	}
+	
 	public void onPlayerDeath(Player player) {
 		//Lets do a lightning strike because the player died!
 		player.getWorld().strikeLightningEffect(player.getLocation());
@@ -241,6 +255,4 @@ public class TeamDeathMatch extends MiniGame {
 		
 		ArenaManager.respawnPlayer(player, false, true);
 	}
-	public void onPlayerDamage(Player player) {}
-	public void playerInteract(Player player) {}
 }

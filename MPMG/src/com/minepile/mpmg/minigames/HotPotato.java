@@ -175,6 +175,20 @@ public class HotPotato extends MiniGame {
 		//TODO: Any special player inventory updates go here.
 	}
 	
+	public void setupPlayerTeam(Player player) {
+		int redTeam = TeamManager.getTeamSize(ArenaTeams.RED);
+		int playerTeam = TeamManager.getTeamSize(ArenaTeams.PLAYER);
+		if (TeamManager.getPlayerTeam(player) == null) {
+			if (redTeam > playerTeam) {
+				TeamManager.setPlayerTeam(player, ArenaTeams.PLAYER);
+			} else if (playerTeam > redTeam) {
+				TeamManager.setPlayerTeam(player, ArenaTeams.RED);
+			} else {
+				TeamManager.setPlayerTeam(player, ArenaTeams.PLAYER);
+			}
+		}
+	}
+	
 	public void onPlayerDeath(Player player) {
 		//Switch player team.  If player is on "players" team switch to red "zombies" team.
 		//Update the scoreboard.  The zombie team is Team1.
@@ -202,6 +216,4 @@ public class HotPotato extends MiniGame {
 			ArenaManager.respawnPlayer(player, false, true);
 		}
 	}
-	public void onPlayerDamage(Player player) {}
-	public void playerInteract(Player player) {}
 }
