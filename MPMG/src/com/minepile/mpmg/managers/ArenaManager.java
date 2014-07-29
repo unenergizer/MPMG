@@ -43,6 +43,7 @@ public class ArenaManager {
 	private static String worldName;
 	private static String gameName;
 	private static boolean arenaCountdownActive = false;
+	private static boolean gameHasWon = false;
 	private static boolean gameEnding = false;
 	private static int maxScore = 5;
 	private static int arenaCountdownTime = 20;
@@ -162,6 +163,9 @@ public class ArenaManager {
 				//The plugin is running endGame() method.
 				//It should now be safe to reset gameEnding to false.
 				setGameEnding(false);
+				
+				//Reset the ending score boolean.
+				setGameHasWon(false);
 			}
 		}.runTaskLater(plugin, delayTime * 20);
 	}
@@ -588,62 +592,27 @@ public class ArenaManager {
 		}
 	}
 	
+	//TODO : Abstract this code.
+	
 	//Win game code.
+	
 	public static void hasGameWon(final Player player, final String tempName) {
+		
 		new BukkitRunnable() {
 			@Override
 	    	public void run() {
-				if (isGameEnding() == false) {
-					//Define what makes a win based on miniGame type.
-					switch(GameManager.getCurrentMiniGame()){
-					case HOTPOTATO:
-						if(TeamManager.getTeamSize(ArenaTeams.PLAYER) <= 1 && TeamManager.getTeamSize(ArenaTeams.RED) <= 0){
-							setGameEnding(true);
-							showGameScores(tempName);
-							endGame();
-						}
-						break;
-					case INFECTION:
-						if(TeamManager.getTeamSize(ArenaTeams.PLAYER) <= 1){
-							setGameEnding(true);
-							showGameScores(tempName);
-							endGame();
-						}
-						break;
-					case LASTMOBSTANDING:
-						if(TeamManager.getTeamSize(ArenaTeams.PLAYER) <= 1){
-							setGameEnding(true);
-							showGameScores(tempName);
-							endGame();
-						}
-						break;
-					case ONEINTHECHAMBER:
-						if(scoreboardUtil.getPoints(player) >= maxScore) {
-							setGameEnding(true);
-							showGameScores(tempName);
-							endGame();
-						}
-						break;
-					case SPLEEF:
-						if(TeamManager.getTeamSize(ArenaTeams.PLAYER) <= 1){
-							setGameEnding(true);
-							showGameScores("test");
-							endGame();
-						}
-						break;
-					case TEAMDEATHMATCH:
-						if(scoreboardUtil.getOfflinePlayerPoints((Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team"))) >= maxScore) {
-							setGameEnding(true);
-							showGameScores(tempName);
-							endGame();
-						}
-						break;
-					default:
-						break;
-					}
+				
+				if (GameManager.miniGame.testGameWin(player) == true && isGameHasWon() == false) {
+					
+					setGameHasWon(true);
+					setGameEnding(true);
+					showGameScores(tempName);
+					endGame();
 				}
+			
 			}
 		}.runTaskLater(plugin, 100); //run after 1 tick
+
 	}
 	
 	public static void showGameScores(String tempName) {
@@ -675,6 +644,14 @@ public class ArenaManager {
 		ArenaManager.gameName = gameName;
 	}
 
+	public static boolean isGameHasWon() {
+		return gameHasWon;
+	}
+
+	public static void setGameHasWon(boolean gameHasWon) {
+		ArenaManager.gameHasWon = gameHasWon;
+	}
+
 	public static boolean isGameEnding() {
 		return gameEnding;
 	}
@@ -690,4 +667,9 @@ public class ArenaManager {
 	public static void setMaxScore(int maxScore) {
 		ArenaManager.maxScore = maxScore;
 	}
+
+	public static ScoreboardUtil getScoreboardUtil() {
+		return scoreboardUtil;
+	}
+
 }

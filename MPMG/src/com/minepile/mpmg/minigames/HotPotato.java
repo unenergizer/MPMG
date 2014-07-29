@@ -216,4 +216,12 @@ public class HotPotato extends MiniGame {
 			ArenaManager.respawnPlayer(player, false, true);
 		}
 	}
+	
+	public boolean testGameWin(Player player) {
+		if(TeamManager.getTeamSize(ArenaTeams.PLAYER) <= 1 && TeamManager.getTeamSize(ArenaTeams.RED) <= 0){
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

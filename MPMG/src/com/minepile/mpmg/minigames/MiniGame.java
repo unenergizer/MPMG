@@ -39,6 +39,7 @@ public abstract class MiniGame {
 	public void spawnPlayer(Player player){}
 	public void doRunnable(Player player){}
 	public void onPlayerDeath(Player player) {}
+	public boolean testGameWin(Player player) { return false;}
 
 	public int getGameID() {
 		return gameID;

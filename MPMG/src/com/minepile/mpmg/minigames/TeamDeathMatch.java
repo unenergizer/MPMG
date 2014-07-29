@@ -6,6 +6,7 @@ import me.libraryaddict.disguise.disguisetypes.DisguiseType;
 import me.libraryaddict.disguise.disguisetypes.MobDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.LivingWatcher;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -254,5 +255,13 @@ public class TeamDeathMatch extends MiniGame {
 		ParticleEffect.LARGE_EXPLODE.display(player.getLocation(), 1, 1, 1, 1, 30);
 		
 		ArenaManager.respawnPlayer(player, false, true);
+	}
+	
+	public boolean testGameWin(Player player) {
+		if(ArenaManager.getScoreboardUtil().getOfflinePlayerPoints((Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team"))) >= ArenaManager.getMaxScore()){
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

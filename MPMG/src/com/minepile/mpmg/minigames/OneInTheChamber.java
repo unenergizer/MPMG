@@ -205,4 +205,12 @@ public class OneInTheChamber extends MiniGame {
 		
 		ArenaManager.respawnPlayer(player, false, true);
 	}
+	
+	public boolean testGameWin(Player player) {
+		if(ArenaManager.getScoreboardUtil().getPoints(player) >= ArenaManager.getMaxScore()){
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

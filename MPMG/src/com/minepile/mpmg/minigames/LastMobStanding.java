@@ -275,4 +275,12 @@ public class LastMobStanding extends MiniGame {
 		
 		ArenaManager.respawnPlayer(player, true, true);
 	}
+	
+	public boolean testGameWin(Player player) {
+		if(TeamManager.getTeamSize(ArenaTeams.PLAYER) <= 1){
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

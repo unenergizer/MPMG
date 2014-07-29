@@ -153,4 +153,12 @@ public class Spleef extends MiniGame {
 			ArenaManager.respawnPlayer(player, false, true);
 		}
 	}
+	
+	public boolean testGameWin(Player player) {
+		if(TeamManager.getTeamSize(ArenaTeams.PLAYER) <= 1){
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
