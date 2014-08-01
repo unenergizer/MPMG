@@ -19,6 +19,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.minepile.mpmg.managers.ArenaManager;
 import com.minepile.mpmg.managers.KitManager;
+import com.minepile.mpmg.managers.ScoreManager;
 import com.minepile.mpmg.managers.TeamManager;
 import com.minepile.mpmg.managers.KitManager.Kits;
 import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
@@ -272,6 +273,9 @@ public class LastMobStanding extends MiniGame {
 		player.getWorld().strikeLightningEffect(player.getLocation());
 		player.playSound(player.getLocation(), Sound.EXPLODE, 1, 10);
 		ParticleEffect.LARGE_EXPLODE.display(player.getLocation(), 1, 1, 1, 1, 30);
+		
+		//Set players score for time being alive.
+		ScoreManager.setPlayerScore(player, ScoreManager.getTime());
 		
 		ArenaManager.respawnPlayer(player, true, true);
 	}

@@ -27,7 +27,7 @@ import com.minepile.mpmg.managers.GameManager;
 import com.minepile.mpmg.managers.KitManager;
 import com.minepile.mpmg.managers.LobbyManager;
 import com.minepile.mpmg.managers.NPCManager;
-import com.minepile.mpmg.managers.PlayerManager;
+import com.minepile.mpmg.managers.ScoreManager;
 import com.minepile.mpmg.managers.StatsManager;
 
 public class MPMG extends JavaPlugin {
@@ -53,7 +53,7 @@ public class MPMG extends JavaPlugin {
 		KitManager.getInstance().setup(this);
 		NPCManager.getInstance().setup(this);
 		LobbyManager.getInstance().setup(this);
-		PlayerManager.getInstance().setup(this);
+		ScoreManager.getInstance().setup(this);
 		StatsManager.getInstance().setup(this);
 		
 		//Register commands

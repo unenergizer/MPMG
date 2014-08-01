@@ -5,6 +5,7 @@ import com.minepile.mpmg.minigames.HotPotato;
 import com.minepile.mpmg.minigames.Infection;
 import com.minepile.mpmg.minigames.LastMobStanding;
 import com.minepile.mpmg.minigames.MiniGame;
+import com.minepile.mpmg.minigames.MowGrass;
 import com.minepile.mpmg.minigames.OneInTheChamber;
 import com.minepile.mpmg.minigames.Spleef;
 import com.minepile.mpmg.minigames.TeamDeathMatch;
@@ -23,7 +24,7 @@ public class GameManager {
 	private static String pluginVersion = "0.3.9a";	//Plugin version.
 	private static int minPlayers = 2;				//Minimal players needed to start a game.
 	private static int maxPlayers = 32;				//Maximum players allowed in a game.
-	private static MiniGameType lastGame = MiniGameType.INFECTION;
+	private static MiniGameType lastGame = MiniGameType.TEAMDEATHMATCH;
 	
 	//Different types of Minigames.
 	public enum MiniGameType {
@@ -32,6 +33,7 @@ public class GameManager {
 		HOTPOTATO("Hot Potato"),
 		INFECTION("Infection"),
 		LASTMOBSTANDING("Last Mob Standing"),
+		MOWGRASS("Yard Work"),
 		ONEINTHECHAMBER("One In The Chamber"),
 		SPLEEF("Spleef"),
 		TEAMDEATHMATCH("Team Deathmatch");
@@ -62,7 +64,7 @@ public class GameManager {
 	public static void selectNextGame() {
 		//TODO : set way to select game.
 		
-		if (lastGame == MiniGameType.LASTMOBSTANDING) {
+		if (lastGame == MiniGameType.MOWGRASS) {
 			selectGame(MiniGameType.ONEINTHECHAMBER);
 		} else if (lastGame == MiniGameType.ONEINTHECHAMBER) {
 			selectGame(MiniGameType.TEAMDEATHMATCH);
@@ -74,6 +76,8 @@ public class GameManager {
 			selectGame(MiniGameType.HOTPOTATO);
 		} else if (lastGame == MiniGameType.HOTPOTATO) {
 			selectGame(MiniGameType.LASTMOBSTANDING);
+		} else if (lastGame == MiniGameType.LASTMOBSTANDING) {
+			selectGame(MiniGameType.MOWGRASS);
 		} else {
 			//Select default starting game.
 			selectGame(MiniGameType.ONEINTHECHAMBER);
@@ -102,6 +106,12 @@ public class GameManager {
 				miniGame = new LastMobStanding();
 				miniGame.setupGame();
 				lastGame = MiniGameType.LASTMOBSTANDING;
+				break;
+			case MOWGRASS:
+				setCurrentMiniGame(MiniGameType.MOWGRASS);
+				miniGame = new MowGrass();
+				miniGame.setupGame();
+				lastGame = MiniGameType.MOWGRASS;
 				break;
 			case ONEINTHECHAMBER:
 				setCurrentMiniGame(MiniGameType.ONEINTHECHAMBER);

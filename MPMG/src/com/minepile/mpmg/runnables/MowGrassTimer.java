@@ -8,65 +8,47 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.minepile.mpmg.managers.ArenaManager;
 import com.minepile.mpmg.managers.GameManager;
-import com.minepile.mpmg.managers.KitManager;
-import com.minepile.mpmg.managers.KitManager.Kits;
-import com.minepile.mpmg.managers.TeamManager;
-import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
-import com.minepile.mpmg.util.ScoreboardUtil.ScoreboardTeam;
 
-public class HotPotatoTimer extends BukkitRunnable {
+public class MowGrassTimer extends BukkitRunnable {
 	
 	private int targetTime;
 	private int currentTime;
 	private boolean showBossBar;
 	private boolean changePlayerEXPBar;
+	private boolean countDownStarted;
 	private Player player;
 	
-	public HotPotatoTimer(int time, boolean showBossBar, boolean changePlayerEXPBar, Player player) {
+	public MowGrassTimer(int time, boolean showBossBar, boolean changePlayerEXPBar, Player player) {
 		this.setTargetTime(time);
 		this.setCurrentTime(time);
 		this.setShowBossBar(showBossBar);
 		this.setChangePlayerEXPBar(changePlayerEXPBar);
 		this.setPlayer(player);
+		
 	}
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		if (currentTime > 0 && TeamManager.getPlayerTeam(getPlayer()).equals(ArenaTeams.RED)) {
+		if (countDownStarted == false) {
+			currentTime--;
 			if (this.canShowBossBar()) {
 				BarAPI.setMessage(ChatColor.AQUA + "Time left: " + ChatColor.YELLOW + currentTime);
 			}
-			if (this.canChangePlayerEXPBar()) {
-				//TODO : Fix this.  Experience bar countdown.
-				//getPlayer().setExp(currentTime);
+			
+			if (currentTime < 1) {
+				cancelTimer();
+				//TODO : remove null and use player name.
+				ArenaManager.hasGameWon(getPlayer());
 			}
-			currentTime--;
-		} else {
-			if (currentTime < 1 ) {
-				ArenaManager.killPlayer(getPlayer());
+		
+			if (GameManager.isGameRunning() == false) {
+				cancelTimer();
 			}
-			cancelHotPotatoTimer();
-		}
-	
-		if (GameManager.isGameRunning() == false) {
-			cancelHotPotatoTimer();
 		}
 	}
 
-	private void cancelHotPotatoTimer() {
+	private void cancelTimer() {
 		cancel();
-		
-		//Set nearest player to have tnt.
-		if(TeamManager.getTeamSize(ArenaTeams.RED) <= 0 && TeamManager.getTeamSize(ArenaTeams.PLAYER) > 1) {
-			Player nearestPlayer = ArenaManager.getNearestPlayer(getPlayer());
-			
-			KitManager.setPlayerKit(nearestPlayer, Kits.KIT6); //Set hidden tnt kit
-			ArenaManager.switchTeam(nearestPlayer, ArenaTeams.RED, ScoreboardTeam.TEAM1);
-			
-			ArenaManager.miniGameRunnable(nearestPlayer, targetTime - 2);
-		}
-		BarAPI.removeBar(getPlayer());
 	}
 
 	public int getTargetTime() {
@@ -101,6 +83,14 @@ public class HotPotatoTimer extends BukkitRunnable {
 		this.changePlayerEXPBar = changePlayerEXPBar;
 	}
 
+	public boolean isCountDownStarted() {
+		return countDownStarted;
+	}
+
+	public void setCountDownStarted(boolean countDownStarted) {
+		this.countDownStarted = countDownStarted;
+	}
+
 	public Player getPlayer() {
 		return player;
 	}
@@ -108,5 +98,4 @@ public class HotPotatoTimer extends BukkitRunnable {
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
-
 }

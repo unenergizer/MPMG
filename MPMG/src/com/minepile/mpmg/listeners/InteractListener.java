@@ -2,6 +2,7 @@ package com.minepile.mpmg.listeners;
 
 import java.sql.SQLException;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -68,6 +69,13 @@ public class InteractListener implements Listener {
 						case DEAD_BUSH:
 							event.setCancelled(false);
 							break;
+						case DOUBLE_PLANT:
+							event.setCancelled(false);
+							if(GameManager.getCurrentMiniGame() == MiniGameType.MOWGRASS){
+								ArenaManager.addPoint(player, 1);
+								event.setCancelled(false);
+							}
+							break;
 						case FISHING_ROD:
 							event.setCancelled(false);
 							break;
@@ -75,7 +83,8 @@ public class InteractListener implements Listener {
 							event.setCancelled(false);
 							break;
 						case GRASS:
-							event.setCancelled(false);
+							//This is grass block.
+							event.setCancelled(true);
 							break;
 						case LONG_GRASS:
 							event.setCancelled(false);
@@ -211,7 +220,7 @@ public class InteractListener implements Listener {
 							event.setCancelled(true);
 							break;
 						case LONG_GRASS:
-							event.setCancelled(true);
+							event.setCancelled(false);
 							break;
 						case MAP:
 							event.setCancelled(true);
@@ -274,11 +283,9 @@ public class InteractListener implements Listener {
 		} else { //Lobby Code		
 			
 			//Simple anti-grief
-			if (!(player.isOp())) { //Cancel event if not Operator
-				if (action == Action.LEFT_CLICK_BLOCK) {
-					event.setCancelled(true);
-				}
-		    }
+			if (action == Action.LEFT_CLICK_BLOCK) {
+				event.setCancelled(true);
+			}
 		}
 		
 		//Compass and stats book interact.

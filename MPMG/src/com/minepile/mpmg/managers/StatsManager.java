@@ -20,11 +20,37 @@ import com.minepile.mpmg.util.MySQL;
 public class StatsManager {
 	
 	static StatsManager statsInstance = new StatsManager();
+	
 	@SuppressWarnings("unused")
 	private MPMG plugin;
 	
-    static MySQL mySQL = new MySQL("localhost", "3306", "mpmg", "root", "");
-    static Connection c = null;
+	/*
+	//Get db info from config file.
+	private String host = (String) plugin.getConfig().get("db.host");
+	private String port = (String) plugin.getConfig().get("db.port");
+	private String dbName = (String) plugin.getConfig().get("db.dbName");
+	private String username = (String) plugin.getConfig().get("db.username");
+	private String password = (String) plugin.getConfig().get("db.password");
+	*/
+	
+	/*
+	private String host = "localhost";
+	private String port = "3306";
+	private String dbName = "mpmg";
+	private String username = "root";
+	private String password = "";
+	*/
+	
+	private String host = "66.85.144.162";
+	private String port = "3306";
+	private String dbName = "mcph224346";
+	private String username = "mcph224346";
+	private String password = "f81ddb1807";
+	
+	private static String table = "stats";
+	
+    private MySQL mySQL = new MySQL(host, port, dbName, username, password);
+    private static Connection c = null;
 	
 	public static StatsManager getInstance() {
 		return statsInstance;
@@ -49,10 +75,10 @@ public class StatsManager {
 		String playerName = player.getName();
 		
 		Statement statement = c.createStatement();
-		ResultSet res = statement.executeQuery("SELECT * FROM stats WHERE username = '" + playerName + "';");
+		ResultSet res = statement.executeQuery("SELECT * FROM " + table + " WHERE username = '" + playerName + "';");
 		
 		if(!res.next()) {
-			statement.executeUpdate("INSERT INTO stats(username, win_total, play_total, kills, deaths, join_date) "
+			statement.executeUpdate("INSERT INTO " + table + "(username, win_total, play_total, kills, deaths, join_date) "
 					+ "VALUES ('" + playerName + "','0','0','0','0','" + timeStamp + "');");
 			Bukkit.broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG> " + ChatColor.DARK_AQUA + "Player " + playerName + " was added to databse.");
 		} else {
@@ -62,8 +88,7 @@ public class StatsManager {
 			int newKillTotal = kills + res.getInt("kills"); 
 			int newDeathsTotal = deaths + res.getInt("deaths");
 			
-			statement.executeUpdate("UPDATE stats SET win_total='" + newWinTotal + "', play_total='" + newPlayTotal + "', kills='" + newKillTotal + "', deaths='" + newDeathsTotal + "' WHERE username='" + playerName + "';");
-			player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG> " + ChatColor.GREEN + "Your stats have been updated. Open your book for updates.");
+			statement.executeUpdate("UPDATE " + table + " SET win_total='" + newWinTotal + "', play_total='" + newPlayTotal + "', kills='" + newKillTotal + "', deaths='" + newDeathsTotal + "' WHERE username='" + playerName + "';");
 		}
 	}
 	
@@ -73,7 +98,7 @@ public class StatsManager {
 		
 		//Get players statistics.
 		Statement statement = c.createStatement();
-		ResultSet res = statement.executeQuery("SELECT * FROM stats WHERE username = '" + playerName + "';");
+		ResultSet res = statement.executeQuery("SELECT * FROM " + table + " WHERE username = '" + playerName + "';");
 		
 		if(!res.next()) {
 			//Player does not exist.  Add them to the database now.

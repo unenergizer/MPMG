@@ -76,7 +76,7 @@ public class DamageListener  implements Listener {
 							ArenaManager.switchTeam(player, ArenaTeams.RED, ScoreboardTeam.TEAM1);
 							
 							//Run the timer for the attacker.
-							ArenaManager.miniGameRunnable(player);
+							ArenaManager.miniGameRunnable(player, 20);
 							
 							//Switch attackers kit and team:
 							attacker.sendMessage(" ");

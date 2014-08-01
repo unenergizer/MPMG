@@ -21,7 +21,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.minepile.mpmg.MPMG;
 import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
+import com.minepile.mpmg.runnables.GameTimer;
 import com.minepile.mpmg.runnables.HotPotatoTimer;
+import com.minepile.mpmg.runnables.MowGrassTimer;
 import com.minepile.mpmg.util.ChatUtil;
 import com.minepile.mpmg.util.InfoUtil;
 import com.minepile.mpmg.util.ParticleEffect;
@@ -45,11 +47,12 @@ public class ArenaManager {
 	private static boolean arenaCountdownActive = false;
 	private static boolean gameHasWon = false;
 	private static boolean gameEnding = false;
-	private static int maxScore = 5;
+	private static int maxScore = 2;
 	private static int arenaCountdownTime = 20;
 	private static int currentCountdownTime = arenaCountdownTime;
 	private static int spawnID = 0;
 	private static int arenaTaskID;
+	private static int gameLength = 120;  //Default 120
 	
 	private static MPMG plugin;
 	
@@ -109,6 +112,7 @@ public class ArenaManager {
 			scoreboardUtil.setupTeam(ScoreboardTeam.TEAM1, true, false, ChatColor.RED + "");
 			break;
 		default:
+			scoreboardUtil.setupTeam(ScoreboardTeam.PLAYER, true, true, ChatColor.GREEN + "");
 			break;
 		}
 		
@@ -141,12 +145,13 @@ public class ArenaManager {
 	public static void endGame() {
 		final int delayTime = 5; //Seconds
 		
+		//Let the game manager know the game is not running.
+		GameManager.setGameRunning(false);
+		
 		//Delay the end game code by X amount of seconds
 		new BukkitRunnable() {
 			@Override
 	    	public void run() {
-				//Let the game manager know the game is not running.
-				GameManager.setGameRunning(false);
 				
 				//Clear the scoreboard
 				scoreboardUtil.removeAllScoreboards();
@@ -156,6 +161,10 @@ public class ArenaManager {
 				
 				//Clear player team selection.
 				TeamManager.resetAllPlayerTeams();
+				
+				//Clear scores in the ScoreManager
+				ScoreManager.removeAllPlayers();
+				ScoreManager.resetGameTimer();
 				
 				//Setup the game lobby. Also teleports players back to lobby).
 				LobbyManager.setupLobby();
@@ -174,6 +183,9 @@ public class ArenaManager {
 	public static void setupPlayer(Player player) {
 		//Monster bar @ top of screen.
 		BarAPI.removeBar(player);
+		
+		//Add player to the ScoreManager
+		ScoreManager.addPlayer(player);
 		
 		//Set scoreboard info.
 		switch(GameManager.currentMiniGame){
@@ -258,7 +270,7 @@ public class ArenaManager {
 			
 			//Check if the game was won.
 			if(GameManager.isGameRunning() == true) {
-				hasGameWon(player, player.getName());
+				hasGameWon(player);
 			}
 			
 			//Spawn player using cords from config file.
@@ -343,6 +355,7 @@ public class ArenaManager {
 	public static void removePlayer(Player player) {
 		scoreboardUtil.removePlayer(player);
 		playerSpawnID.remove(player.getName());
+		ScoreManager.removePlayer(player);
 		//Remove the players disguise.
 		try{
 			DisguiseAPI.undisguiseToAll(player);
@@ -458,25 +471,28 @@ public class ArenaManager {
 					}
 					
 					//Run any game-specific Runnables.
-					switch(GameManager.getCurrentMiniGame()){
-					case HOTPOTATO:
-						for (Player player : Bukkit.getOnlinePlayers()) {
+					for (Player player : Bukkit.getOnlinePlayers()) {
+						switch(GameManager.getCurrentMiniGame()){
+						case HOTPOTATO:
 							if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.RED)){
-								miniGameRunnable(player);
+								miniGameRunnable(player, 20);
 							}
+							break;
+						case INFECTION:
+							break;
+						case MOWGRASS:
+							miniGameRunnable(player, getGameLength());
+							break;
+						case ONEINTHECHAMBER:
+							break;
+						case SPLEEF:
+							break;
+						case TEAMDEATHMATCH:
+							break;
+						default:
+							break;
+						
 						}
-						break;
-					case INFECTION:
-						break;
-					case ONEINTHECHAMBER:
-						break;
-					case SPLEEF:
-						break;
-					case TEAMDEATHMATCH:
-						break;
-					default:
-						break;
-					
 					}
 				}
 				
@@ -532,26 +548,20 @@ public class ArenaManager {
 	public static void addPoint(Player player, int points) {
 		if (player != null) {
 			
-			//If the players current score is not less than the max score
-			//Then lets add a point for the player.
-			String tempName = "";
-			
-			player.playSound(player.getLocation(), Sound.ANVIL_BREAK, 1, 10); //Play a sound.
-		
 			//Add a point to the scoreboard.	
 			switch(GameManager.getCurrentMiniGame()) {
 			case TEAMDEATHMATCH:
 				scoreboardUtil.addPoint(player, Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team"), points);	//Add a point to the scoreboard.
-				tempName = Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team").getName();
+				//tempName = Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team").getName();
 				break;
 			default:
 				scoreboardUtil.addPoint(player, points);	//Add a point to the scoreboard.
-				tempName = player.getName();				//TODO: Remove this. Sets the name that shows up in chat score screen.
+				ScoreManager.setPlayerScore(player, ScoreManager.getPlayerScore(player) + points);
 				break;
 			}
 			
 			//Test if game has been won.
-			hasGameWon(player, tempName);
+			hasGameWon(player);
 		}
 	}
 	
@@ -572,56 +582,43 @@ public class ArenaManager {
 		spawnPlayer(player, true, true);
 	}
 	
-	public static void miniGameRunnable(Player player) {
+	//Start game specific runnables and the gameTimer.
+	public static void miniGameRunnable(Player player, int time) {
+		
+		//Start GameTimer.
+		new GameTimer().runTaskTimer(plugin, 0L, 20L);
+		
+		//Start game-specific timers.
 		switch(GameManager.getCurrentMiniGame()) {
 		case HOTPOTATO:
-			new HotPotatoTimer(20, true, true, player).runTaskTimer(plugin, 0L, 20L);
+			new HotPotatoTimer(time, true, true, player).runTaskTimer(plugin, 0L, 20L);
 			break;
-		case INFECTION:
-			break;
-		case LASTMOBSTANDING:
-			break;
-		case ONEINTHECHAMBER:
-			break;
-		case SPLEEF:
-			break;
-		case TEAMDEATHMATCH:
+		case MOWGRASS:
+			new MowGrassTimer(getGameLength(), true, true, player).runTaskTimer(plugin, 0L, 20L);
 			break;
 		default:
 			break;
 		}
 	}
 	
-	//TODO : Abstract this code.
-	
-	//Win game code.
-	
-	public static void hasGameWon(final Player player, final String tempName) {
-		
-		new BukkitRunnable() {
-			@Override
-	    	public void run() {
-				
-				if (GameManager.miniGame.testGameWin(player) == true && isGameHasWon() == false) {
+	//Tests for game win.
+	public static void hasGameWon(final Player player) {
+		if (GameManager.isGameRunning() == true) {
+			new BukkitRunnable() {
+				@Override
+		    	public void run() {
 					
-					setGameHasWon(true);
-					setGameEnding(true);
-					showGameScores(tempName);
-					endGame();
+					if (GameManager.miniGame.testGameWin(player) == true && isGameHasWon() == false) {
+						
+						setGameHasWon(true);
+						setGameEnding(true);
+						ScoreManager.displayScores(player);
+						endGame();
+					}
+				
 				}
-			
-			}
-		}.runTaskLater(plugin, 100); //run after 1 tick
-
-	}
-	
-	public static void showGameScores(String tempName) {
-		Bukkit.broadcastMessage(ChatColor.GOLD + "✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰");
-		Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
-		Bukkit.broadcastMessage(ChatColor.GOLD + "✰ " + ChatColor.GREEN + "" + ChatColor.BOLD + tempName + " has won the game!");
-		Bukkit.broadcastMessage(ChatColor.GOLD + "✰");
-		Bukkit.broadcastMessage(ChatColor.GOLD + "✰" + ChatColor.RED + "Scoring is not fully programmed and may be inaccurate.");
-		Bukkit.broadcastMessage(ChatColor.GOLD + "✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰✰");
+			}.runTaskLater(plugin, 100); //run after 1 tick
+		}
 	}
 	
 	//Get the world currently loaded for game play.
@@ -670,6 +667,14 @@ public class ArenaManager {
 
 	public static ScoreboardUtil getScoreboardUtil() {
 		return scoreboardUtil;
+	}
+
+	public static int getGameLength() {
+		return gameLength;
+	}
+
+	public static void setGameLength(int gameLength) {
+		ArenaManager.gameLength = gameLength;
 	}
 
 }
