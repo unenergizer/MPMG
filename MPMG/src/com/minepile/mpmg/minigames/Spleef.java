@@ -29,14 +29,6 @@ public class Spleef extends MiniGame {
 	public void setupGame() {
 		setWorldName("MapSPLEEF01");
 		setGameName("Spleef");
-		setCanPlaceBlocks(false);
-		setCanDropItems(false);
-		setCanPickupItems(false);
-		setCanFoodLevelChange(false);
-		setCanPlaceBlocks(false);
-		setCanPlayerDie(true);
-		setCanPlayerTakeDamage(true);
-		setMaxLives(0);
 		
 		//Set Game info.
 		setInfoSlot1("Break blocks and drop players.");

@@ -28,14 +28,6 @@ public class MowGrass extends MiniGame {
 	public void setupGame() {
 		setWorldName("MapMOW01");
 		setGameName("Yard Work");
-		setCanPlaceBlocks(false);
-		setCanDropItems(false);
-		setCanPickupItems(false);
-		setCanFoodLevelChange(false);
-		setCanPlaceBlocks(false);
-		setCanPlayerDie(true);
-		setCanPlayerTakeDamage(true);
-		setMaxLives(0);
 		
 		//Set Game info.
 		setInfoSlot1("Cut down as much grass as possible for points.");

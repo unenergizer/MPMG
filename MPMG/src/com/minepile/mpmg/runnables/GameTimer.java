@@ -7,6 +7,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.minepile.mpmg.managers.ArenaManager;
 import com.minepile.mpmg.managers.GameManager;
 import com.minepile.mpmg.managers.GameManager.MiniGameType;
+import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
 import com.minepile.mpmg.managers.ScoreManager;
 import com.minepile.mpmg.managers.TeamManager;
 
@@ -17,17 +18,24 @@ public class GameTimer extends BukkitRunnable {
 	@Override
 	public void run() {
 		//Add 1 to "time"
-		setTime(getTime() + 1);
+		time++;
 		
 		//Update the time in ScoreManager.
-		ScoreManager.setTime(getTime());
+		ScoreManager.setTime(time);
 		
-		for (Player player : Bukkit.getOnlinePlayers()) {
-			if (TeamManager.containsPlayer(player)) {
-				if(GameManager.getCurrentMiniGame() == MiniGameType.SPLEEF) {
-					ArenaManager.addPoint(player, ScoreManager.getTime());
+		if(GameManager.getCurrentMiniGame() == MiniGameType.SPLEEF || GameManager.getCurrentMiniGame() == MiniGameType.HOTPOTATO) {
+			for (Player player : Bukkit.getOnlinePlayers()) {
+				if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.PLAYER) || TeamManager.getPlayerTeam(player).equals(ArenaTeams.RED)) {
+					
+					ArenaManager.addPoint(player, 1);
+					
 				}
 			}
+		}
+		
+		if (GameManager.isGameRunning() == false) {
+			cancel();
+			resetTime();
 		}
 	}
 	

@@ -66,10 +66,13 @@ public class ScoreManager {
 		}
 		
 		//Show the players place.
-		
 		String firstPlace = playerPlacement.get(1);
 		String secondPlace =  playerPlacement.get(2);
 		String thirdPlace =  playerPlacement.get(3);
+		
+		if (playerName == firstPlace) {
+			StatsManager.updateStats(player, 1, 0, 0, 0);
+		}
 		
 		Bukkit.broadcastMessage(" ");
 		Bukkit.broadcastMessage(" ");

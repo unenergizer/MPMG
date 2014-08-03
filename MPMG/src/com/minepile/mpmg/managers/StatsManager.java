@@ -33,19 +33,19 @@ public class StatsManager {
 	private String password = (String) plugin.getConfig().get("db.password");
 	*/
 	
-	/*
 	private String host = "localhost";
 	private String port = "3306";
 	private String dbName = "mpmg";
 	private String username = "root";
 	private String password = "";
-	*/
 	
+	/*
 	private String host = "66.85.144.162";
 	private String port = "3306";
 	private String dbName = "mcph224346";
 	private String username = "mcph224346";
 	private String password = "f81ddb1807";
+	*/
 	
 	private static String table = "stats";
 	

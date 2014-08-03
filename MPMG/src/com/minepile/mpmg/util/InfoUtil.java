@@ -17,7 +17,7 @@ public class InfoUtil {
 		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "█    " + ChatColor.WHITE + infoSlot4);
 		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "█    " + ChatColor.WHITE + infoSlot5);
 		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "█   " + ChatColor.WHITE + infoSlot6);
-		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "█▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇");
+		Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "███████████████████████████████");
 	}
 
 	public void setTitleSlot(String titleSlot) {

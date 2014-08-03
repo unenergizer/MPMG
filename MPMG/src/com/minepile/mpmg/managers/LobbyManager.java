@@ -28,6 +28,7 @@ public class LobbyManager {
 	private static WorldUtil worldUtil = new WorldUtil();
 	private static ScoreboardUtil scoreboardUtil = new ScoreboardUtil();
 	
+	private static boolean lobbyActive = false;
 	private static boolean lobbyCountdownStarted = false;
 	private static int lobbyCountdownTime = 90;	// TODO : Default 90
 	private static int currentCountdownTime = lobbyCountdownTime;
@@ -49,13 +50,12 @@ public class LobbyManager {
 	}
 	
 	public static void setupLobby() {
+		//Lobby is being setup. Lobby must be active.
+		setLobbyActive(true);
+		
 		//Setup lobby world. Default lobby world folder name "world"
 		worldUtil.loadWorld("world");
 		worldUtil.setWorldProperties(false, false, 0, 6, 6000);
-		
-		//Select game to load in lobby.
-		//Select the next game to load.
-		GameManager.selectNextGame();
 				
 		//Remove players and set some defaults before we begin setting up the game.
 		GameManager.setGameRunning(false);		//Make sure the game is not running when in the lobby.
@@ -63,6 +63,9 @@ public class LobbyManager {
 		TeamManager.resetAllPlayerTeams();		//Clear player team selection.
 		KitManager.resetAllPlayerKits();		//Clear player kit selection.
 
+		//Select game to load in lobby.
+		//Select the next game to load.
+		GameManager.selectNextGame();
 		
 		//Setup scoreboard.
 		scoreboardUtil.setup("Lobby", "MiniGame Lobby");
@@ -282,7 +285,7 @@ public class LobbyManager {
 					ArenaManager.setupGame();						//Set's up the game.
 					lobbyCountdownStarted = false;					//Stops the lobby countdown.
 					currentCountdownTime = lobbyCountdownTime;		//Reset the time.
-					
+					setLobbyActive(false);							//Lobby is no longer active.
 					//Despawn any animals or monsters.
 					worldUtil.clearEntities();
 				}
@@ -293,6 +296,14 @@ public class LobbyManager {
 
 	public static void setCurrentCountdownTime(int currentCountdownTime) {
 		LobbyManager.currentCountdownTime = currentCountdownTime;
+	}
+
+	public static boolean isLobbyActive() {
+		return lobbyActive;
+	}
+
+	public static void setLobbyActive(boolean lobbyActive) {
+		LobbyManager.lobbyActive = lobbyActive;
 	}
 
 	public static boolean isLobbyCountdownStarted() {

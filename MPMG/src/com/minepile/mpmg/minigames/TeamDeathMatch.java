@@ -35,14 +35,6 @@ public class TeamDeathMatch extends MiniGame {
 	public void setupGame() {
 		setWorldName("MapTDM01");
 		setGameName("Team Death Match");
-		setCanPlaceBlocks(false);
-		setCanDropItems(false);
-		setCanPickupItems(false);
-		setCanFoodLevelChange(false);
-		setCanPlaceBlocks(false);
-		setCanPlayerDie(true);
-		setCanPlayerTakeDamage(true);
-		setMaxLives(0);
 		
 		//Set Game info.
 		setInfoSlot1("Bows are insta-kill and you only get one arrow.");

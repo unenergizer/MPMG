@@ -2,7 +2,6 @@ package com.minepile.mpmg.listeners;
 
 import java.sql.SQLException;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -215,9 +214,6 @@ public class InteractListener implements Listener {
 							break;
 						case LEVER:
 							event.setCancelled(false);
-							break;
-						case LOCKED_CHEST:
-							event.setCancelled(true);
 							break;
 						case LONG_GRASS:
 							event.setCancelled(false);

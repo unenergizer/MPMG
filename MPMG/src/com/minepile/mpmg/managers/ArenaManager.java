@@ -48,7 +48,7 @@ public class ArenaManager {
 	private static boolean gameHasWon = false;
 	private static boolean gameEnding = false;
 	private static int maxScore = 2;
-	private static int arenaCountdownTime = 20;
+	private static int arenaCountdownTime = 20; //Default 20
 	private static int currentCountdownTime = arenaCountdownTime;
 	private static int spawnID = 0;
 	private static int arenaTaskID;
@@ -78,6 +78,7 @@ public class ArenaManager {
 	
 	//Game has been initialed.  Lets setup the game.
 	public static void setupGame() {
+		Bukkit.broadcastMessage("<<<DEBUG>> ArenaManager.setupGame()");
 		//Setup game world properties.
 		worldUtil.setWorldProperties(true, false, 0, 6, 6000);
 		
@@ -97,15 +98,6 @@ public class ArenaManager {
 		case INFECTION:
 			scoreboardUtil.setupTeam(ScoreboardTeam.TEAM0, true, false, ChatColor.GREEN + "");
 			scoreboardUtil.setupTeam(ScoreboardTeam.TEAM1, true, false, ChatColor.RED + "");
-			break;
-		case LASTMOBSTANDING:
-			scoreboardUtil.setupTeam(ScoreboardTeam.PLAYER, true, true, ChatColor.GREEN + "");
-			break;
-		case ONEINTHECHAMBER:
-			scoreboardUtil.setupTeam(ScoreboardTeam.PLAYER, true, true, ChatColor.GREEN + "");
-			break;
-		case SPLEEF:
-			scoreboardUtil.setupTeam(ScoreboardTeam.PLAYER, true, true, ChatColor.GREEN + "");
 			break;
 		case TEAMDEATHMATCH:
 			scoreboardUtil.setupTeam(ScoreboardTeam.TEAM0, true, false, ChatColor.BLUE + "");
@@ -211,21 +203,6 @@ public class ArenaManager {
 				scoreboardUtil.addPoint(player, -1);
 			}
 			break;
-		case LASTMOBSTANDING:
-			scoreboardUtil.addPlayer(player, ScoreboardTeam.PLAYER);
-			scoreboardUtil.addPoint(player, 1);
-			scoreboardUtil.addPoint(player, -1);
-			break;
-		case ONEINTHECHAMBER:
-			scoreboardUtil.addPlayer(player, ScoreboardTeam.PLAYER);
-			scoreboardUtil.addPoint(player, 1);
-			scoreboardUtil.addPoint(player, -1);
-			break;
-		case SPLEEF:
-			scoreboardUtil.addPlayer(player, ScoreboardTeam.PLAYER);
-			scoreboardUtil.addPoint(player, 1);
-			scoreboardUtil.addPoint(player, -1);
-			break;
 		case TEAMDEATHMATCH:
 			if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.BLUE)){
 				scoreboardUtil.addPlayer(player, ScoreboardTeam.TEAM0);
@@ -237,8 +214,10 @@ public class ArenaManager {
 			scoreboardUtil.setPoints(player, Bukkit.getOfflinePlayer(TeamManager.getPlayerTeam(player).getName() + " Team"), 0);
 			break;
 		default:
+			scoreboardUtil.addPlayer(player, ScoreboardTeam.PLAYER);
+			scoreboardUtil.addPoint(player, 1);
+			scoreboardUtil.addPoint(player, -1);
 			break;
-		
 		}
 		
 		//Spawn player
@@ -470,6 +449,10 @@ public class ArenaManager {
 						BarAPI.removeBar(player);
 					}
 					
+					
+					//Start GameTimer.
+					new GameTimer().runTaskTimer(plugin, 0, 20);
+					
 					//Run any game-specific Runnables.
 					for (Player player : Bukkit.getOnlinePlayers()) {
 						switch(GameManager.getCurrentMiniGame()){
@@ -517,11 +500,6 @@ public class ArenaManager {
 	    return nearest;
 	}
 	
-	//This method returns if the game countdown has started.
-	public static boolean hasCountdownStarted() {
-		return arenaCountdownActive;
-	}
-	
 	//Switches the players team and scoreboard score.
 	public static void switchTeam(Player player, ArenaTeams newTeam, ScoreboardTeam newSBTeam) {
 		int oldPoints = scoreboardUtil.getPoints(player);
@@ -546,7 +524,7 @@ public class ArenaManager {
 	
 	//Adds a point to the scoreboard.
 	public static void addPoint(Player player, int points) {
-		if (player != null) {
+		if (player != null && GameManager.isGameRunning() == true && LobbyManager.isLobbyActive() == false) {
 			
 			//Add a point to the scoreboard.	
 			switch(GameManager.getCurrentMiniGame()) {
@@ -585,9 +563,6 @@ public class ArenaManager {
 	//Start game specific runnables and the gameTimer.
 	public static void miniGameRunnable(Player player, int time) {
 		
-		//Start GameTimer.
-		new GameTimer().runTaskTimer(plugin, 0L, 20L);
-		
 		//Start game-specific timers.
 		switch(GameManager.getCurrentMiniGame()) {
 		case HOTPOTATO:
@@ -603,22 +578,26 @@ public class ArenaManager {
 	
 	//Tests for game win.
 	public static void hasGameWon(final Player player) {
-		if (GameManager.isGameRunning() == true) {
-			new BukkitRunnable() {
-				@Override
-		    	public void run() {
-					
-					if (GameManager.miniGame.testGameWin(player) == true && isGameHasWon() == false) {
-						
-						setGameHasWon(true);
-						setGameEnding(true);
-						ScoreManager.displayScores(player);
-						endGame();
-					}
+		new BukkitRunnable() {
+			@Override
+	    	public void run() {
 				
+				if (GameManager.miniGame.testGameWin(player) == true && isGameHasWon() == false && GameManager.isGameRunning() == true) {
+					
+					ScoreManager.displayScores(player);
+					endGame();
+					setGameHasWon(true);
+					setGameEnding(true);
 				}
-			}.runTaskLater(plugin, 100); //run after 1 tick
-		}
+			
+			}
+		}.runTaskLater(plugin, 100); //run after 1 tick
+		
+	}
+	
+	//This method returns if the game countdown has started.
+	public static boolean hasCountdownStarted() {
+		return arenaCountdownActive;
 	}
 	
 	//Get the world currently loaded for game play.

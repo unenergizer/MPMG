@@ -1,5 +1,7 @@
 package com.minepile.mpmg.managers;
 
+import org.bukkit.Bukkit;
+
 import com.minepile.mpmg.MPMG;
 import com.minepile.mpmg.minigames.HotPotato;
 import com.minepile.mpmg.minigames.Infection;
@@ -86,7 +88,6 @@ public class GameManager {
 	}
 	
 	public static void selectGame(MiniGameType game) {
-		
 		//Select the minigame and then start it up.
 		switch(game) {
 			case HOTPOTATO:

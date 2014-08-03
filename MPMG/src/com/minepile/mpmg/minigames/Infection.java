@@ -6,6 +6,7 @@ import me.libraryaddict.disguise.disguisetypes.DisguiseType;
 import me.libraryaddict.disguise.disguisetypes.MobDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.LivingWatcher;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -38,14 +39,6 @@ public class Infection extends MiniGame {
 	public void setupGame() {
 		setWorldName("MapINF01");
 		setGameName("Infection");
-		setCanPlaceBlocks(false);
-		setCanDropItems(false);
-		setCanPickupItems(false);
-		setCanFoodLevelChange(false);
-		setCanPlaceBlocks(false);
-		setCanPlayerDie(true);
-		setCanPlayerTakeDamage(true);
-		setMaxLives(0);
 		
 		//Set Game info.
 		setInfoSlot1("The goal is to avoid being infected.");

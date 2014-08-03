@@ -40,14 +40,6 @@ public class LastMobStanding extends MiniGame {
 	public void setupGame() {
 		setWorldName("MapLMS01");
 		setGameName("Last Mob Standing");
-		setCanPlaceBlocks(false);
-		setCanDropItems(false);
-		setCanPickupItems(false);
-		setCanFoodLevelChange(false);
-		setCanPlaceBlocks(false);
-		setCanPlayerDie(true);
-		setCanPlayerTakeDamage(true);
-		setMaxLives(0);
 		
 		//Set Game info.
 		setInfoSlot1("Bows are insta-kill and you only get one arrow.");

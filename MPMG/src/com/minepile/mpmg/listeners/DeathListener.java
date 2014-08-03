@@ -3,7 +3,6 @@ package com.minepile.mpmg.listeners;
 import java.sql.SQLException;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,14 +13,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.minepile.mpmg.MPMG;
 import com.minepile.mpmg.managers.ArenaManager;
 import com.minepile.mpmg.managers.GameManager;
-import com.minepile.mpmg.managers.KitManager;
-import com.minepile.mpmg.managers.KitManager.Kits;
 import com.minepile.mpmg.managers.LobbyManager;
 import com.minepile.mpmg.managers.StatsManager;
-import com.minepile.mpmg.managers.TeamManager;
-import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
-import com.minepile.mpmg.util.ParticleEffect;
-import com.minepile.mpmg.util.ScoreboardUtil.ScoreboardTeam;
 
 public class DeathListener implements Listener {
 	
