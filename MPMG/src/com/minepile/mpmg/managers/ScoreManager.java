@@ -1,5 +1,6 @@
 package com.minepile.mpmg.managers;
 
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -71,7 +72,12 @@ public class ScoreManager {
 		String thirdPlace =  playerPlacement.get(3);
 		
 		if (playerName == firstPlace) {
-			StatsManager.updateStats(player, 1, 0, 0, 0);
+			try {
+				StatsManager.updateStats(player, 1, 0, 0, 0);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		Bukkit.broadcastMessage(" ");

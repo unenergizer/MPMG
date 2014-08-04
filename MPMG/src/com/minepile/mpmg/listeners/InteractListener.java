@@ -70,7 +70,7 @@ public class InteractListener implements Listener {
 							break;
 						case DOUBLE_PLANT:
 							event.setCancelled(false);
-							if(GameManager.getCurrentMiniGame() == MiniGameType.MOWGRASS){
+							if(GameManager.getCurrentMiniGame() == MiniGameType.YARDWORK){
 								ArenaManager.addPoint(player, 1);
 								event.setCancelled(false);
 							}

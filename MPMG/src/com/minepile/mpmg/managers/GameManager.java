@@ -1,16 +1,15 @@
 package com.minepile.mpmg.managers;
 
-import org.bukkit.Bukkit;
-
 import com.minepile.mpmg.MPMG;
 import com.minepile.mpmg.minigames.HotPotato;
 import com.minepile.mpmg.minigames.Infection;
 import com.minepile.mpmg.minigames.LastMobStanding;
 import com.minepile.mpmg.minigames.MiniGame;
-import com.minepile.mpmg.minigames.MowGrass;
+import com.minepile.mpmg.minigames.YardWork;
 import com.minepile.mpmg.minigames.OneInTheChamber;
 import com.minepile.mpmg.minigames.Spleef;
 import com.minepile.mpmg.minigames.TeamDeathMatch;
+import com.minepile.mpmg.minigames.WoolCollector;
 
 public class GameManager {
 	
@@ -26,7 +25,7 @@ public class GameManager {
 	private static String pluginVersion = "0.3.9a";	//Plugin version.
 	private static int minPlayers = 2;				//Minimal players needed to start a game.
 	private static int maxPlayers = 32;				//Maximum players allowed in a game.
-	private static MiniGameType lastGame = MiniGameType.TEAMDEATHMATCH;
+	private static MiniGameType lastGame = MiniGameType.YARDWORK;
 	
 	//Different types of Minigames.
 	public enum MiniGameType {
@@ -35,10 +34,11 @@ public class GameManager {
 		HOTPOTATO("Hot Potato"),
 		INFECTION("Infection"),
 		LASTMOBSTANDING("Last Mob Standing"),
-		MOWGRASS("Yard Work"),
+		YARDWORK("Yard Work"),
 		ONEINTHECHAMBER("One In The Chamber"),
 		SPLEEF("Spleef"),
-		TEAMDEATHMATCH("Team Deathmatch");
+		TEAMDEATHMATCH("Team Deathmatch"),
+		WOOLCOLLECTOR("Wool Collector");
 
 		private String name;
 
@@ -66,7 +66,7 @@ public class GameManager {
 	public static void selectNextGame() {
 		//TODO : set way to select game.
 		
-		if (lastGame == MiniGameType.MOWGRASS) {
+		if (lastGame == MiniGameType.WOOLCOLLECTOR) {
 			selectGame(MiniGameType.ONEINTHECHAMBER);
 		} else if (lastGame == MiniGameType.ONEINTHECHAMBER) {
 			selectGame(MiniGameType.TEAMDEATHMATCH);
@@ -79,7 +79,9 @@ public class GameManager {
 		} else if (lastGame == MiniGameType.HOTPOTATO) {
 			selectGame(MiniGameType.LASTMOBSTANDING);
 		} else if (lastGame == MiniGameType.LASTMOBSTANDING) {
-			selectGame(MiniGameType.MOWGRASS);
+			selectGame(MiniGameType.YARDWORK);
+		} else if (lastGame == MiniGameType.YARDWORK) {
+			selectGame(MiniGameType.WOOLCOLLECTOR);
 		} else {
 			//Select default starting game.
 			selectGame(MiniGameType.ONEINTHECHAMBER);
@@ -108,11 +110,11 @@ public class GameManager {
 				miniGame.setupGame();
 				lastGame = MiniGameType.LASTMOBSTANDING;
 				break;
-			case MOWGRASS:
-				setCurrentMiniGame(MiniGameType.MOWGRASS);
-				miniGame = new MowGrass();
+			case YARDWORK:
+				setCurrentMiniGame(MiniGameType.YARDWORK);
+				miniGame = new YardWork();
 				miniGame.setupGame();
-				lastGame = MiniGameType.MOWGRASS;
+				lastGame = MiniGameType.YARDWORK;
 				break;
 			case ONEINTHECHAMBER:
 				setCurrentMiniGame(MiniGameType.ONEINTHECHAMBER);
@@ -132,6 +134,11 @@ public class GameManager {
 				miniGame.setupGame();
 				lastGame = MiniGameType.TEAMDEATHMATCH;
 				break;
+			case WOOLCOLLECTOR:
+				setCurrentMiniGame(MiniGameType.WOOLCOLLECTOR);
+				miniGame = new WoolCollector();
+				miniGame.setupGame();
+				lastGame = MiniGameType.WOOLCOLLECTOR;
 			default:
 				setCurrentMiniGame(MiniGameType.ONEINTHECHAMBER);
 				miniGame = new OneInTheChamber();

@@ -22,7 +22,7 @@ import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
 import com.minepile.mpmg.util.ParticleEffect;
 import com.minepile.mpmg.util.ScoreboardUtil.ScoreboardTeam;
 
-public class MowGrass extends MiniGame {
+public class YardWork extends MiniGame {
 	
 	@Override
 	public void setupGame() {

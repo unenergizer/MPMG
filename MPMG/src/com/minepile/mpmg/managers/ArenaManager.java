@@ -47,7 +47,7 @@ public class ArenaManager {
 	private static boolean arenaCountdownActive = false;
 	private static boolean gameHasWon = false;
 	private static boolean gameEnding = false;
-	private static int maxScore = 2;
+	private static int maxScore = 2;			//Default 20
 	private static int arenaCountdownTime = 20; //Default 20
 	private static int currentCountdownTime = arenaCountdownTime;
 	private static int spawnID = 0;
@@ -78,7 +78,6 @@ public class ArenaManager {
 	
 	//Game has been initialed.  Lets setup the game.
 	public static void setupGame() {
-		Bukkit.broadcastMessage("<<<DEBUG>> ArenaManager.setupGame()");
 		//Setup game world properties.
 		worldUtil.setWorldProperties(true, false, 0, 6, 6000);
 		
@@ -463,7 +462,7 @@ public class ArenaManager {
 							break;
 						case INFECTION:
 							break;
-						case MOWGRASS:
+						case YARDWORK:
 							miniGameRunnable(player, getGameLength());
 							break;
 						case ONEINTHECHAMBER:
@@ -568,7 +567,7 @@ public class ArenaManager {
 		case HOTPOTATO:
 			new HotPotatoTimer(time, true, true, player).runTaskTimer(plugin, 0L, 20L);
 			break;
-		case MOWGRASS:
+		case YARDWORK:
 			new MowGrassTimer(getGameLength(), true, true, player).runTaskTimer(plugin, 0L, 20L);
 			break;
 		default:
