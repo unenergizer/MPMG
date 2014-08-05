@@ -23,22 +23,22 @@ public class GameManager {
 	
 	private static boolean gameRunning = false;		//Mini-game is running? (default = false)
 	private static String pluginVersion = "0.3.9a";	//Plugin version.
-	private static int minPlayers = 2;				//Minimal players needed to start a game.
+	private static int minPlayers = 1;				//Minimal players needed to start a game.
 	private static int maxPlayers = 32;				//Maximum players allowed in a game.
 	private static MiniGameType lastGame = MiniGameType.YARDWORK;
 	
 	//Different types of Minigames.
 	public enum MiniGameType {
 		
-		BOMBARENA("Bomb Arena"),
-		HOTPOTATO("Hot Potato"),
-		INFECTION("Infection"),
-		LASTMOBSTANDING("Last Mob Standing"),
-		YARDWORK("Yard Work"),
-		ONEINTHECHAMBER("One In The Chamber"),
-		SPLEEF("Spleef"),
-		TEAMDEATHMATCH("Team Deathmatch"),
-		WOOLCOLLECTOR("Wool Collector");
+		BOMBARENA("#1 Bomb Arena"),
+		HOTPOTATO("#2 Hot Potato"),
+		INFECTION("#3 Infection"),
+		LASTMOBSTANDING("#4 Last Mob Standing"),
+		ONEINTHECHAMBER("#5 One In The Chamber"),
+		SPLEEF("#6 Spleef"),
+		TEAMDEATHMATCH("#7 Team Deathmatch"),
+		WOOLCOLLECTOR("#8 Wool Collector"),
+		YARDWORK("#9 Yard Work");
 
 		private String name;
 
@@ -82,9 +82,6 @@ public class GameManager {
 			selectGame(MiniGameType.YARDWORK);
 		} else if (lastGame == MiniGameType.YARDWORK) {
 			selectGame(MiniGameType.WOOLCOLLECTOR);
-		} else {
-			//Select default starting game.
-			selectGame(MiniGameType.ONEINTHECHAMBER);
 		}
 		
 	}
@@ -110,12 +107,6 @@ public class GameManager {
 				miniGame.setupGame();
 				lastGame = MiniGameType.LASTMOBSTANDING;
 				break;
-			case YARDWORK:
-				setCurrentMiniGame(MiniGameType.YARDWORK);
-				miniGame = new YardWork();
-				miniGame.setupGame();
-				lastGame = MiniGameType.YARDWORK;
-				break;
 			case ONEINTHECHAMBER:
 				setCurrentMiniGame(MiniGameType.ONEINTHECHAMBER);
 				miniGame = new OneInTheChamber();
@@ -139,11 +130,18 @@ public class GameManager {
 				miniGame = new WoolCollector();
 				miniGame.setupGame();
 				lastGame = MiniGameType.WOOLCOLLECTOR;
+				break;
+			case YARDWORK:
+				setCurrentMiniGame(MiniGameType.YARDWORK);
+				miniGame = new YardWork();
+				miniGame.setupGame();
+				lastGame = MiniGameType.YARDWORK;
+				break;
 			default:
-				setCurrentMiniGame(MiniGameType.ONEINTHECHAMBER);
+				setCurrentMiniGame(MiniGameType.WOOLCOLLECTOR);
 				miniGame = new OneInTheChamber();
 				miniGame.setupGame();
-				lastGame = MiniGameType.INFECTION;
+				lastGame = MiniGameType.WOOLCOLLECTOR;
 				break;
 		}
 	}

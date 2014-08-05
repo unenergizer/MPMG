@@ -136,7 +136,7 @@ public class Spleef extends MiniGame {
 			ParticleEffect.LARGE_EXPLODE.display(player.getLocation(), 1, 1, 1, 1, 30);
 			
 			//Set players score for time being alive.
-			ScoreManager.setPlayerScore(player, ScoreManager.getTime());
+			ScoreManager.setPlayerScore(player, ScoreManager.getTime() - 1);
 			
 			ArenaManager.switchTeam(player, ArenaTeams.SPECTATOR, ScoreboardTeam.SPECTATOR);
 			ArenaManager.respawnPlayer(player, true, true);	//respawn player as a spectator

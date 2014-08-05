@@ -40,7 +40,7 @@ public class WoolCollector extends MiniGame {
 		
 		//Setup Kit names.
 		KitManager.setKit0(ChatColor.RED + "Glass Hammer");
-		//KitManager.setKit1(ChatColor.GOLD + "Smack Attack");
+		KitManager.setKit1(ChatColor.GOLD + "Smack Attack");
 		//KitManager.setKit2(ChatColor.YELLOW + "Sharp Shooter");
 		//KitManager.setKit3(ChatColor.GREEN + "Stone Sword");
 		//KitManager.setKit4(ChatColor.AQUA + "Iron Axe");
@@ -49,7 +49,7 @@ public class WoolCollector extends MiniGame {
 		
 		//Spawn Kit NPC's.
 		NPCManager.setupNPC(NPCManager.kit0Location, EntityType.IRON_GOLEM, KitManager.getKit0(), Kits.KIT0);
-		//NPCManager.setupNPC(NPCManager.kit1Location, EntityType.ZOMBIE, KitManager.getKit1(), Kits.KIT1);
+		NPCManager.setupNPC(NPCManager.kit1Location, EntityType.ZOMBIE, KitManager.getKit1(), Kits.KIT1);
 		//NPCManager.setupNPC(NPCManager.kit2Location, EntityType.ZOMBIE, KitManager.getKit2(), Kits.KIT2);
 		//NPCManager.setupNPC(NPCManager.kit3Location, EntityType.ZOMBIE, KitManager.getKit3(), Kits.KIT3);
 		//NPCManager.setupNPC(NPCManager.kit4Location, EntityType.ZOMBIE, KitManager.getKit4(), Kits.KIT4);
@@ -91,18 +91,27 @@ public class WoolCollector extends MiniGame {
 		
 		//Spawn player kit.
 		switch (kit) {
-		case KIT0: {
-			//Set item
-			ItemStack item0 = new ItemStack(Material.IRON_SPADE, 1);
-			//Set enchantment
-			ItemMeta itemMeta = item0.getItemMeta();
-			itemMeta.addEnchant(Enchantment.DIG_SPEED, 1, true);
-			item0.setItemMeta(itemMeta);
-			//Set player slot
-			player.getInventory().setItem(0, item0);
-		}
+		case KIT0: 
+			{
+				//Set item
+				ItemStack item0 = new ItemStack(Material.SHEARS, 1);
+				//Set enchantment
+
+				//Set player slot
+				player.getInventory().setItem(0, item0);
+			}
 			break;
 		case KIT1:
+			{
+				//Set item
+				ItemStack item0 = new ItemStack(Material.SHEARS, 1);
+				ItemStack item1 = new ItemStack(Material.POTION, 1, (short) 8226);
+				//Set enchantment
+
+				//Set player slot
+				player.getInventory().setItem(0, item0);
+				player.getInventory().setItem(1, item1);
+			}
 			break;
 		case KIT2:
 			break;

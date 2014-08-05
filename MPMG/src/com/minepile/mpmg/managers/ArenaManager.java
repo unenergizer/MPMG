@@ -24,6 +24,7 @@ import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
 import com.minepile.mpmg.runnables.GameTimer;
 import com.minepile.mpmg.runnables.HotPotatoTimer;
 import com.minepile.mpmg.runnables.MowGrassTimer;
+import com.minepile.mpmg.runnables.WoolCollectorTimer;
 import com.minepile.mpmg.util.ChatUtil;
 import com.minepile.mpmg.util.InfoUtil;
 import com.minepile.mpmg.util.ParticleEffect;
@@ -566,6 +567,9 @@ public class ArenaManager {
 		switch(GameManager.getCurrentMiniGame()) {
 		case HOTPOTATO:
 			new HotPotatoTimer(time, true, true, player).runTaskTimer(plugin, 0L, 20L);
+			break;
+		case WOOLCOLLECTOR:
+			new WoolCollectorTimer(getGameLength(), true, true, player).runTaskTimer(plugin, 0L, 20L);
 			break;
 		case YARDWORK:
 			new MowGrassTimer(getGameLength(), true, true, player).runTaskTimer(plugin, 0L, 20L);

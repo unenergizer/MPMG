@@ -30,7 +30,7 @@ public class LobbyManager {
 	
 	private static boolean lobbyActive = false;
 	private static boolean lobbyCountdownStarted = false;
-	private static int lobbyCountdownTime = 90;	// TODO : Default 90
+	private static int lobbyCountdownTime = 20;	// TODO : Default 90
 	private static int currentCountdownTime = lobbyCountdownTime;
 	private static int lastCountdownTime = 0;
 	private static int taskID; 
