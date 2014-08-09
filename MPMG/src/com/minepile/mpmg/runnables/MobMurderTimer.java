@@ -15,7 +15,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.minepile.mpmg.managers.GameManager;
 import com.minepile.mpmg.util.LivingEntitySpawnerUtil;
 
-public class WoolCollectorTimer extends BukkitRunnable {
+public class MobMurderTimer extends BukkitRunnable {
 	
 	private static LivingEntitySpawnerUtil spawnerUtil = new LivingEntitySpawnerUtil();
 	private static String worldName = GameManager.getMiniGame().getWorldName();
@@ -28,7 +28,7 @@ public class WoolCollectorTimer extends BukkitRunnable {
 	private boolean countDownStarted;
 	private Player player;
 	
-	public WoolCollectorTimer(int time, boolean showBossBar, boolean changePlayerEXPBar, Player player) {
+	public MobMurderTimer(int time, boolean showBossBar, boolean changePlayerEXPBar, Player player) {
 		this.setTargetTime(time);
 		this.setCurrentTime(time);
 		this.setShowBossBar(showBossBar);
@@ -44,13 +44,26 @@ public class WoolCollectorTimer extends BukkitRunnable {
 				BarAPI.setMessage(ChatColor.AQUA + "Time left: " + ChatColor.YELLOW + currentTime);
 			}
 			
-			Random generator = new Random();
+			Random generator1 = new Random();
 			spawnerUtil.spawnEntity(
 					worldName, 
-					new Location(world, generator.nextInt(80) - 40, 82, generator.nextInt(80) - 40), 
-					EntityType.SHEEP, 
-					ChatColor.WHITE, 
-					"Sheep");
+					new Location(world, generator1.nextInt(60) - 30, 82, generator1.nextInt(60) - 30), 
+					EntityType.COW, 
+					ChatColor.GOLD + "" + ChatColor.BOLD + "3 Points");
+			
+			Random generator2 = new Random();
+			spawnerUtil.spawnEntity(
+					worldName, 
+					new Location(world, generator2.nextInt(60) - 30, 82, generator2.nextInt(60) - 30), 
+					EntityType.PIG, 
+					ChatColor.GREEN + "" + ChatColor.BOLD + "2 Points");
+			
+			Random generator3 = new Random();
+			spawnerUtil.spawnEntity(
+					worldName, 
+					new Location(world, generator3.nextInt(60) - 30, 82, generator3.nextInt(60) - 30), 
+					EntityType.CHICKEN,
+					ChatColor.WHITE + "" + ChatColor.BOLD + "1 Point");
 			
 		
 			if (GameManager.isGameRunning() == false) {

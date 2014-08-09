@@ -9,6 +9,7 @@ import com.minepile.mpmg.listeners.BlockPlaceListener;
 import com.minepile.mpmg.listeners.ChatListener;
 import com.minepile.mpmg.listeners.DamageListener;
 import com.minepile.mpmg.listeners.DeathListener;
+import com.minepile.mpmg.listeners.EntityDeathListener;
 import com.minepile.mpmg.listeners.FoodLevelChangeListener;
 import com.minepile.mpmg.listeners.InteractListener;
 import com.minepile.mpmg.listeners.InventoryClickListener;
@@ -64,6 +65,7 @@ public class MPMG extends JavaPlugin {
 		pluginManager.registerEvents(new ChatListener(this), this);
 		pluginManager.registerEvents(new DamageListener(this), this);
 		pluginManager.registerEvents(new DeathListener(this), this);
+		pluginManager.registerEvents(new EntityDeathListener(this), this);
 		pluginManager.registerEvents(new FoodLevelChangeListener(this), this);
 		pluginManager.registerEvents(new InteractListener(this), this);
 		pluginManager.registerEvents(new InventoryClickListener(this), this);

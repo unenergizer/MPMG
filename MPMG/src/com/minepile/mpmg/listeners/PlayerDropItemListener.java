@@ -1,6 +1,5 @@
 package com.minepile.mpmg.listeners;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -19,16 +18,12 @@ public class PlayerDropItemListener  implements Listener {
 	
 	@EventHandler
 	public void onPlayerDropItem(PlayerDropItemEvent event) {
-		Player player = event.getPlayer();
-		
 		if (GameManager.isGameRunning() == true) {
 			//Prevent players from dropping items in-game.
 			event.setCancelled(true);
 		} else { // Lobby code.
 			//If player is in the lobby, prevent them from dropping items (compass).
-			if (!(player.isOp())) { //Cancel event if not Operator
-				event.setCancelled(true);
-		    }
+			event.setCancelled(true);
 		}
 	}
 }

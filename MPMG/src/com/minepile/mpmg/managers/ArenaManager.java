@@ -23,6 +23,7 @@ import com.minepile.mpmg.MPMG;
 import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
 import com.minepile.mpmg.runnables.GameTimer;
 import com.minepile.mpmg.runnables.HotPotatoTimer;
+import com.minepile.mpmg.runnables.MobMurderTimer;
 import com.minepile.mpmg.runnables.MowGrassTimer;
 import com.minepile.mpmg.runnables.WoolCollectorTimer;
 import com.minepile.mpmg.util.ChatUtil;
@@ -48,7 +49,7 @@ public class ArenaManager {
 	private static boolean arenaCountdownActive = false;
 	private static boolean gameHasWon = false;
 	private static boolean gameEnding = false;
-	private static int maxScore = 2;			//Default 20
+	private static int maxScore = 5;			//Default 20
 	private static int arenaCountdownTime = 20; //Default 20
 	private static int currentCountdownTime = arenaCountdownTime;
 	private static int spawnID = 0;
@@ -463,6 +464,12 @@ public class ArenaManager {
 							break;
 						case INFECTION:
 							break;
+						case MOBMURDER:
+							miniGameRunnable(player, getGameLength());
+							break;
+						case WOOLCOLLECTOR:
+							miniGameRunnable(player, getGameLength());
+							break;
 						case YARDWORK:
 							miniGameRunnable(player, getGameLength());
 							break;
@@ -568,11 +575,14 @@ public class ArenaManager {
 		case HOTPOTATO:
 			new HotPotatoTimer(time, true, true, player).runTaskTimer(plugin, 0L, 20L);
 			break;
+		case MOBMURDER:
+			new MobMurderTimer(time, true, true, player).runTaskTimer(plugin, 0L, 20L);
+			break;
 		case WOOLCOLLECTOR:
-			new WoolCollectorTimer(getGameLength(), true, true, player).runTaskTimer(plugin, 0L, 20L);
+			new WoolCollectorTimer(time, true, true, player).runTaskTimer(plugin, 0L, 20L);
 			break;
 		case YARDWORK:
-			new MowGrassTimer(getGameLength(), true, true, player).runTaskTimer(plugin, 0L, 20L);
+			new MowGrassTimer(time, true, true, player).runTaskTimer(plugin, 0L, 20L);
 			break;
 		default:
 			break;

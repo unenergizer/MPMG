@@ -36,20 +36,23 @@ public class DamageListener  implements Listener {
 	
 	@EventHandler
 	public void onEntityDamage(EntityDamageByEntityEvent event) {
-		if (event.getDamager() instanceof Player) {
-			
-			//Get the attacker.
-			Player attacker = (Player) event.getDamager();
-			
-			if (event.getEntity() instanceof Player) {
-				//Get the player that was attacked.
-				Player player = (Player) event.getEntity();
+
+
+
+		//If game is not running.  Player is in lobby.
+		//This is for kit selection.
+		if (GameManager.isGameRunning() == true) {
+
+			if (event.getDamager() instanceof Player) {
+
+				//Get the attacker.
+				Player attacker = (Player) event.getDamager();
 				
-				
-				//If game is not running.  Player is in lobby.
-				//This is for kit selection.
-				if (GameManager.isGameRunning() == true) {
-					
+				//Set up the rest of the games.
+				if (event.getEntity() instanceof Player) {
+					//Get the player that was attacked.
+					Player player = (Player) event.getEntity();
+
 					switch(GameManager.getCurrentMiniGame()) {
 					case HOTPOTATO:
 						event.setCancelled(true);
@@ -57,27 +60,27 @@ public class DamageListener  implements Listener {
 						//Make sure that we are only testing for the left click of a player on the red (tnt) team.
 						if (TeamManager.getPlayerTeam(attacker).equals(ArenaTeams.RED)){
 							//Player is now holding tnt potato:
-							
+
 							//Lets do a lightning strike because the player died!
 							player.playSound(player.getLocation(), Sound.VILLAGER_DEATH, 1, 10);
-							
+
 							//ParticleEffect.LARGE_EXPLODE.display(player.getLocation(), 1, 1, 1, 1, 30);
 							ParticleEffect.RED_DUST.display(player.getLocation(), 1, 1, 1, 1, 30);
-							
+
 							//Send every player a message.
 							Bukkit.broadcastMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> " 
-		+ ChatColor.RED + player.getName() + ChatColor.GOLD + " has the potato! Passed by " + ChatColor.GREEN + attacker.getName() + ChatColor.GOLD + "!");
-							
+									+ ChatColor.RED + player.getName() + ChatColor.GOLD + " has the potato! Passed by " + ChatColor.GREEN + attacker.getName() + ChatColor.GOLD + "!");
+
 							//Switch players kit and team.
 							player.sendMessage(" ");
 							player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> " + "" + ChatColor.LIGHT_PURPLE + ChatColor.BOLD + "YOU HAVE THE POTATO!! QUICK PASS IT!!");
 							player.sendMessage(" ");
 							KitManager.setPlayerKit(player, Kits.KIT6); //Set hidden tnt kit.
 							ArenaManager.switchTeam(player, ArenaTeams.RED, ScoreboardTeam.TEAM1);
-							
+
 							//Run the timer for the attacker.
 							ArenaManager.miniGameRunnable(player, 20);
-							
+
 							//Switch attackers kit and team:
 							attacker.sendMessage(" ");
 							attacker.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "MPMG" + ChatColor.GOLD + "> " + ChatColor.LIGHT_PURPLE + ChatColor.BOLD + "You passed the potato! Now run like CRAZY!!");
@@ -99,18 +102,28 @@ public class DamageListener  implements Listener {
 						event.setCancelled(true);
 					}
 				}
-			} else { //Lobby code.
-				//Cancel damage to mobs from other players
-				event.setCancelled(true);
-				
-				//Identify the mob being punched, then set up player kit.
-				Entity mob = event.getEntity();
-				UUID mobID = mob.getUniqueId();
-				
-				NPCManager.interactPlayer(attacker, mobID);
-				
 			}
+		} else { //Lobby code.
+			if (event.getDamager() instanceof Player) {
+
+				//Get the attacker.
+				Player attacker = (Player) event.getDamager();
+
+				if (!(event.getEntity() instanceof Player)) {
+					
+					//Cancel damage to mobs from other players
+					event.setCancelled(true);
+		
+					//Identify the mob being punched, then set up player kit.
+					Entity mob = event.getEntity();
+					UUID mobID = mob.getUniqueId();
+		
+					NPCManager.interactPlayer(attacker, mobID);
+				}
+			}
+
 		}
+
 	}
 	
 	@EventHandler

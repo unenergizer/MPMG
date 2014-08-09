@@ -43,8 +43,8 @@ public class InteractListener implements Listener {
 		//Game and lobby specific actions.
 		if (GameManager.isGameRunning() == true) {
 			
-			//Check if the player is a operator and if the player clicked a block.
-			if (!(player.isOp()) && blockClicked != null) {
+			//Check if the player clicked a block.
+			if (blockClicked != null) {
 				//Make sure the item being clicked ins't a bow or a fishing rod.
 				if (!blockClicked.getType().equals(Material.BOW) || !blockClicked.getType().equals(Material.FISHING_ROD)) {
 					//Here we handle what happens when a user left clicks a block item.

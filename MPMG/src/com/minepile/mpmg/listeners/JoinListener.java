@@ -42,9 +42,14 @@ public class JoinListener implements Listener {
 			event.setJoinMessage(chatManager.playerJoinMessage(playerName));
 			Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + " >> Developer " + playerName + " has joined the game!");
 			break;
+		case "TheGreatHayley":
+			event.setJoinMessage(chatManager.playerJoinMessage(playerName));
+			Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + " >> Developers girlfriend " + player.getName() + " has joined the game!");
+			break;
 		case "cloudfr":
 			event.setJoinMessage(chatManager.playerJoinMessage(playerName));
-			Bukkit.broadcastMessage(ChatColor.DARK_AQUA + "" + ChatColor.BOLD + " >> Moderator " + player.getName() + " has joined the game!");
+			Bukkit.broadcastMessage(ChatColor.DARK_AQUA + "" + ChatColor.BOLD + " >> Builder " + player.getName() + " has joined the game!");
+			break;
 		default:
 			event.setJoinMessage(chatManager.playerJoinMessage(playerName));
 			break;

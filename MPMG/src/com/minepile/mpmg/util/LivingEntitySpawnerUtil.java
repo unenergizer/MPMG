@@ -12,6 +12,8 @@ import org.bukkit.entity.Sheep;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import com.minepile.mpmg.managers.GameManager;
+
 public class LivingEntitySpawnerUtil {
 		
 	private UUID entityID;
@@ -23,15 +25,19 @@ public class LivingEntitySpawnerUtil {
 		entity.setRemoveWhenFarAway(false);
 		entity.setCanPickupItems(false);
 		
-		PotionEffect potionEffect = new PotionEffect(PotionEffectType.SLOW, 60*60*20, 10);
-		PotionEffect potionEffect2 = new PotionEffect(PotionEffectType.JUMP, 60*60*20, -10);
-		
-		entity.addPotionEffect(potionEffect);
-		entity.addPotionEffect(potionEffect2);
+		//Add potion effects to lobby entity.
+		if (!GameManager.isGameRunning()) {
+			PotionEffect potionEffect = new PotionEffect(PotionEffectType.SLOW, 60*60*20, 10);
+			PotionEffect potionEffect2 = new PotionEffect(PotionEffectType.JUMP, 60*60*20, -10);
+			
+			entity.addPotionEffect(potionEffect);
+			entity.addPotionEffect(potionEffect2);
+		}
 		
 		setEntityID(entity.getUniqueId());
 		
 	}
+	
 	
 	public void spawnEntity(String world, Location location, EntityType entityType, ChatColor color, String entityName) {
 		Sheep sheep = (Sheep) Bukkit.getWorld(world).spawnEntity(location, entityType);
@@ -85,11 +91,14 @@ public class LivingEntitySpawnerUtil {
 			break;
 		}
 		
-		PotionEffect potionEffect = new PotionEffect(PotionEffectType.SLOW, 60*60*20, 10);
-		PotionEffect potionEffect2 = new PotionEffect(PotionEffectType.JUMP, 60*60*20, -10);
-		
-		sheep.addPotionEffect(potionEffect);
-		sheep.addPotionEffect(potionEffect2);
+		//Add potion effects to lobby sheep.
+		if (!GameManager.isGameRunning()) {
+			PotionEffect potionEffect = new PotionEffect(PotionEffectType.SLOW, 60*60*20, 10);
+			PotionEffect potionEffect2 = new PotionEffect(PotionEffectType.JUMP, 60*60*20, -10);
+			
+			sheep.addPotionEffect(potionEffect);
+			sheep.addPotionEffect(potionEffect2);
+		}
 		
 		setEntityID(sheep.getUniqueId());
 		

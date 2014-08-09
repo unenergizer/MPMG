@@ -32,6 +32,7 @@ public class PlayerInteractEntityListener  implements Listener {
 			//Arena code goes here.
 
 		} else { // Lobby code.
+
 			// Identify the mob being right-clicked, then set player kit.
 			Entity mob = event.getRightClicked();
 			UUID mobID = mob.getUniqueId();

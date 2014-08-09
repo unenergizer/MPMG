@@ -4,11 +4,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 
 import com.minepile.mpmg.managers.ArenaManager;
@@ -33,14 +31,14 @@ public class WoolCollector extends MiniGame {
 		//Set Game info.
 		setInfoSlot1("Find sheep!");
 		setInfoSlot2("");
-		setInfoSlot3("Sheer the sheep! Collect wool.");
+		setInfoSlot3("Shear the sheep! Collect wool.");
 		setInfoSlot4("");
 		setInfoSlot5("Person with the most wool wins!");
 		setInfoSlot6("");
 		
 		//Setup Kit names.
-		KitManager.setKit0(ChatColor.RED + "Glass Hammer");
-		KitManager.setKit1(ChatColor.GOLD + "Smack Attack");
+		KitManager.setKit0(ChatColor.RED + "Plain Shears");
+		KitManager.setKit1(ChatColor.GOLD + "Speedy Shears");
 		//KitManager.setKit2(ChatColor.YELLOW + "Sharp Shooter");
 		//KitManager.setKit3(ChatColor.GREEN + "Stone Sword");
 		//KitManager.setKit4(ChatColor.AQUA + "Iron Axe");
@@ -48,8 +46,8 @@ public class WoolCollector extends MiniGame {
 		KitManager.setKit6(ChatColor.RED + "Zombie Kit");
 		
 		//Spawn Kit NPC's.
-		NPCManager.setupNPC(NPCManager.kit0Location, EntityType.IRON_GOLEM, KitManager.getKit0(), Kits.KIT0);
-		NPCManager.setupNPC(NPCManager.kit1Location, EntityType.ZOMBIE, KitManager.getKit1(), Kits.KIT1);
+		NPCManager.setupNPC(NPCManager.kit0Location, EntityType.SHEEP, KitManager.getKit0(), Kits.KIT0);
+		NPCManager.setupNPC(NPCManager.kit1Location, EntityType.SHEEP, KitManager.getKit1(), Kits.KIT1);
 		//NPCManager.setupNPC(NPCManager.kit2Location, EntityType.ZOMBIE, KitManager.getKit2(), Kits.KIT2);
 		//NPCManager.setupNPC(NPCManager.kit3Location, EntityType.ZOMBIE, KitManager.getKit3(), Kits.KIT3);
 		//NPCManager.setupNPC(NPCManager.kit4Location, EntityType.ZOMBIE, KitManager.getKit4(), Kits.KIT4);
@@ -160,7 +158,7 @@ public class WoolCollector extends MiniGame {
 	}
 	
 	public boolean testGameWin(Player player) {
-		if(TeamManager.getTeamSize(ArenaTeams.PLAYER) <= 1){
+		if(ScoreManager.getTime() >= ArenaManager.getGameLength()){
 			return true;
 		} else {
 			return false;

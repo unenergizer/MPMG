@@ -725,7 +725,7 @@ MapMOW01:
     z: 0
     yaw: 180
     pitch: 3
-MapSHEEP01:
+MapMOBMURDER01:
   Spectator:
     x: 0
     y: 95
@@ -734,7 +734,7 @@ MapSHEEP01:
     pitch: 2  
   0:
     x: 0
-    y: 80
+    y: 79
     z: 18
     yaw: 180
     pitch: 2

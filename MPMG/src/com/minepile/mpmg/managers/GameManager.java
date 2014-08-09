@@ -5,11 +5,12 @@ import com.minepile.mpmg.minigames.HotPotato;
 import com.minepile.mpmg.minigames.Infection;
 import com.minepile.mpmg.minigames.LastMobStanding;
 import com.minepile.mpmg.minigames.MiniGame;
-import com.minepile.mpmg.minigames.YardWork;
+import com.minepile.mpmg.minigames.MobMurder;
 import com.minepile.mpmg.minigames.OneInTheChamber;
 import com.minepile.mpmg.minigames.Spleef;
 import com.minepile.mpmg.minigames.TeamDeathMatch;
 import com.minepile.mpmg.minigames.WoolCollector;
+import com.minepile.mpmg.minigames.YardWork;
 
 public class GameManager {
 	
@@ -25,7 +26,7 @@ public class GameManager {
 	private static String pluginVersion = "0.3.9a";	//Plugin version.
 	private static int minPlayers = 1;				//Minimal players needed to start a game.
 	private static int maxPlayers = 32;				//Maximum players allowed in a game.
-	private static MiniGameType lastGame = MiniGameType.YARDWORK;
+	private static MiniGameType lastGame = MiniGameType.WOOLCOLLECTOR;
 	
 	//Different types of Minigames.
 	public enum MiniGameType {
@@ -35,10 +36,11 @@ public class GameManager {
 		INFECTION("#3 Infection"),
 		LASTMOBSTANDING("#4 Last Mob Standing"),
 		ONEINTHECHAMBER("#5 One In The Chamber"),
-		SPLEEF("#6 Spleef"),
-		TEAMDEATHMATCH("#7 Team Deathmatch"),
-		WOOLCOLLECTOR("#8 Wool Collector"),
-		YARDWORK("#9 Yard Work");
+		MOBMURDER("#6 Mob Murder"),
+		SPLEEF("#7 Spleef"),
+		TEAMDEATHMATCH("#8 Team Deathmatch"),
+		WOOLCOLLECTOR("#9 Wool Collector"),
+		YARDWORK("#10 Yard Work");
 
 		private String name;
 
@@ -66,7 +68,7 @@ public class GameManager {
 	public static void selectNextGame() {
 		//TODO : set way to select game.
 		
-		if (lastGame == MiniGameType.WOOLCOLLECTOR) {
+		if (lastGame == MiniGameType.MOBMURDER) {
 			selectGame(MiniGameType.ONEINTHECHAMBER);
 		} else if (lastGame == MiniGameType.ONEINTHECHAMBER) {
 			selectGame(MiniGameType.TEAMDEATHMATCH);
@@ -82,6 +84,8 @@ public class GameManager {
 			selectGame(MiniGameType.YARDWORK);
 		} else if (lastGame == MiniGameType.YARDWORK) {
 			selectGame(MiniGameType.WOOLCOLLECTOR);
+		} else if (lastGame == MiniGameType.WOOLCOLLECTOR) {
+			selectGame(MiniGameType.MOBMURDER);
 		}
 		
 	}
@@ -106,6 +110,12 @@ public class GameManager {
 				miniGame = new LastMobStanding();
 				miniGame.setupGame();
 				lastGame = MiniGameType.LASTMOBSTANDING;
+				break;
+			case MOBMURDER:
+				setCurrentMiniGame(MiniGameType.MOBMURDER);
+				miniGame = new MobMurder();
+				miniGame.setupGame();
+				lastGame = MiniGameType.MOBMURDER;
 				break;
 			case ONEINTHECHAMBER:
 				setCurrentMiniGame(MiniGameType.ONEINTHECHAMBER);

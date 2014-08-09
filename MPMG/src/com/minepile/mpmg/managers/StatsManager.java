@@ -126,6 +126,20 @@ public class StatsManager {
         	" \n" +
         	">> " + ChatColor.BLUE + "To update these stats, simply close and reopen this book."
 	    );
+	    meta.addPage(
+	    		ChatColor.DARK_AQUA + "" + ChatColor.BOLD + " MINIGAME CREDITS" + "\n" +
+	    		" \n" +
+	    		ChatColor.DARK_GRAY + ChatColor.BOLD + "Programing: " + ChatColor.RESET + ChatColor.BLACK + "unenergizer" + " \n" +
+	    		" \n" +
+	    		ChatColor.DARK_GRAY + ChatColor.BOLD + "Map Builds: " +  
+	    		" \n" + 
+	    		ChatColor.RESET + ChatColor.BLACK + "cloudfr & unenergizer" +
+	    		" \n" + 
+	    		ChatColor.BLUE + "Submit suggestions, bugs and player reports @" + " \n" +
+	        	" \n" +
+	        	 ChatColor.DARK_GREEN + "    " + ChatColor.UNDERLINE + "www.MinePile.com" + 
+	        	 ChatColor.RESET + " \n"
+	    		);
 	               
 	    book.setItemMeta(meta);
 	    player.getInventory().setItem(7, book);

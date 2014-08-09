@@ -21,10 +21,8 @@ public class BlockPlaceListener implements Listener {
 	public void onBlockPlace(BlockPlaceEvent event) {
 		//Simple anti-grief
 		Player player = event.getPlayer();
-		if (!(player.isOp())) { //Cancel event if not Operator
-			event.setCancelled(true);
-			LobbyManager.setupPlayerInventory(player);
-	    }
+		event.setCancelled(true);
+		LobbyManager.setupPlayerInventory(player);
 	}
 
 }
