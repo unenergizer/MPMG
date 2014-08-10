@@ -7,6 +7,7 @@ import com.minepile.mpmg.minigames.LastMobStanding;
 import com.minepile.mpmg.minigames.MiniGame;
 import com.minepile.mpmg.minigames.MobMurder;
 import com.minepile.mpmg.minigames.OneInTheChamber;
+import com.minepile.mpmg.minigames.PirateAttack;
 import com.minepile.mpmg.minigames.Spleef;
 import com.minepile.mpmg.minigames.TeamDeathMatch;
 import com.minepile.mpmg.minigames.WoolCollector;
@@ -26,7 +27,7 @@ public class GameManager {
 	private static String pluginVersion = "0.3.9a";	//Plugin version.
 	private static int minPlayers = 1;				//Minimal players needed to start a game.
 	private static int maxPlayers = 32;				//Maximum players allowed in a game.
-	private static MiniGameType lastGame = MiniGameType.WOOLCOLLECTOR;
+	private static MiniGameType lastGame = MiniGameType.MOBMURDER;
 	
 	//Different types of Minigames.
 	public enum MiniGameType {
@@ -127,10 +128,10 @@ public class GameManager {
 				lastGame = MiniGameType.ONEINTHECHAMBER;
 				break;
 			case PIRATEATTACK:
-				setCurrentMiniGame(MiniGameType.SPLEEF);
-				miniGame = new Spleef();
+				setCurrentMiniGame(MiniGameType.PIRATEATTACK);
+				miniGame = new PirateAttack();
 				miniGame.setupGame();
-				lastGame = MiniGameType.SPLEEF;
+				lastGame = MiniGameType.PIRATEATTACK;
 				break;
 			case SPLEEF:
 				setCurrentMiniGame(MiniGameType.SPLEEF);
