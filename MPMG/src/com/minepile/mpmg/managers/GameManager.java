@@ -37,10 +37,11 @@ public class GameManager {
 		LASTMOBSTANDING("#4 Last Mob Standing"),
 		ONEINTHECHAMBER("#5 One In The Chamber"),
 		MOBMURDER("#6 Mob Murder"),
-		SPLEEF("#7 Spleef"),
-		TEAMDEATHMATCH("#8 Team Deathmatch"),
-		WOOLCOLLECTOR("#9 Wool Collector"),
-		YARDWORK("#10 Yard Work");
+		PIRATEATTACK("#7 Pirate Attack"),
+		SPLEEF("#8 Spleef"),
+		TEAMDEATHMATCH("#9 Team Deathmatch"),
+		WOOLCOLLECTOR("#10 Wool Collector"),
+		YARDWORK("#11 Yard Work");
 
 		private String name;
 
@@ -68,7 +69,7 @@ public class GameManager {
 	public static void selectNextGame() {
 		//TODO : set way to select game.
 		
-		if (lastGame == MiniGameType.MOBMURDER) {
+		if (lastGame == MiniGameType.PIRATEATTACK) {
 			selectGame(MiniGameType.ONEINTHECHAMBER);
 		} else if (lastGame == MiniGameType.ONEINTHECHAMBER) {
 			selectGame(MiniGameType.TEAMDEATHMATCH);
@@ -86,6 +87,8 @@ public class GameManager {
 			selectGame(MiniGameType.WOOLCOLLECTOR);
 		} else if (lastGame == MiniGameType.WOOLCOLLECTOR) {
 			selectGame(MiniGameType.MOBMURDER);
+		} else if (lastGame == MiniGameType.MOBMURDER) {
+			selectGame(MiniGameType.PIRATEATTACK);
 		}
 		
 	}
@@ -122,6 +125,12 @@ public class GameManager {
 				miniGame = new OneInTheChamber();
 				miniGame.setupGame();
 				lastGame = MiniGameType.ONEINTHECHAMBER;
+				break;
+			case PIRATEATTACK:
+				setCurrentMiniGame(MiniGameType.SPLEEF);
+				miniGame = new Spleef();
+				miniGame.setupGame();
+				lastGame = MiniGameType.SPLEEF;
 				break;
 			case SPLEEF:
 				setCurrentMiniGame(MiniGameType.SPLEEF);
