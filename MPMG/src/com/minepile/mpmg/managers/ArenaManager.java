@@ -146,6 +146,9 @@ public class ArenaManager {
 			@Override
 	    	public void run() {
 				
+				//Reset the spawn ID counter
+				spawnID = 0;
+				
 				//Clear the scoreboard
 				scoreboardUtil.removeAllScoreboards();
 				
@@ -301,14 +304,32 @@ public class ArenaManager {
 			//Example, in "Infection" a player is changed to a zombie when killed.
 			if (teleportPlayer == true) {
 				//Spawn player using cords from config file.
-				int x = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".x"); //Loads x coordinate from file.
-				int y = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".y"); //Loads y coordinate from file.
-				int z = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".z"); //Loads z coordinate from file.
-				int yaw = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".yaw"); //Loads yaw from file.
-				int pitch = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".pitch"); //Loads pitch from file.
+				double x = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".x"); //Loads x coordinate from file.
+				double y = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".y"); //Loads y coordinate from file.
+				double z = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".z"); //Loads z coordinate from file.
+				double yaw = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".yaw"); //Loads yaw from file.
+				double pitch = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".pitch"); //Loads pitch from file.
+				
+				//Fix spawn positions for X coordinate locations.
+				if (x > 0) {
+					//Fix spawn positions for positive coordinate locations.
+					x = x + .5;
+				} else {
+					//Fix spawn positions for negative coordinate locations.
+					x = x - .5;
+				}
+				
+				//Fix spawn positions for Z coordinate locations.
+				if (z > 0) {
+					//Fix spawn positions for positive coordinate locations.
+					z = z + .5;
+				} else {
+					//Fix spawn positions for negative coordinate locations.
+					z = z - .5;
+				}
 				
 				//Teleport players.
-				worldUtil.teleportPlayer(player, x + .5, y, z + .5, yaw, pitch);
+				worldUtil.teleportPlayer(player, x, y, z, yaw, pitch);
 			}
 			
 			//Save users spawn location for later.

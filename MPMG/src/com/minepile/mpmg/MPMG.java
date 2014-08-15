@@ -22,6 +22,8 @@ import com.minepile.mpmg.listeners.PlayerMoveListener;
 import com.minepile.mpmg.listeners.PlayerPickupItemListener;
 import com.minepile.mpmg.listeners.ProjectileHitListener;
 import com.minepile.mpmg.listeners.QuitListener;
+import com.minepile.mpmg.listeners.SheerEntityListener;
+import com.minepile.mpmg.listeners.TeleportListener;
 import com.minepile.mpmg.listeners.WeatherChangeListener;
 import com.minepile.mpmg.managers.ArenaManager;
 import com.minepile.mpmg.managers.CommandManager;
@@ -79,6 +81,8 @@ public class MPMG extends JavaPlugin {
 		pluginManager.registerEvents(new PlayerPickupItemListener(this), this);
 		pluginManager.registerEvents(new ProjectileHitListener(this), this);
 		pluginManager.registerEvents(new QuitListener(this), this);
+		pluginManager.registerEvents(new SheerEntityListener(this), this);
+		pluginManager.registerEvents(new TeleportListener(this), this);
 		pluginManager.registerEvents(new WeatherChangeListener(this), this);
 	}
 }

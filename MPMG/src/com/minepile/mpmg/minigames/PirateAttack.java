@@ -113,6 +113,11 @@ public class PirateAttack extends MiniGame {
 			player.getInventory().setItem(1, item0);
 			player.getInventory().setItem(2, item0);
 			player.getInventory().setItem(3, item0);
+			player.getInventory().setItem(4, item0);
+			player.getInventory().setItem(5, item0);
+			player.getInventory().setItem(6, item0);
+			player.getInventory().setItem(7, item0);
+			player.getInventory().setItem(8, item0);
 		}
 			break;
 		case KIT1: {
@@ -123,6 +128,11 @@ public class PirateAttack extends MiniGame {
 			player.getInventory().setItem(1, item0);
 			player.getInventory().setItem(2, item0);
 			player.getInventory().setItem(3, item0);
+			player.getInventory().setItem(4, item0);
+			player.getInventory().setItem(5, item0);
+			player.getInventory().setItem(6, item0);
+			player.getInventory().setItem(7, item0);
+			player.getInventory().setItem(8, item0);
 			
 		}
 			break;
@@ -169,31 +179,15 @@ public class PirateAttack extends MiniGame {
 	}
 	
 	public void onPlayerDeath(Player player) {
-		//Switch player team.  If player is on "players" team switch to red "zombies" team.
-		//Update the scoreboard.  The zombie team is Team1.
-		if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.PLAYER)){
-			//Player death:
-			
-			//Lets do a lightning strike because the player died!
-			player.getWorld().strikeLightningEffect(player.getLocation());
-			player.playSound(player.getLocation(), Sound.VILLAGER_DEATH, 1, 10);
-			
-			//ParticleEffect.LARGE_EXPLODE.display(player.getLocation(), 1, 1, 1, 1, 30);
-			ParticleEffect.ANGRY_VILLAGER.display(player.getLocation(), 1, 1, 1, 1, 30);
-			
-			ArenaManager.switchTeam(player, ArenaTeams.RED, ScoreboardTeam.TEAM1);
-			KitManager.setPlayerKit(player, Kits.KIT6); //Set hidden "Zombie" kit.
-			ArenaManager.respawnPlayer(player, false, false);
-		} else {
-			//HotPotatoPlayer death:
-			
-			//Lets do a lightning strike because the player died!
-			player.getWorld().strikeLightningEffect(player.getLocation());
-			player.playSound(player.getLocation(), Sound.EXPLODE, 1, 10);
-			ParticleEffect.LARGE_EXPLODE.display(player.getLocation(), 1, 1, 1, 1, 30);
-			
-			ArenaManager.respawnPlayer(player, false, true);
-		}
+		
+		//Lets do a lightning strike because the player died!
+		player.getWorld().strikeLightningEffect(player.getLocation());
+		player.playSound(player.getLocation(), Sound.EXPLODE, 1, 10);
+		ParticleEffect.LARGE_EXPLODE.display(player.getLocation(), 1, 1, 1, 1, 30);
+		
+		ArenaManager.switchTeam(player, ArenaTeams.SPECTATOR, ScoreboardTeam.SPECTATOR);
+		ArenaManager.respawnPlayer(player, true, true);
+		
 	}
 	
 	public boolean testGameWin(Player player) {

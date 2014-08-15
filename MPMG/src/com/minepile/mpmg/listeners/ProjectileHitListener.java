@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 
 import com.minepile.mpmg.MPMG;
+import com.minepile.mpmg.managers.ArenaManager;
 import com.minepile.mpmg.managers.GameManager;
 
 public class ProjectileHitListener  implements Listener {
@@ -27,21 +28,26 @@ public class ProjectileHitListener  implements Listener {
 		
 		if (GameManager.isGameRunning() == true) {
 			//Arena Code
-			
-			if(proj instanceof Snowball) {
-				Snowball snowball = (Snowball) proj;
-				if(snowball.getShooter() instanceof Player) {
-					snowball.getWorld().createExplosion(snowball.getLocation(), 4);
+			if(ArenaManager.hasCountdownStarted() == false) {
+				
+				if(proj instanceof Snowball) {
+					Snowball snowball = (Snowball) proj;
+					if(snowball.getShooter() instanceof Player) {
+						if(snowball.getLocation().getX() < 0) {
+							snowball.getWorld().createExplosion(snowball.getLocation(), 2);	
+						}
+					}
+				}
+				
+				if(proj instanceof EnderPearl) {
+					EnderPearl enderpearl = (EnderPearl) proj;
+					if (enderpearl.getShooter() instanceof Player) {
+						if (enderpearl.getLocation().getX() > 0) {
+							enderpearl.getWorld().createExplosion(enderpearl.getLocation(), 2);
+						}
+					}	
 				}
 			}
-			
-			if(proj instanceof EnderPearl) {
-				EnderPearl enderpearl = (EnderPearl) proj;
-				if (enderpearl.getShooter() instanceof Player) {
-					enderpearl.getWorld().createExplosion(enderpearl.getLocation(), 4);
-				}
-			}
-			
 		} else {
 			//Lobby Code
 			

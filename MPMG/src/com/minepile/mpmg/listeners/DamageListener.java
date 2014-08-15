@@ -47,6 +47,9 @@ public class DamageListener  implements Listener {
 
 				//Get the attacker.
 				Player attacker = (Player) event.getDamager();
+				Entity entity = event.getEntity();
+				
+				ParticleEffect.RED_DUST.display(entity.getLocation(), 1, 1, 1, 1, 30);
 				
 				//Set up the rest of the games.
 				if (event.getEntity() instanceof Player) {

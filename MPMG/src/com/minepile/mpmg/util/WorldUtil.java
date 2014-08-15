@@ -105,9 +105,9 @@ public class WorldUtil {
 	// Teleport a specific player to a given location in the loaded world.
 	// Takes X, Y, & Z coordinates and the pitch and yaw. This sets the players
 	// direction and camera.
-	public void teleportPlayer(Player player, double x, int y, double z,
-			float yaw, float pitch) {
-		Location location = new Location(this.world, x, y, z, yaw, pitch);
+	public void teleportPlayer(Player player, double x, double y, double z,
+			double yaw, double pitch) {
+		Location location = new Location(this.world, x, y, z);
 		player.teleport(location);
 	}
 

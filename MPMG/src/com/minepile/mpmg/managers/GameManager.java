@@ -27,7 +27,7 @@ public class GameManager {
 	private static String pluginVersion = "0.3.9a";	//Plugin version.
 	private static int minPlayers = 1;				//Minimal players needed to start a game.
 	private static int maxPlayers = 32;				//Maximum players allowed in a game.
-	private static MiniGameType lastGame = MiniGameType.MOBMURDER;
+	private static MiniGameType lastGame = MiniGameType.YARDWORK;
 	
 	//Different types of Minigames.
 	public enum MiniGameType {
@@ -70,7 +70,7 @@ public class GameManager {
 	public static void selectNextGame() {
 		//TODO : set way to select game.
 		
-		if (lastGame == MiniGameType.PIRATEATTACK) {
+		if (lastGame == MiniGameType.MOBMURDER) {
 			selectGame(MiniGameType.ONEINTHECHAMBER);
 		} else if (lastGame == MiniGameType.ONEINTHECHAMBER) {
 			selectGame(MiniGameType.TEAMDEATHMATCH);
@@ -88,9 +88,9 @@ public class GameManager {
 			selectGame(MiniGameType.WOOLCOLLECTOR);
 		} else if (lastGame == MiniGameType.WOOLCOLLECTOR) {
 			selectGame(MiniGameType.MOBMURDER);
-		} else if (lastGame == MiniGameType.MOBMURDER) {
-			selectGame(MiniGameType.PIRATEATTACK);
-		}
+		} //else if (lastGame == MiniGameType.MOBMURDER) {
+			//selectGame(MiniGameType.PIRATEATTACK);
+		//}
 		
 	}
 	
