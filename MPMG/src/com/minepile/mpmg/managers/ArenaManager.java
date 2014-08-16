@@ -52,7 +52,9 @@ public class ArenaManager {
 	private static int maxScore = 5;			//Default 20
 	private static int arenaCountdownTime = 20; //Default 20
 	private static int currentCountdownTime = arenaCountdownTime;
-	private static int spawnID = 0;
+	private static int spawnTeam0 = 0; //Default 0
+	private static int spawnTeam1 = 0; //Default 0
+	private static int spawnTeam2 = 8; //Default 8
 	private static int arenaTaskID;
 	private static int gameLength = 120;  //Default 120
 	
@@ -147,7 +149,9 @@ public class ArenaManager {
 	    	public void run() {
 				
 				//Reset the spawn ID counter
-				spawnID = 0;
+				spawnTeam0 = 0; //Defualt 0
+				spawnTeam1 = 0; //Default 0
+				spawnTeam2 = 8; //Default 8
 				
 				//Clear the scoreboard
 				scoreboardUtil.removeAllScoreboards();
@@ -303,45 +307,133 @@ public class ArenaManager {
 			//Some games may not want to teleport the player.
 			//Example, in "Infection" a player is changed to a zombie when killed.
 			if (teleportPlayer == true) {
-				//Spawn player using cords from config file.
-				double x = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".x"); //Loads x coordinate from file.
-				double y = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".y"); //Loads y coordinate from file.
-				double z = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".z"); //Loads z coordinate from file.
-				double yaw = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".yaw"); //Loads yaw from file.
-				double pitch = (int) plugin.getConfig().get(getWorldName() + "." + spawnID + ".pitch"); //Loads pitch from file.
 				
-				//Fix spawn positions for X coordinate locations.
-				if (x > 0) {
-					//Fix spawn positions for positive coordinate locations.
-					x = x + .5;
-				} else {
-					//Fix spawn positions for negative coordinate locations.
-					x = x - .5;
+				//If the spawn location id is greater than 15, reset the counter.
+				if(TeamManager.getPlayerTeam(player).equals(ArenaTeams.RED)) {
+					//Spawn red team
+					
+					//Spawn player using cords from config file.
+					double x = (int) plugin.getConfig().get(getWorldName() + ".Team1." + spawnTeam1 + ".x"); //Loads x coordinate from file.
+					double y = (int) plugin.getConfig().get(getWorldName() + ".Team1." + spawnTeam1 + ".y"); //Loads y coordinate from file.
+					double z = (int) plugin.getConfig().get(getWorldName() + ".Team1." + spawnTeam1 + ".z"); //Loads z coordinate from file.
+					double yaw = (int) plugin.getConfig().get(getWorldName() + ".Team1." + spawnTeam1 + ".yaw"); //Loads yaw from file.
+					double pitch = (int) plugin.getConfig().get(getWorldName() + ".Team1." + spawnTeam1 + ".pitch"); //Loads pitch from file.
+					
+					//Fix spawn positions for X coordinate locations.
+					if (x > 0) {
+						//Fix spawn positions for positive coordinate locations.
+						x = x + .5;
+					} else {
+						//Fix spawn positions for negative coordinate locations.
+						x = x - .5;
+					}
+					
+					//Fix spawn positions for Z coordinate locations.
+					if (z > 0) {
+						//Fix spawn positions for positive coordinate locations.
+						z = z + .5;
+					} else {
+						//Fix spawn positions for negative coordinate locations.
+						z = z - .5;
+					}
+					
+					//Teleport players.
+					worldUtil.teleportPlayer(player, x, y, z, yaw, pitch);
+					
+					//Save users spawn location for later.
+					//This location will be used to teleport player back to this point during countdowns.
+					playerSpawnID.put(player.getName(), spawnTeam1);
+					
+					//Increment the spawn location id.  Sets next location to load.
+					spawnTeam1++;
+					
+					if(spawnTeam1 > 7) {
+						spawnTeam1 = 0;
+					}
+					
+				} else if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.BLUE)) {
+					//Spawn blue team
+					
+					//Spawn player using cords from config file.
+					double x = (int) plugin.getConfig().get(getWorldName() + ".Team2." + spawnTeam2 + ".x"); //Loads x coordinate from file.
+					double y = (int) plugin.getConfig().get(getWorldName() + ".Team2." + spawnTeam2 + ".y"); //Loads y coordinate from file.
+					double z = (int) plugin.getConfig().get(getWorldName() + ".Team2." + spawnTeam2 + ".z"); //Loads z coordinate from file.
+					double yaw = (int) plugin.getConfig().get(getWorldName() + ".Team2." + spawnTeam2 + ".yaw"); //Loads yaw from file.
+					double pitch = (int) plugin.getConfig().get(getWorldName() + ".Team2." + spawnTeam2 + ".pitch"); //Loads pitch from file.
+					
+					//Fix spawn positions for X coordinate locations.
+					if (x > 0) {
+						//Fix spawn positions for positive coordinate locations.
+						x = x + .5;
+					} else {
+						//Fix spawn positions for negative coordinate locations.
+						x = x - .5;
+					}
+					
+					//Fix spawn positions for Z coordinate locations.
+					if (z > 0) {
+						//Fix spawn positions for positive coordinate locations.
+						z = z + .5;
+					} else {
+						//Fix spawn positions for negative coordinate locations.
+						z = z - .5;
+					}
+					
+					//Teleport players.
+					worldUtil.teleportPlayer(player, x, y, z, yaw, pitch);
+					
+					//Save users spawn location for later.
+					//This location will be used to teleport player back to this point during countdowns.
+					playerSpawnID.put(player.getName(), spawnTeam2);
+					
+					//Increment the spawn location id.  Sets next location to load.
+					spawnTeam2++;
+					
+					if(spawnTeam2 > 15) {
+						spawnTeam2 = 8;
+					}
+					
+				} else if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.PLAYER)) {
+					
+					//Spawn player using cords from config file.
+					double x = (int) plugin.getConfig().get(getWorldName() + ".Team0." + spawnTeam0 + ".x"); //Loads x coordinate from file.
+					double y = (int) plugin.getConfig().get(getWorldName() + ".Team0." + spawnTeam0 + ".y"); //Loads y coordinate from file.
+					double z = (int) plugin.getConfig().get(getWorldName() + ".Team0." + spawnTeam0 + ".z"); //Loads z coordinate from file.
+					double yaw = (int) plugin.getConfig().get(getWorldName() + ".Team0." + spawnTeam0 + ".yaw"); //Loads yaw from file.
+					double pitch = (int) plugin.getConfig().get(getWorldName() + ".Team0." + spawnTeam0 + ".pitch"); //Loads pitch from file.
+					
+					//Fix spawn positions for X coordinate locations.
+					if (x > 0) {
+						//Fix spawn positions for positive coordinate locations.
+						x = x + .5;
+					} else {
+						//Fix spawn positions for negative coordinate locations.
+						x = x - .5;
+					}
+					
+					//Fix spawn positions for Z coordinate locations.
+					if (z > 0) {
+						//Fix spawn positions for positive coordinate locations.
+						z = z + .5;
+					} else {
+						//Fix spawn positions for negative coordinate locations.
+						z = z - .5;
+					}
+					
+					//Teleport players.
+					worldUtil.teleportPlayer(player, x, y, z, yaw, pitch);
+					
+					//Save users spawn location for later.
+					//This location will be used to teleport player back to this point during countdowns.
+					playerSpawnID.put(player.getName(), spawnTeam0);
+					
+					//Increment the spawn location id.  Sets next location to load.
+					spawnTeam0++;
+					
+					if(spawnTeam0 > 15) {
+						spawnTeam0 = 0;
+					}
 				}
-				
-				//Fix spawn positions for Z coordinate locations.
-				if (z > 0) {
-					//Fix spawn positions for positive coordinate locations.
-					z = z + .5;
-				} else {
-					//Fix spawn positions for negative coordinate locations.
-					z = z - .5;
-				}
-				
-				//Teleport players.
-				worldUtil.teleportPlayer(player, x, y, z, yaw, pitch);
-			}
-			
-			//Save users spawn location for later.
-			//This location will be used to teleport player back to this point during countdowns.
-			playerSpawnID.put(player.getName(), spawnID);
-			
-			//Increment the spawn location id.  Sets next location to load.
-			spawnID++;
-			
-			//If the spawn location id is greater than 15, reset the counter.
-			if(spawnID > 15) {
-				spawnID = 0;
 			}
 		}
 	}
@@ -376,13 +468,30 @@ public class ArenaManager {
 	        		float tempPitch = player.getLocation().getPitch();	//Gets players in-game pitch.
 	        		int playerSpawnID = getPlayerSpawnID(player.getName());	//Gets the players spawn location.
 	        		
-	        		int x = (int) plugin.getConfig().get(getWorldName() + "." + playerSpawnID + ".x"); //Loads x coordinate from file.
-	        		int y = (int) plugin.getConfig().get(getWorldName() + "." + playerSpawnID + ".y"); //Loads y coordinate from file.
-	        		int z = (int) plugin.getConfig().get(getWorldName() + "." + playerSpawnID + ".z"); //Loads z coordinate from file.
+	        		double x = (int) plugin.getConfig().get(getWorldName() + "." + playerSpawnID + ".x"); //Loads x coordinate from file.
+	        		double y = (int) plugin.getConfig().get(getWorldName() + "." + playerSpawnID + ".y"); //Loads y coordinate from file.
+	        		double z = (int) plugin.getConfig().get(getWorldName() + "." + playerSpawnID + ".z"); //Loads z coordinate from file.
 	        		
-	        		//Teleport the player to their original spawn location.
-	        		//Players camera does not change.
-	        		worldUtil.teleportPlayer(player, x + .5, y, z + .5, tempYaw, tempPitch);
+					//Fix spawn positions for X coordinate locations.
+					if (x > 0) {
+						//Fix spawn positions for positive coordinate locations.
+						x = x + .5;
+					} else {
+						//Fix spawn positions for negative coordinate locations.
+						x = x - .5;
+					}
+					
+					//Fix spawn positions for Z coordinate locations.
+					if (z > 0) {
+						//Fix spawn positions for positive coordinate locations.
+						z = z + .5;
+					} else {
+						//Fix spawn positions for negative coordinate locations.
+						z = z - .5;
+					}
+					
+					//Teleport players.
+					worldUtil.teleportPlayer(player, x, y, z, tempYaw, tempPitch);
 	            }
 	 
 	        }.runTaskLater(plugin, 1);

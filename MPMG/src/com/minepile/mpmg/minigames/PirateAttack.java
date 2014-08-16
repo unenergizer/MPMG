@@ -7,15 +7,14 @@ import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import com.minepile.mpmg.managers.ArenaManager;
 import com.minepile.mpmg.managers.KitManager;
+import com.minepile.mpmg.managers.KitManager.Kits;
 import com.minepile.mpmg.managers.NPCManager;
 import com.minepile.mpmg.managers.ScoreManager;
 import com.minepile.mpmg.managers.TeamManager;
-import com.minepile.mpmg.managers.KitManager.Kits;
 import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
 import com.minepile.mpmg.util.ParticleEffect;
 import com.minepile.mpmg.util.ScoreboardUtil.ScoreboardTeam;
@@ -55,7 +54,10 @@ public class PirateAttack extends MiniGame {
 		//NPCManager.setupNPC(NPCManager.kit6Location, EntityType.SKELETON, KitManager.getKit6(), Kits.KIT6);
 
 		//Setup join-able teams.
-		NPCManager.setupNPC(NPCManager.team2Location, EntityType.PIG_ZOMBIE, ChatColor.GREEN, "Players Team", ArenaTeams.PLAYER);	
+		NPCManager.setupNPC(NPCManager.team0Location, EntityType.ZOMBIE,
+				ChatColor.BLUE, "Blue Team", ArenaTeams.BLUE);
+		NPCManager.setupNPC(NPCManager.team1Location, EntityType.SKELETON,
+				ChatColor.RED, "Red Team", ArenaTeams.RED);	
 	}
 	
 	@Override
@@ -81,17 +83,12 @@ public class PirateAttack extends MiniGame {
 	    //If the player is on the red team, lets do some additional setup for them.
 	    if (TeamManager.getPlayerTeam(player).equals(ArenaTeams.RED)) {
 	    	
-	    	//Force these players to use the zombie kit.
-	    	KitManager.setPlayerKit(player, Kits.KIT6);
+	    	KitManager.setPlayerKit(player, Kits.KIT0);
 	    	
-	    	//play a sound
-		    player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1, 10);
 	    } else {
-	    	//If the player is on the "Players" team lets do some additional setup.
-			PotionEffect potionEffect = new PotionEffect(PotionEffectType.SPEED, 25*20, 0);
-			potionEffect.apply(player);
-	    	//play a sound
-		    player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1, 10);
+	    	
+	    	KitManager.setPlayerKit(player, Kits.KIT1);
+
 	    }
 	}
 	
@@ -166,14 +163,14 @@ public class PirateAttack extends MiniGame {
 	
 	public void setupPlayerTeam(Player player) {
 		int redTeam = TeamManager.getTeamSize(ArenaTeams.RED);
-		int playerTeam = TeamManager.getTeamSize(ArenaTeams.PLAYER);
+		int blueTeam = TeamManager.getTeamSize(ArenaTeams.BLUE);
 		if (TeamManager.getPlayerTeam(player) == null) {
-			if (redTeam > playerTeam) {
-				TeamManager.setPlayerTeam(player, ArenaTeams.PLAYER);
-			} else if (playerTeam > redTeam) {
+			if (redTeam > blueTeam) {
+				TeamManager.setPlayerTeam(player, ArenaTeams.BLUE);
+			} else if (blueTeam > redTeam) {
 				TeamManager.setPlayerTeam(player, ArenaTeams.RED);
 			} else {
-				TeamManager.setPlayerTeam(player, ArenaTeams.PLAYER);
+				TeamManager.setPlayerTeam(player, ArenaTeams.BLUE);
 			}
 		}
 	}
@@ -191,7 +188,7 @@ public class PirateAttack extends MiniGame {
 	}
 	
 	public boolean testGameWin(Player player) {
-		if(ScoreManager.getTime() >= ArenaManager.getGameLength()){
+		if(TeamManager.getTeamSize(ArenaTeams.RED) <= 1 || TeamManager.getTeamSize(ArenaTeams.BLUE) <= 1){
 			return true;
 		} else {
 			return false;

@@ -28,10 +28,48 @@ public class PlayerPickupItemListener   implements Listener {
 			Player player = event.getPlayer();
 			
 			//Game is running, what do we do when player picks up an item?
-			if(event.getItem().getItemStack().getType().equals(Material.WOOL) && GameManager.getCurrentMiniGame().equals(MiniGameType.WOOLCOLLECTOR)){
-				event.setCancelled(false);
-				//add point
-				ArenaManager.addPoint(player, 1);
+			if(GameManager.getCurrentMiniGame().equals(MiniGameType.WOOLCOLLECTOR)) {
+				if(event.getItem().getItemStack().getType().equals(Material.WOOL)) {
+					event.setCancelled(false);
+					//add point
+					ArenaManager.addPoint(player, 1);
+				} else {
+					event.setCancelled(true);
+				}
+				
+			} else if(GameManager.getCurrentMiniGame().equals(MiniGameType.SUPERMINECHALLANGE)){
+				if (event.getItem().getItemStack().getType().equals(Material.COAL)){ 
+					event.setCancelled(false);
+					//add point
+					ArenaManager.addPoint(player, 1);
+				} else if (event.getItem().getItemStack().getType().equals(Material.IRON_ORE)){ 
+					event.setCancelled(false);
+					//add point
+					ArenaManager.addPoint(player, 2);
+				} else if (event.getItem().getItemStack().getType().equals(Material.LAPIS_ORE)){ 
+					event.setCancelled(false);
+					//add point
+					ArenaManager.addPoint(player, 1);
+				} else if (event.getItem().getItemStack().getType().equals(Material.DIAMOND)){ 
+					event.setCancelled(false);
+					//add point
+					ArenaManager.addPoint(player, 5);
+				} else if (event.getItem().getItemStack().getType().equals(Material.EMERALD)){ 
+					event.setCancelled(false);
+					//add point
+					ArenaManager.addPoint(player, 5);
+				} else if (event.getItem().getItemStack().getType().equals(Material.REDSTONE)){ 
+					event.setCancelled(false);
+					//add point
+					ArenaManager.addPoint(player, 1);
+				} else if (event.getItem().getItemStack().getType().equals(Material.GOLD_ORE)){ 
+					event.setCancelled(false);
+					//add point
+					ArenaManager.addPoint(player, 1);
+				} else {
+					event.setCancelled(true);
+				}
+				
 			} else {
 				event.setCancelled(true);
 			}

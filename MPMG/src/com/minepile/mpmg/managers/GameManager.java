@@ -9,6 +9,7 @@ import com.minepile.mpmg.minigames.MobMurder;
 import com.minepile.mpmg.minigames.OneInTheChamber;
 import com.minepile.mpmg.minigames.PirateAttack;
 import com.minepile.mpmg.minigames.Spleef;
+import com.minepile.mpmg.minigames.SuperMineChallange;
 import com.minepile.mpmg.minigames.TeamDeathMatch;
 import com.minepile.mpmg.minigames.WoolCollector;
 import com.minepile.mpmg.minigames.YardWork;
@@ -24,10 +25,10 @@ public class GameManager {
 	private static MPMG plugin;
 	
 	private static boolean gameRunning = false;		//Mini-game is running? (default = false)
-	private static String pluginVersion = "0.3.9a";	//Plugin version.
-	private static int minPlayers = 1;				//Minimal players needed to start a game.
+	private static String pluginVersion = "0.4.1";	//Plugin version.
+	private static int minPlayers = 2;				//Minimal players needed to start a game.
 	private static int maxPlayers = 32;				//Maximum players allowed in a game.
-	private static MiniGameType lastGame = MiniGameType.YARDWORK;
+	private static MiniGameType lastGame = MiniGameType.MOBMURDER;
 	
 	//Different types of Minigames.
 	public enum MiniGameType {
@@ -40,9 +41,10 @@ public class GameManager {
 		MOBMURDER("#6 Mob Murder"),
 		PIRATEATTACK("#7 Pirate Attack"),
 		SPLEEF("#8 Spleef"),
-		TEAMDEATHMATCH("#9 Team Deathmatch"),
-		WOOLCOLLECTOR("#10 Wool Collector"),
-		YARDWORK("#11 Yard Work");
+		SUPERMINECHALLANGE("#9 Super Mine Challange"),
+		TEAMDEATHMATCH("#10 Team Deathmatch"),
+		WOOLCOLLECTOR("#11 Wool Collector"),
+		YARDWORK("#12 Yard Work");
 
 		private String name;
 
@@ -70,7 +72,7 @@ public class GameManager {
 	public static void selectNextGame() {
 		//TODO : set way to select game.
 		
-		if (lastGame == MiniGameType.MOBMURDER) {
+		if (lastGame == MiniGameType.SUPERMINECHALLANGE) {
 			selectGame(MiniGameType.ONEINTHECHAMBER);
 		} else if (lastGame == MiniGameType.ONEINTHECHAMBER) {
 			selectGame(MiniGameType.TEAMDEATHMATCH);
@@ -88,9 +90,11 @@ public class GameManager {
 			selectGame(MiniGameType.WOOLCOLLECTOR);
 		} else if (lastGame == MiniGameType.WOOLCOLLECTOR) {
 			selectGame(MiniGameType.MOBMURDER);
-		} //else if (lastGame == MiniGameType.MOBMURDER) {
-			//selectGame(MiniGameType.PIRATEATTACK);
-		//}
+		} else if (lastGame == MiniGameType.MOBMURDER) {
+			selectGame(MiniGameType.PIRATEATTACK);
+		} else if (lastGame == MiniGameType.PIRATEATTACK) {
+			selectGame(MiniGameType.SUPERMINECHALLANGE);
+		}
 		
 	}
 	
@@ -138,6 +142,12 @@ public class GameManager {
 				miniGame = new Spleef();
 				miniGame.setupGame();
 				lastGame = MiniGameType.SPLEEF;
+				break;
+			case SUPERMINECHALLANGE:
+				setCurrentMiniGame(MiniGameType.SUPERMINECHALLANGE);
+				miniGame = new SuperMineChallange();
+				miniGame.setupGame();
+				lastGame = MiniGameType.SUPERMINECHALLANGE;
 				break;
 			case TEAMDEATHMATCH:
 				setCurrentMiniGame(MiniGameType.TEAMDEATHMATCH);

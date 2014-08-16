@@ -120,6 +120,62 @@ public class InteractListener implements Listener {
 						case WEB:
 							event.setCancelled(false);
 							break;
+						case DIRT:
+							if (GameManager.getCurrentMiniGame().equals(MiniGameType.SUPERMINECHALLANGE)) {
+								event.setCancelled(false);
+							} else {
+								event.setCancelled(true);
+							}
+							break;
+						case DIAMOND_ORE:
+							if (GameManager.getCurrentMiniGame().equals(MiniGameType.SUPERMINECHALLANGE)) {
+								event.setCancelled(false);
+							} else {
+								event.setCancelled(true);
+							}
+							break;
+						case EMERALD_ORE:
+							if (GameManager.getCurrentMiniGame().equals(MiniGameType.SUPERMINECHALLANGE)) {
+								event.setCancelled(false);
+							} else {
+								event.setCancelled(true);
+							}
+							break;
+						case IRON_ORE:
+							if (GameManager.getCurrentMiniGame().equals(MiniGameType.SUPERMINECHALLANGE)) {
+								event.setCancelled(false);
+							} else {
+								event.setCancelled(true);
+							}
+							break;
+						case LAPIS_ORE:
+							if (GameManager.getCurrentMiniGame().equals(MiniGameType.SUPERMINECHALLANGE)) {
+								event.setCancelled(false);
+							} else {
+								event.setCancelled(true);
+							}
+							break;
+						case COAL_ORE:
+							if (GameManager.getCurrentMiniGame().equals(MiniGameType.SUPERMINECHALLANGE)) {
+								event.setCancelled(false);
+							} else {
+								event.setCancelled(true);
+							}
+							break;
+						case REDSTONE_ORE:
+							if (GameManager.getCurrentMiniGame().equals(MiniGameType.SUPERMINECHALLANGE)) {
+								event.setCancelled(false);
+							} else {
+								event.setCancelled(true);
+							}
+							break;
+						case GOLD_ORE:
+							if (GameManager.getCurrentMiniGame().equals(MiniGameType.SUPERMINECHALLANGE)) {
+								event.setCancelled(false);
+							} else {
+								event.setCancelled(true);
+							}
+							break;
 						default:
 							event.setCancelled(true);
 							break;

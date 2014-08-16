@@ -1,6 +1,5 @@
 package com.minepile.mpmg.listeners;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerShearEntityEvent;
@@ -20,8 +19,6 @@ public class SheerEntityListener implements Listener {
 	
 	@EventHandler
 	public void onEntitySheer(PlayerShearEntityEvent event) {
-		
-		Player player = event.getPlayer();
 		
 		if (GameManager.isGameRunning() == true) {
 			//Game Code
