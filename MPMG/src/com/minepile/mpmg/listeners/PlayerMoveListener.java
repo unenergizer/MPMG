@@ -45,6 +45,11 @@ public class PlayerMoveListener implements Listener {
 					}
 				}
 			}
+			
+			//Spectator below void fix
+			if (player.getLocation().getBlockY() <= 0 && TeamManager.getPlayerTeam(player).equals(ArenaTeams.SPECTATOR)) {
+				ArenaManager.respawnPlayer(player, true, true);
+			}
 		}
 	}
 }

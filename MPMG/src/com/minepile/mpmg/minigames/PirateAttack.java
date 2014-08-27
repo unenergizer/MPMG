@@ -13,7 +13,6 @@ import com.minepile.mpmg.managers.ArenaManager;
 import com.minepile.mpmg.managers.KitManager;
 import com.minepile.mpmg.managers.KitManager.Kits;
 import com.minepile.mpmg.managers.NPCManager;
-import com.minepile.mpmg.managers.ScoreManager;
 import com.minepile.mpmg.managers.TeamManager;
 import com.minepile.mpmg.managers.TeamManager.ArenaTeams;
 import com.minepile.mpmg.util.ParticleEffect;

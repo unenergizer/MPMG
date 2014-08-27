@@ -57,6 +57,9 @@ public class DamageListener  implements Listener {
 					Player player = (Player) event.getEntity();
 
 					switch(GameManager.getCurrentMiniGame()) {
+					case ICERUNNER:
+						event.setCancelled(true);
+						break;
 					case HOTPOTATO:
 						event.setCancelled(true);
 						//Switch player team.  If player is on "players" team switch to red "red tnt" team.
@@ -92,7 +95,25 @@ public class DamageListener  implements Listener {
 							ArenaManager.switchTeam(attacker, ArenaTeams.PLAYER, ScoreboardTeam.TEAM0);
 						}
 						break;
+					case MOBMURDER:
+						event.setCancelled(true);
+						break;
+					case MUSICALMINECARTS:
+						event.setCancelled(true);
+						break;
+					case PIRATEATTACK:
+						event.setCancelled(true);
+						break;
 					case SPLEEF:
+						event.setCancelled(true);
+						break;
+					case SUPERMINECHALLANGE:
+						event.setCancelled(true);
+						break;
+					case WOOLCOLLECTOR:
+						event.setCancelled(true);
+						break;
+					case YARDWORK:
 						event.setCancelled(true);
 						break;
 					default:
@@ -146,6 +167,10 @@ public class DamageListener  implements Listener {
 				if (TeamManager.getPlayerTeam(player) == ArenaTeams.SPECTATOR) {
 					event.setCancelled(true);
 					player.setHealth(20);
+				}
+				
+				if (event.getCause() == EntityDamageEvent.DamageCause.VOID) {
+					GameManager.getMiniGame().onPlayerDeath(player);
 				}
 				
 			} else { // Lobby code.

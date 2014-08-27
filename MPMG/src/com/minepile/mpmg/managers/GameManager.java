@@ -2,10 +2,12 @@ package com.minepile.mpmg.managers;
 
 import com.minepile.mpmg.MPMG;
 import com.minepile.mpmg.minigames.HotPotato;
+import com.minepile.mpmg.minigames.IceRunner;
 import com.minepile.mpmg.minigames.Infection;
 import com.minepile.mpmg.minigames.LastMobStanding;
 import com.minepile.mpmg.minigames.MiniGame;
 import com.minepile.mpmg.minigames.MobMurder;
+import com.minepile.mpmg.minigames.MusicalMinecarts;
 import com.minepile.mpmg.minigames.OneInTheChamber;
 import com.minepile.mpmg.minigames.PirateAttack;
 import com.minepile.mpmg.minigames.Spleef;
@@ -28,23 +30,25 @@ public class GameManager {
 	private static String pluginVersion = "0.4.1";	//Plugin version.
 	private static int minPlayers = 2;				//Minimal players needed to start a game.
 	private static int maxPlayers = 32;				//Maximum players allowed in a game.
-	private static MiniGameType lastGame = MiniGameType.MOBMURDER;
+	private static MiniGameType lastGame = MiniGameType.SUPERMINECHALLANGE;
 	
 	//Different types of Minigames.
 	public enum MiniGameType {
 		
 		BOMBARENA("#1 Bomb Arena"),
 		HOTPOTATO("#2 Hot Potato"),
-		INFECTION("#3 Infection"),
-		LASTMOBSTANDING("#4 Last Mob Standing"),
-		ONEINTHECHAMBER("#5 One In The Chamber"),
-		MOBMURDER("#6 Mob Murder"),
-		PIRATEATTACK("#7 Pirate Attack"),
-		SPLEEF("#8 Spleef"),
-		SUPERMINECHALLANGE("#9 Super Mine Challange"),
-		TEAMDEATHMATCH("#10 Team Deathmatch"),
-		WOOLCOLLECTOR("#11 Wool Collector"),
-		YARDWORK("#12 Yard Work");
+		ICERUNNER("#3 Ice Runner"),
+		INFECTION("#4 Infection"),
+		LASTMOBSTANDING("#5 Last Mob Standing"),
+		ONEINTHECHAMBER("#6 One In The Chamber"),
+		MOBMURDER("#7 Mob Murder"),
+		MUSICALMINECARTS("#8 Musical Minecarts"),
+		PIRATEATTACK("#9 Pirate Attack"),
+		SPLEEF("#10 Spleef"),
+		SUPERMINECHALLANGE("#11 Super Mine Challange"),
+		TEAMDEATHMATCH("#12 Team Deathmatch"),
+		WOOLCOLLECTOR("#13 Wool Collector"),
+		YARDWORK("#14 Yard Work");
 
 		private String name;
 
@@ -94,6 +98,10 @@ public class GameManager {
 			selectGame(MiniGameType.PIRATEATTACK);
 		} else if (lastGame == MiniGameType.PIRATEATTACK) {
 			selectGame(MiniGameType.SUPERMINECHALLANGE);
+		} else if (lastGame == MiniGameType.SUPERMINECHALLANGE) {
+			selectGame(MiniGameType.ICERUNNER);
+		} else if (lastGame == MiniGameType.ICERUNNER) {
+			selectGame(MiniGameType.MUSICALMINECARTS);
 		}
 		
 	}
@@ -107,6 +115,12 @@ public class GameManager {
 				miniGame.setupGame();
 				lastGame = MiniGameType.HOTPOTATO;
 				break;
+			case ICERUNNER:
+				setCurrentMiniGame(MiniGameType.ICERUNNER);
+				miniGame = new IceRunner();
+				miniGame.setupGame();
+				lastGame = MiniGameType.ICERUNNER;
+				break;
 			case INFECTION:
 				setCurrentMiniGame(MiniGameType.INFECTION);
 				miniGame = new Infection();
@@ -118,6 +132,12 @@ public class GameManager {
 				miniGame = new LastMobStanding();
 				miniGame.setupGame();
 				lastGame = MiniGameType.LASTMOBSTANDING;
+				break;
+			case MUSICALMINECARTS:
+				setCurrentMiniGame(MiniGameType.MUSICALMINECARTS);
+				miniGame = new MusicalMinecarts();
+				miniGame.setupGame();
+				lastGame = MiniGameType.MUSICALMINECARTS;
 				break;
 			case MOBMURDER:
 				setCurrentMiniGame(MiniGameType.MOBMURDER);
